@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imis.agile.module.system.mapper.UserMapper">
+
+    <!-- 系统用户 通用查询结果列 -->
+    <sql id="sys_user_base_column_list">
+        <!--@sql SELECT -->
+        id, create_by, create_time, update_by, update_time, username, password, salt, avatar, realname, identity_number, email, phone, birthday, sex, status, del_flag
+        <!--@sql FROM sys_user -->
+    </sql>
+
+    <!-- 系统用户 数据表名称 -->
+    <sql id="sys_user_table_name">
+        <!--@sql SELECT TABLE_NAME -->
+        sys_user
+        <!--@sql FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'sys_user' -->
+    </sql>
+
+    <!-- 人事管理 - 人员信息 - 数据分页 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="pageQuery" type="com.imis.agile.module.system.model.vo.UserPageVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="username" property="username" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="realname" property="realname" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="identity_number" property="identityNumber" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="email" property="email" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="birthday" property="birthday" javaType="java.time.LocalDate" jdbcType="TIMESTAMP"/>
+        <result column="sex" property="sex" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="status" property="status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 人事管理 - 人员信息 - ID查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="queryDataById" type="com.imis.agile.module.system.model.vo.UserInfoVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="username" property="username" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="realname" property="realname" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="identity_number" property="identityNumber" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="email" property="email" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="birthday" property="birthday" javaType="java.time.LocalDate" jdbcType="TIMESTAMP"/>
+        <result column="sex" property="sex" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <collection property="roleList" ofType="java.lang.String" javaType="java.util.List" column="{userId=id}" select="com.imis.agile.module.system.mapper.UserRoleMapper.queryRoleIdListByUserId"/>
+        <collection property="organizationList" ofType="java.lang.String" javaType="java.util.List" column="{userId=id}" select="com.imis.agile.module.system.mapper.UserOrganizationMapper.queryOrganizationIdListByUserId"/>
+    </resultMap>
+
+    <!-- 2021年7月20日 14:36:07 分页查询 del_flag = 0 -->
+    <select id="pagingQueryListByParameter" resultMap="pageQuery">
+        SELECT
+            id, username, avatar, realname, identity_number, email, phone, birthday, sex, status
+        FROM
+            <include refid="sys_user_table_name"/>
+        <where>
+            del_flag = 0
+            <if test="param.username != null and param.username != '' ">
+                AND username LIKE CONCAT('%', #{param.username}, '%')
+            </if>
+            <if test="param.realname != null and param.realname != '' ">
+                AND realname LIKE CONCAT('%', #{param.realname}, '%')
+            </if>
+            <if test="param.identityNumber != null and param.identityNumber != '' ">
+                AND sys_user.identity_number LIKE CONCAT('%', #{param.identityNumber}, '%')
+            </if>
+            <if test="param.email != null and param.email != '' ">
+                AND email LIKE CONCAT('%', #{param.email}, '%')
+            </if>
+            <if test="param.phone != null and param.phone != '' ">
+                AND phone LIKE CONCAT('%', #{param.phone}, '%')
+            </if>
+            <if test="param.birthday != null ">
+                AND birthday <![CDATA[>=]]> DATE(#{param.birthday})
+            </if>
+            <if test="param.birthdayEnd != null ">
+                AND birthday <![CDATA[>=]]> DATE(#{param.birthdayEnd})
+            </if>
+            <if test="param.sex != null ">
+                AND sex = #{param.sex}
+            </if>
+        </where>
+    </select>
+
+    <!-- 2021年7月20日 14:36:07 ID查询 del_flag = 0 -->
+    <select id="queryById" resultMap="queryDataById">
+        SELECT
+            id, username, avatar, realname, identity_number, email, phone, birthday, sex
+        FROM
+            <include refid="sys_user_table_name"/>
+        WHERE
+            del_flag = 0 AND id = #{id}
+    </select>
+
+</mapper>

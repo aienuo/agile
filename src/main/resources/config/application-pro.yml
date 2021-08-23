@@ -1,0 +1,25 @@
+imis-boot:
+  uploadType: local
+  path:
+    upload: ./fileFloder
+server:
+  port: 8088
+spring:
+  datasource:
+    dynamic:
+      datasource:
+        master:
+          url: jdbc:mysql://172.17.47.4:3729/escort?allowMultiQueries=true&serverTimezone=UTC&characterEncoding=UTF-8&useUnicode=true&useSSL=false
+          username: devUser
+          password: rjb@zzdz.devUser3.com
+          driver-class-name: com.mysql.cj.jdbc.Driver
+        slave:
+          url: jdbc:mysql://172.17.47.4:3729/escort_old?allowMultiQueries=true&serverTimezone=UTC&characterEncoding=UTF-8&useUnicode=true&useSSL=false
+          username: devUser
+          password: rjb@zzdz.devUser3.com
+          driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+knife4j:
+  production: true

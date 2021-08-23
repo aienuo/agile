@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <base th:href="${#request.getContextPath()}+'/'">
+    <link rel="stylesheet" href="/static/common/element/index.css"/>
+</head>
+<body>
+<div id="menu">
+    <template>
+        <div style="margin-bottom:18px;">
+            <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="button.insert" @click="openInsertDialog">新增</el-button>
+        </div>
+
+        <el-table :data="tableData" :row-style="{height:'40px'}" :cell-style="{padding:'0px'}" :header-cell-style="{'text-align':'center'}" style="margin-bottom:10px;font-size: 14px"
+                  :default-sort="{prop: 'sortNo', order: 'descending'}" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="id" stripe border>
+            <el-table-column prop="name" label="名称">
+                <template slot-scope="scope">
+                    <i :class="scope.row.icon"></i>
+                    {{scope.row.name}}
+                </template>
+            </el-table-column>
+            <el-table-column prop="menuType" label="类型" :formatter="formatMenuType" width="100" align="center"></el-table-column>
+            <el-table-column prop="status" label="状态" width="60" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.status==0" class="el-icon-circle-check" style="color:rgb(103, 194, 58);"></span>
+                    <span v-else class="el-icon-circle-close" style="color:rgb(194, 58, 63);"></span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="icon" label="图标" align="center"></el-table-column>
+            <el-table-column prop="component" label="组件"></el-table-column>
+            <el-table-column prop="url" label="路径"></el-table-column>
+            <el-table-column prop="sortNo" label="排序" width="50" align="center"></el-table-column>
+            <el-table-column label="操作" width="250" align="center" fixed="right">
+                <template slot-scope="scope">
+                    <el-button type="primary" size="mini" v-if="scope.row.menuType != 2 && button.insert" type="text" @click="openInsertDialog(scope.row)">新增下级</el-button>
+                    <el-button type="success" size="mini" v-if="button.update" type="text" @click="openUpdateDialog(scope.row)">修改</el-button>
+                    <el-button type="danger" size="mini" v-if="button.delete" type="text" @click="openRemoveDialog(scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <el-dialog title="新增" width="90%" :visible.sync="insertDialog" :modal="false" :close-on-click-modal="false">
+            <el-form :model="insertForm" ref="insertForm" :rules="rules" label-width="100px">
+                <el-row>
+                    <el-col :span="7">
+                        <el-form-item label="类型" prop="menuType">
+                            <el-radio-group v-model="insertForm.menuType" size="medium">
+                                <el-radio-button v-for="item in menuTypeItem" :label="item.value" :name="item.name" :disabled="item.disabled">{{item.name}}</el-radio-button>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="名称" prop="name">
+                            <el-input v-model="insertForm.name"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="路径" prop="url">
+                            <el-input v-model="insertForm.url"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="7">
+                        <el-form-item label="图标" prop="icon">
+                            <el-input v-model="insertForm.icon"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="状态" prop="status">
+                            <el-radio-group v-model="insertForm.status" size="medium">
+                                <el-radio-button v-for="item in statusItem" :label="item.value" :name="item.name" :disabled="item.disabled">{{item.name}}</el-radio-button>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="组件" prop="component">
+                            <el-input v-model="insertForm.component"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="7">
+                        <el-form-item label="排序" prop="sortNo">
+                            <el-input-number v-model="insertForm.sortNo" :precision="2" :step="0.1" :min="0" :max="99"></el-input-number>
+                        </el-form-item>
+                    </el-col>
+                    <el-col v-if="insertForm.parentName" :span="7">
+                        <el-form-item label="上级菜单" prop="parentName">
+                            <el-input v-model="insertForm.parentName" :disabled="true" :prefix-icon="insertForm.parentIcon"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col v-else :span="7">
+                        <el-form-item label="上级菜单" prop="parentId">
+                            <el-cascader v-model="updateForm.parentId" :options="parentMenu"
+                                         :props="{value:'id', label:'name', checkStrictly:true, expandTrigger:'hover', emitPath:false}"
+                                         :show-all-levels="true" filterable clearable>
+                                <template slot-scope="{ node, data }">
+                                    <i :class="data.icon"></i>
+                                    <span>{{ data.name }}</span>
+                                    <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+                                </template>
+                            </el-cascader>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="21">
+                        <el-form-item label="描述" prop="description">
+                            <el-input type="textarea" autosize v-model="insertForm.description" maxlength="250" show-word-limit></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button icon="el-icon-circle-close" @click="insertDialog = false">取 消</el-button>
+                <el-button icon="el-icon-circle-check" type="primary" @click="insert">确 定</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog title="修改" width="90%" :visible.sync="updateDialog" :modal="false" :close-on-click-modal="false">
+            <el-form :model="updateForm" ref="updateForm" :rules="rules" label-width="100px">
+                <el-row>
+                    <el-col :span="7">
+                        <el-form-item label="类型" prop="menuType">
+                            <el-radio-group v-model="updateForm.menuType" size="medium">
+                                <el-radio-button v-for="item in menuTypeItem" :label="item.value" :name="item.name" :disabled="item.disabled">{{item.name}}</el-radio-button>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="名称" prop="name">
+                            <el-input v-model="updateForm.name"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="路径" prop="url">
+                            <el-input v-model="updateForm.url"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="7">
+                        <el-form-item label="图标" prop="icon">
+                            <el-input v-model="updateForm.icon"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="状态" prop="status">
+                            <el-radio-group v-model="updateForm.status" size="medium">
+                                <el-radio-button v-for="item in statusItem" :label="item.value" :name="item.name" :disabled="item.disabled">{{item.name}}</el-radio-button>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="组件" prop="component">
+                            <el-input v-model="updateForm.component"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="7">
+                        <el-form-item label="排序" prop="sortNo">
+                            <el-input-number v-model="updateForm.sortNo" :precision="2" :step="0.1" :min="0" :max="99"></el-input-number>
+                        </el-form-item>
+                    </el-col>
+                    <el-col v-if="updateForm.parentName" :span="7">
+                        <el-form-item label="上级菜单" prop="parentName">
+                            <el-input v-model="updateForm.parentName" :disabled="true" :prefix-icon="insertForm.parentIcon"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col v-else :span="7">
+                        <el-form-item label="上级菜单" prop="parentId">
+                            <el-cascader v-model="updateForm.parentId" :options="parentMenu"
+                                         :props="{value:'id', label:'name', checkStrictly:true, expandTrigger:'hover', emitPath:false}"
+                                         :show-all-levels="true" filterable clearable>
+                                <template slot-scope="{ node, data }">
+                                    <i :class="data.icon"></i>
+                                    <span>{{ data.name }}</span>
+                                    <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+                                </template>
+                            </el-cascader>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="21">
+                        <el-form-item label="描述" prop="description">
+                            <el-input type="textarea" autosize v-model="updateForm.description" maxlength="250" show-word-limit></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button icon="el-icon-circle-close" @click="updateDialog = false">取 消</el-button>
+                <el-button icon="el-icon-circle-check" type="primary" @click="update">确 定</el-button>
+            </div>
+        </el-dialog>
+    </template>
+</div>
+</body>
+<script src="/static/common/util/axios.min.js"></script>
+<script src="/static/common/vue/vue.min.js"></script>
+<script src="/static/common/element/index.js"></script>
+<script src="/static/common/api.js"></script>
+<script src="/static/common/module/sys/menu.js"></script>
+</html>

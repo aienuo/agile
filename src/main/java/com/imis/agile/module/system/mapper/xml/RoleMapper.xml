@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imis.agile.module.system.mapper.RoleMapper">
+    <!-- 角色管理 通用查询结果列 -->
+    <sql id="sys_role_base_column_list">
+        <!--@sql SELECT -->
+        id, create_by, create_time, update_by, update_time, role_name, role_code, description
+        <!--@sql FROM sys_role -->
+    </sql>
+
+    <!-- 角色管理 数据表名称 -->
+    <sql id="sys_role_table_name">
+        <!--@sql SELECT TABLE_NAME -->
+        sys_role
+        <!--@sql FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'sys_role' -->
+    </sql>
+
+    <!-- 角色管理 - 角色信息 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="listQuery" type="com.imis.agile.module.api.model.vo.RoleVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="role_name" property="roleName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="role_code" property="roleCode" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="description" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 人事管理 - 角色信息 - 数据分页 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="pageQuery" type="com.imis.agile.module.system.model.vo.RolePageVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="role_name" property="roleName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="role_code" property="roleCode" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="description" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 角色管理 - 角色信息 - ID查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="queryDataById" type="com.imis.agile.module.system.model.vo.RoleInfoVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="role_name" property="roleName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="role_code" property="roleCode" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="description" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <collection property="menuList" ofType="java.lang.String" javaType="java.util.List" column="{roleId=id}" select="com.imis.agile.module.system.mapper.RoleMenuMapper.queryMenuIdListByRoleId"/>
+    </resultMap>
+
+    <!-- 角色管理 - 角色信息 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="listQuery1" type="com.imis.agile.module.system.model.vo.RoleVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="role_name" property="roleName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="role_code" property="roleCode" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="description" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 查询角色信息 2020年10月10日 10:24:00 -->
+    <select id="queryRoleListByIdList" resultMap="listQuery">
+        SELECT
+            id, role_name, role_code, description
+        FROM 
+            <include refid="sys_role_table_name"/>
+        <where>
+            <if test="roleIdList != null and roleIdList.size() != 0">
+                AND
+                <foreach collection="roleIdList" item="id" index="index" separator="OR" open="(" close=")">
+                    id = #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!-- 2021年7月20日 14:36:07 分页查询 -->
+    <select id="pagingQueryListByParameter" resultMap="pageQuery">
+        SELECT
+            id, role_name, role_code, description
+        FROM
+            <include refid="sys_role_table_name"/>
+        <where>
+            <if test="param.roleName != null and param.roleName != ''">
+                AND role_name LIKE CONCAT('%', #{param.roleName}, '%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 2021年7月20日 14:36:07 ID查询 -->
+    <select id="queryById" resultMap="queryDataById">
+        SELECT
+            id, role_name, role_code, description
+        FROM
+            <include refid="sys_role_table_name"/>
+        WHERE id = #{id}
+    </select>
+
+    <!-- 查询角色列表 2020年10月10日 10:24:00 -->
+    <select id="queryList" resultMap="listQuery1">
+        SELECT
+            id, role_name, role_code, description
+        FROM
+            <include refid="sys_role_table_name"/>
+    </select>
+
+</mapper>

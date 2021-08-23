@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imis.agile.module.system.mapper.FileMapper">
+
+    <!-- 文件存放 通用查询结果列 -->
+    <sql id="sys_file_base_column_list">
+        <!--@sql SELECT -->
+        id, create_by, create_time, update_by, update_time, file_name, real_name, file_type, file_url, file_size, description, del_flag
+        <!--@sql FROM sys_file -->
+    </sql>
+
+    <!-- 文件存放 数据表名称 -->
+    <sql id="sys_file_table_name">
+        <!--@sql SELECT TABLE_NAME -->
+        sys_file
+        <!--@sql FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'sys_file' -->
+    </sql>
+
+</mapper>

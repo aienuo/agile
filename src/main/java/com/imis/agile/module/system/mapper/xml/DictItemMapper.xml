@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imis.agile.module.system.mapper.DictItemMapper">
+    <!-- 字典 - 值 通用查询结果列 -->
+    <sql id="sys_dict_item_base_column_list">
+        <!--@sql SELECT -->
+        id, create_by, create_time, update_by, update_time, dict_id, parent_id, name, value, disabled, sort_no, description
+        <!--@sql FROM sys_dict_item-->
+    </sql>
+
+    <!-- 字典 - 值 数据表名称 -->
+    <sql id="sys_dict_item_table_name">
+        <!--@sql SELECT TABLE_NAME -->
+        sys_dict_item
+        <!--@sql FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'sys_dict_item' -->
+    </sql>
+
+    <!-- 字典 - 项 - 数据列表 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="listQuery" type="com.imis.agile.module.system.model.vo.DictItemVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="dict_id" property="dictId" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="parent_id" property="parentId" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="name" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="value" property="value" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="disabled" property="disabled" javaType="java.lang.Boolean" jdbcType="INTEGER"/>
+        <result column="sort_no" property="sortNo" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result column="description" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 字典 - 项 - 数据列表 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="listQueryByDictIdList" type="com.imis.agile.module.api.model.vo.ItemVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="dict_id" property="dictId" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="parent_id" property="parentId" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="name" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="value" property="value" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="disabled" property="disabled" javaType="java.lang.Boolean" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 字典 - 项 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <select id="queryDictItemList" resultMap="listQuery">
+        SELECT
+            id, dict_id, parent_id, name, value, disabled, sort_no, description
+        FROM
+            <include refid="sys_dict_item_table_name"/>
+        <where>
+            <if test="param.id!= null and param.id != '' ">
+                AND id = #{param.id}
+            </if>
+            <if test="param.dictId!= null and param.dictId != '' ">
+                AND dict_id = #{param.dictId}
+            </if>
+            <if test="param.name != null and param.name != '' ">
+                AND name LIKE CONCAT('%', #{param.name}, '%')
+            </if>
+            <if test="param.disabled != null and param.disabled != '' ">
+                AND disabled = #{param.disabled}
+            </if>
+        </where>
+        ORDER BY sort_no
+    </select>
+
+    <!-- 字典 - 项 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <select id="queryDictItemListByDictIdList" resultMap="listQueryByDictIdList">
+        SELECT
+            id, dict_id, parent_id, name, value, disabled, sort_no, description
+        FROM
+            <include refid="sys_dict_item_table_name"/>
+        <where>
+            <if test="dictIdList != null and dictIdList.size() != 0">
+                AND
+                <foreach collection="dictIdList" item="dictId" index="index" separator="OR" open="(" close=")">
+                    dict_id = #{dictId}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY sort_no
+    </select>
+
+</mapper>

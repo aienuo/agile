@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <base th:href="${#request.getContextPath()}+'/'">
+    <link rel="stylesheet" href="/static/common/element/index.css"/>
+</head>
+<body>
+<div id="user">
+    <template>
+        <div style="margin-bottom:10px;">
+            <el-input prefix-icon="el-icon-search" style="width: 13%" v-model="queryForm.realname" placeholder="真实姓名"></el-input>
+            <el-input prefix-icon="el-icon-search" style="width: 13%" v-model="queryForm.username" placeholder="登录账号"></el-input>
+            <el-input prefix-icon="el-icon-search" style="width: 13%" v-model="queryForm.identityNumber" placeholder="身份证号"></el-input>
+            <el-input prefix-icon="el-icon-search" style="width: 13%" v-model="queryForm.phone" placeholder="手机号码"></el-input>
+            <el-input prefix-icon="el-icon-search" style="width: 13%" v-model="queryForm.email" placeholder="电子邮箱"></el-input>
+            <el-button type="primary" icon="el-icon-search" @click="submitQueryForm">查询</el-button>
+            <el-button icon="el-icon-refresh-right" @click="clearQueryForm">重置</el-button>
+        </div>
+        <div style="margin-bottom:20px;">
+            <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="button.insert" @click="openInsertDialog">新增</el-button>
+            <el-button type="danger" icon="el-icon-video-pause" v-if="button.freeze" @click="openFreezeDialog">冻结</el-button>
+            <el-button type="danger" icon="el-icon-video-play" v-if="button.unFreeze" @click="openUnFreezeDialog">解冻</el-button>
+            <el-button type="danger" icon="el-icon-remove-outline" v-if="button.remove" @click="openRemoveDialog">删除</el-button>
+        </div>
+
+        <el-table :data="tableData" :row-style="{height:'40px'}" :cell-style="{padding:'0px'}" :header-cell-style="{'text-align':'center'}" style="margin-bottom:10px;font-size: 14px"
+                  :default-sort="{prop: 'date', order: 'descending'}" row-key="id" @selection-change="handleSelectionChange" stripe border>
+            <el-table-column type="selection" width="55" align="center"></el-table-column>
+            <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+            <el-table-column prop="realname" label="真实姓名"></el-table-column>
+            <el-table-column prop="status" label="账户状态" width="80" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.status==0" class="el-icon-circle-check" style="color:rgb(103, 194, 58);"></span>
+                    <span v-else class="el-icon-circle-close" style="color:rgb(194, 58, 63);"></span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="username" label="登录账号"></el-table-column>
+            <el-table-column prop="identityNumber" label="身份证号" width="180" align="center"></el-table-column>
+            <el-table-column prop="phone" label="手机号码" width="120"></el-table-column>
+            <el-table-column prop="email" label="电子邮箱"></el-table-column>
+            <el-table-column prop="avatar" label="头像" width="70" align="center">
+                <template slot-scope="scope">
+                    <el-avatar shape="square" size="small" :src="scope.row.avatar"></el-avatar>
+                </template>
+            </el-table-column>
+            <el-table-column prop="birthday" label="出生日期" width="120" align="center"></el-table-column>
+            <el-table-column prop="sex" label="性别" width="80" align="center" :formatter="formatSex"></el-table-column>
+            <el-table-column prop="age" label="年龄" width="60" align="center"></el-table-column>
+            <el-table-column label="操作" width="250" align="center" fixed="right">
+                <template slot-scope="scope">
+                    <el-button type="primary" size="mini" type="text" @click="openDetailDialog(scope.row)">详情</el-button>
+                    <el-button type="success" size="mini" v-if="button.update" type="text" @click="openUpdateDialog(scope.row)">修改</el-button>
+                    <el-button type="danger" size="mini" v-if="button.reset" type="text" @click="openResetDialog(scope.row)">密码重置</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+                       :page-sizes="[10, 50, 100]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
+                       :total="total" background>
+        </el-pagination>
+
+        <el-dialog title="新增" width="90%" :visible.sync="insertDialog" :modal="false" :close-on-click-modal="false">
+            <el-form :model="insertForm" ref="insertForm" :rules="rules" label-width="100px">
+                <el-row>
+                    <el-col :span="7">
+                        <el-form-item label="真实姓名" prop="realname">
+                            <el-input v-model="insertForm.realname"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="登录账号" prop="username">
+                            <el-input v-model="insertForm.username"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="登录密码" prop="password">
+                            <el-input type="password" v-model="insertForm.password" placeholder="密码"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="7">
+                        <el-form-item label="身份证号" prop="identityNumber">
+                            <el-input v-model="insertForm.identityNumber" maxlength="18" show-word-limit></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="电子邮箱" prop="email">
+                            <el-input v-model="insertForm.email"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="手机号码" prop="phone">
+                            <el-input v-model="insertForm.phone" maxlength="11" show-word-limit></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="21">
+                        <el-form-item label="头像" prop="avatar">
+                            <el-upload class="avatar-uploader" :action="actionUrl" :show-file-list="false"
+                                       :on-success="handleAvatarSuccess.bind(this,'head')"
+                                       :before-upload="beforeAvatarUpload">
+                                <el-avatar v-if="insertForm.avatar" :src="insertForm.avatar" class="avatar"></el-avatar>
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                <div slot="tip" class="el-upload__tip">上传头像图片大小不能超过2MB!</div>
+                            </el-upload>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="21">
+                        <el-form-item label="角色" prop="roleId">
+                            <el-select v-model="insertForm.roleId" multiple placeholder="请选择" style="width:100%">
+                                <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button icon="el-icon-circle-close" @click="insertDialog = false">取 消</el-button>
+                <el-button icon="el-icon-circle-check" type="primary" @click="insert">确 定</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog title="修改" width="90%" :visible.sync="updateDialog" :modal="false" :close-on-click-modal="false">
+            <el-form :model="updateForm" ref="updateForm" :rules="rules" label-width="100px">
+                <el-row>
+                    <el-col :span="7">
+                        <el-form-item label="登录账号" prop="username">
+                            <el-input v-model="updateForm.username" :disabled="true"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="真实姓名" prop="realname">
+                            <el-input v-model="updateForm.realname"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="身份证号" prop="identityNumber">
+                            <el-input v-model="updateForm.identityNumber" maxlength="18" show-word-limit></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="7">
+                        <el-form-item label="电子邮箱" prop="email">
+                            <el-input v-model="updateForm.email"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="手机号码" prop="phone">
+                            <el-input v-model="updateForm.phone" maxlength="11" show-word-limit></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="7">
+                        <el-form-item label="出生日期" prop="birthday">
+                            <el-input v-model="updateForm.birthday" :disabled="true"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="性别" prop="sex">
+                            <el-radio-group v-model="updateForm.sex" :disabled="true">
+                                <el-radio-button v-for="item in sexItem" :label="item.value" :name="item.name">{{item.name}}</el-radio-button>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="年龄" prop="age">
+                            <el-input v-model="updateForm.age" :disabled="true"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="21">
+                        <el-form-item label="头像" prop="avatar">
+                            <el-upload class="avatar-uploader" :action="actionUrl" :show-file-list="false"
+                                       :on-success="handleAvatarSuccess.bind(this,'head')"
+                                       :before-upload="beforeAvatarUpload">
+                                <el-avatar v-if="updateForm.avatar" :src="updateForm.avatar" class="avatar"></el-avatar>
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                <div slot="tip" class="el-upload__tip">上传头像图片大小不能超过2MB!</div>
+                            </el-upload>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="21">
+                        <el-form-item label="角色" prop="roleId">
+                            <el-select v-model="updateForm.roleId" multiple placeholder="请选择" style="width:100%">
+                                <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button icon="el-icon-circle-close" @click="updateDialog = false">取 消</el-button>
+                <el-button icon="el-icon-circle-check" type="primary" @click="update">确 定</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog title="密码重置" width="30%" :visible.sync="resetDialog" :modal="false" :close-on-click-modal="false">
+            <el-form :model="passwordResetForm" ref="passwordResetForm" :rules="passwordFormRules" label-width="100px">
+                <el-form-item label="登录密码" prop="newPassword">
+                    <el-input v-model="passwordResetForm.newPassword" show-password></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="confirmPassword">
+                    <el-input v-model="passwordResetForm.confirmPassword" show-password></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button icon="el-icon-circle-close" @click="resetDialog = false">取 消</el-button>
+                <el-button icon="el-icon-circle-check" type="primary" @click="reset">确 定</el-button>
+            </div>
+        </el-dialog>
+
+    </template>
+</div>
+</body>
+<script src="/static/common/util/axios.min.js"></script>
+<script src="/static/common/vue/vue.min.js"></script>
+<script src="/static/common/element/index.js"></script>
+<script src="/static/common/api.js"></script>
+<script src="/static/common/module/sys/user.js"></script>
+<style>
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+    }
+
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+    }
+
+    .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+    }
+</style>
+</html>

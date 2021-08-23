@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imis.agile.module.system.mapper.UserOrganizationMapper">
+    <!-- 用户组织机构关联 通用查询结果列 -->
+    <sql id="sys_user_organization_base_column_list">
+        <!--@sql SELECT -->
+        id,create_by, create_time, update_by, update_time, user_id, organization_id, is_responsible
+        <!--@sql FROM sys_user_organization -->
+    </sql>
+
+    <!-- 用户组织机构关联 数据表名称 -->
+    <sql id="sys_user_organization_table_name">
+        <!--@sql SELECT TABLE_NAME -->
+        sys_user_organization
+        <!--@sql FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'sys_user_organization' -->
+    </sql>
+
+    <!-- 指定用户下的组织机构编号 -->
+    <select id="queryOrganizationIdListByUserId" resultType="java.lang.String">
+        SELECT organization_id FROM <include refid="sys_user_organization_table_name"/> WHERE user_id = #{userId}
+    </select>
+
+</mapper>

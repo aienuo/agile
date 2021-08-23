@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <base th:href="${#request.getContextPath()}+'/'">
+    <link rel="stylesheet" href="/static/common/element/index.css"/>
+</head>
+<body>
+<div id="dict">
+    <template>
+        <div style="margin-bottom:10px;">
+            <el-input prefix-icon="el-icon-search" style="width: 13%" v-model="queryForm.dictName" placeholder="字典名称"></el-input>
+            <el-input prefix-icon="el-icon-search" style="width: 13%" v-model="queryForm.dictCode" placeholder="字典编码"></el-input>
+            <el-button type="primary" icon="el-icon-search" @click="submitQueryForm">查询</el-button>
+            <el-button icon="el-icon-refresh-right" @click="clearQueryForm">重置</el-button>
+        </div>
+        <div style="margin-bottom:20px;">
+            <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="button.insert" @click="openInsertDialog">新增</el-button>
+            <el-button type="danger" icon="el-icon-circle-close" v-if="button.delete" @click="openDeleteDialog">删除</el-button>
+        </div>
+
+        <el-table :data="tableData" :row-style="{height:'40px'}" :cell-style="{padding:'0px'}" :header-cell-style="{'text-align':'center'}" style="margin-bottom:10px;font-size: 14px"
+                  :default-sort="{prop: 'date', order: 'descending'}" row-key="id" @selection-change="handleSelectionChange" stripe border>
+            <el-table-column type="selection" width="55" align="center"></el-table-column>
+            <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+            <el-table-column prop="dictName" label="字典名称" width="180" align="center"></el-table-column>
+            <el-table-column prop="dictCode" label="字典编码" width="100" align="center"></el-table-column>
+            <el-table-column prop="dictType" label="字典类型" width="80" align="center" :formatter="formatDictType"></el-table-column>
+            <el-table-column prop="status" label="字典状态" width="80" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.status==0" class="el-icon-circle-check" style="color:rgb(103, 194, 58);"></span>
+                    <span v-else class="el-icon-circle-close" style="color:rgb(194, 58, 63);"></span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="description" label="描述"></el-table-column>
+            <el-table-column label="操作" width="220" align="center" fixed="right">
+                <template slot-scope="scope">
+                    <el-button type="success" icon="el-icon-edit" size="mini" v-if="button.update" type="text" @click="openUpdateDialog(scope.row)">修改</el-button>
+                    <el-button type="primary" icon="el-icon-setting" size="mini" type="text" @click="openConfigurationDrawer(scope.row)">字典配置</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+                       :page-sizes="[10, 50, 100]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
+                       :total="total">
+        </el-pagination>
+
+        <el-dialog title="新增" width="70%" :visible.sync="insertDialog" :modal="false" :close-on-click-modal="false">
+            <el-form :model="insertForm" ref="insertForm" :rules="rules" label-width="100px">
+                <el-row>
+                    <el-col :span="10">
+                        <el-form-item label="字典名称" prop="dictName">
+                            <el-input v-model="insertForm.dictName"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                        <el-form-item label="字典编码" prop="dictCode">
+                            <el-input v-model="insertForm.dictCode"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="10">
+                        <el-form-item label="字典类型" prop="dictType">
+                            <el-radio-group v-model="insertForm.dictType" size="medium">
+                                <el-radio-button v-for="item in dictTypeItem" :label="item.value" :name="item.name" :disabled="item.disabled">{{item.name}}</el-radio-button>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                        <el-form-item label="字典状态" prop="status">
+                            <el-switch v-model="insertForm.status" active-color="#ff4949" inactive-color="#13ce66" :active-value="1" :inactive-value="0"></el-switch>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="20">
+                        <el-form-item label="描述" prop="description">
+                            <el-input type="textarea" autosize v-model="insertForm.description" maxlength="250" show-word-limit></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button icon="el-icon-circle-close" @click="insertDialog = false">取 消</el-button>
+                <el-button icon="el-icon-circle-check" type="primary" @click="insert">确 定</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog title="修改" width="70%" :visible.sync="updateDialog" :modal="false" :close-on-click-modal="false">
+            <el-form :model="updateForm" ref="updateForm" :rules="rules" label-width="100px">
+                <el-row>
+                    <el-col :span="10">
+                        <el-form-item label="字典名称" prop="dictName">
+                            <el-input v-model="updateForm.dictName"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                        <el-form-item label="字典编码" prop="dictCode">
+                            <el-input v-model="updateForm.dictCode"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="10">
+                        <el-form-item label="字典类型" prop="dictType">
+                            <el-radio-group v-model="updateForm.dictType" size="medium">
+                                <el-radio-button v-for="item in dictTypeItem" :label="item.value" :name="item.name" :disabled="item.disabled">{{item.name}}</el-radio-button>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                        <el-form-item label="字典状态" prop="status">
+                            <el-switch v-model="updateForm.status" active-color="#ff4949" inactive-color="#13ce66" :active-value="1" :inactive-value="0"></el-switch>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="20">
+                        <el-form-item label="描述" prop="description">
+                            <el-input type="textarea" autosize v-model="updateForm.description" maxlength="250" show-word-limit></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button icon="el-icon-circle-close" @click="updateDialog = false">取 消</el-button>
+                <el-button icon="el-icon-circle-check" type="primary" @click="update">确 定</el-button>
+            </div>
+        </el-dialog>
+
+        <!--<el-drawer title="字典值维护" size="50%" :visible.sync="configurationDrawer" direction="rtl" :before-close="handleClose">-->
+        <el-drawer title="字典值维护" size="40%" :visible.sync="configurationDrawer">
+            <div style="padding-left: 20px">
+                <div style="margin-bottom:10px;">
+                    <el-input prefix-icon="el-icon-search" style="width: 30%" v-model="queryItemForm.name" placeholder="字典项名"></el-input>
+                    <el-input prefix-icon="el-icon-search" style="width: 30%" v-model="queryItemForm.disabled" placeholder="禁用状态"></el-input>
+                    <!--<el-select v-model="queryItemForm.disabled" placeholder="请选择状态">
+                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+                        </el-option>
+                    </el-select>-->
+
+                    <el-button type="primary" icon="el-icon-search" @click="submitItemQueryForm">查询</el-button>
+                    <el-button icon="el-icon-refresh-right" @click="clearItemQueryForm">重置</el-button>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="button.insertItem" @click="openInsertItemDialog">新增</el-button>
+                </div>
+
+                <el-table :data="dictItemData" :row-style="{height:'40px'}" :cell-style="{padding:'0px'}" :header-cell-style="{'text-align':'center'}" style="margin-bottom:10px;font-size: 14px"
+                          :default-sort="{prop: 'date', order: 'descending'}" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="id" border default-expand-all stripe border>
+                    <el-table-column prop="name" label="字典项名" width="220"></el-table-column>
+                    <el-table-column prop="value" label="字典项值" align="center"></el-table-column>
+                    <el-table-column prop="disabled" label="状态" width="60" align="center">
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.disabled" class="el-icon-circle-close" style="color:rgb(194, 58, 63);"></span>
+                            <span v-else class="el-icon-circle-check" style="color:rgb(103, 194, 58);"></span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="sortNo" label="排序" align="center"></el-table-column>
+                    <el-table-column label="操作" width="200" align="center" fixed="right">
+                        <template slot-scope="scope">
+                            <el-button type="primary" icon="el-icon-plus" size="mini" v-if="button.insertItem" @click="openInsertItemDialog(scope.row)"></el-button>
+                            <el-button type="success" icon="el-icon-edit" size="mini" v-if="button.updateItem" @click="openUpdateItemDialog(scope.row)"></el-button>
+                            <el-button type="danger" icon="el-icon-delete" size="mini" v-if="button.deleteItem" @click="openDeleteItemDialog(scope.row)"></el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+        </el-drawer>
+
+        <el-dialog title="新增" width="70%" :visible.sync="insertItemDialog" :close-on-click-modal="false">
+            <el-form :model="insertItemForm" ref="insertItemForm" :rules="rules" label-width="100px">
+                <el-row>
+                    <el-col :span="20">
+                        <el-form-item label="父级字典项" prop="parentId">
+                            <el-cascader v-model="insertItemForm.parentId" :options="dictItemData" placeholder="请选择父级字典项"
+                                         :props="{value:'id', label:'name', checkStrictly:true, expandTrigger:'hover', emitPath:false}"
+                                         :show-all-levels="true" filterable clearable>
+                                <template slot-scope="{ node, data }">
+                                    <i :class="data.icon"></i>
+                                    <span>{{ data.name }}</span>
+                                    <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+                                </template>
+                            </el-cascader>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="10">
+                        <el-form-item label="字典项名" prop="name">
+                            <el-input v-model="insertItemForm.name"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                        <el-form-item label="字典项值" prop="value">
+                            <el-input v-model="insertItemForm.value"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="10">
+                        <el-form-item label="状态" prop="disabled">
+                            <el-switch v-model="insertItemForm.disabled" active-color="#ff4949" inactive-color="#13ce66" :active-value="1" :inactive-value="0"></el-switch>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                        <el-form-item label="排序" prop="sortNo">
+                            <el-input-number v-model="insertItemForm.sortNo" :precision="2" :step="0.1" :min="0" :max="99"></el-input-number>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="20">
+                        <el-form-item label="描述" prop="description">
+                            <el-input type="textarea" autosize v-model="insertItemForm.description" maxlength="250" show-word-limit></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button icon="el-icon-circle-close" @click="insertItemDialog = false">取 消</el-button>
+                <el-button icon="el-icon-circle-check" type="primary" @click="insertItem">确 定</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog title="修改" width="70%" :visible.sync="updateItemDialog" :close-on-click-modal="false">
+            <el-form :model="updateItemForm" ref="updateItemForm" :rules="rules" label-width="100px">
+                <el-row>
+                    <el-col :span="20">
+                        <el-form-item label="父级字典项" prop="parentId">
+                            <el-cascader v-model="updateItemForm.parentId" :options="dictItemData" placeholder="请选择父级字典项"
+                                         :props="{value:'id', label:'name', checkStrictly:true, expandTrigger:'hover', emitPath:false}"
+                                         :show-all-levels="true" filterable clearable>
+                                <template slot-scope="{ node, data }">
+                                    <i :class="data.icon"></i>
+                                    <span>{{ data.name }}</span>
+                                    <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+                                </template>
+                            </el-cascader>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="10">
+                        <el-form-item label="字典项名" prop="name">
+                            <el-input v-model="updateItemForm.name"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                        <el-form-item label="字典项值" prop="value">
+                            <el-input v-model="updateItemForm.value"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="10">
+                        <el-form-item label="状态" prop="disabled">
+                            <el-switch v-model="updateItemForm.disabled" active-color="#ff4949" inactive-color="#13ce66" :active-value="1" :inactive-value="0"></el-switch>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                        <el-form-item label="排序" prop="sortNo">
+                            <el-input-number v-model="updateItemForm.sortNo" :precision="2" :step="0.1" :min="0" :max="99"></el-input-number>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="20">
+                        <el-form-item label="描述" prop="description">
+                            <el-input type="textarea" autosize v-model="updateItemForm.description" maxlength="250" show-word-limit></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button icon="el-icon-circle-close" @click="updateItemDialog = false">取 消</el-button>
+                <el-button icon="el-icon-circle-check" type="primary" @click="updateItem">确 定</el-button>
+            </div>
+        </el-dialog>
+
+    </template>
+</div>
+</body>
+<script src="/static/common/util/axios.min.js"></script>
+<script src="/static/common/vue/vue.min.js"></script>
+<script src="/static/common/element/index.js"></script>
+<script src="/static/common/api.js"></script>
+<script src="/static/common/module/sys/dict.js"></script>
+</html>

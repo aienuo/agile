@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imis.agile.module.system.mapper.MenuMapper">
+
+    <!-- 菜单权限 通用查询结果列 -->
+    <sql id="sys_menu_base_column_list">
+        <!--@sql SELECT -->
+        id, create_by, create_time, update_by, update_time,
+        parent_id, leaf_type, menu_type, name, icon, url, component, sort_no, status, description
+        <!--@sql FROM sys_menu -->
+    </sql>
+
+    <!-- 菜单权限 数据表名称 -->
+    <sql id="sys_menu_table_name">
+        <!--@sql SELECT TABLE_NAME -->
+        sys_menu
+        <!--@sql FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'sys_menu' -->
+    </sql>
+
+    <!-- 菜单权限管理 - 菜单权限 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="listQuery" type="com.imis.agile.module.api.model.vo.MenuTreeVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="parent_id" property="parentId" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="menu_type" property="menuType" javaType="java.lang.Integer" jdbcType="TINYINT"/>
+        <result column="name" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="icon" property="icon" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="url" property="url" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="component" property="component" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 菜单权限管理 - 菜单权限 - 数据树 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="treeListQuery" type="com.imis.agile.module.system.model.vo.MenuTreeInfoVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="parent_id" property="parentId" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="leaf_type" property="leafType" javaType="java.lang.Integer" jdbcType="TINYINT"/>
+        <result column="menu_type" property="menuType" javaType="java.lang.Integer" jdbcType="TINYINT"/>
+        <result column="name" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="icon" property="icon" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="url" property="url" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="component" property="component" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="sort_no" property="sortNo" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result column="status" property="status" javaType="java.lang.Integer" jdbcType="TINYINT"/>
+        <result column="description" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 人事管理 - 人员信息 - ID查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="queryDataById" type="com.imis.agile.module.system.model.vo.MenuInfoVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="parent_id" property="parentId" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="leaf_type" property="leafType" javaType="java.lang.Integer" jdbcType="TINYINT"/>
+        <result column="menu_type" property="menuType" javaType="java.lang.Integer" jdbcType="TINYINT"/>
+        <result column="name" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="icon" property="icon" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="url" property="url" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="component" property="component" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="sort_no" property="sortNo" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result column="status" property="status" javaType="java.lang.Integer" jdbcType="TINYINT"/>
+        <result column="description" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 菜单权限管理 - 菜单权限 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <select id="queryMenuTreeListByIdList" resultMap="listQuery">
+        SELECT
+        id, parent_id, menu_type, name, icon, url, component
+        FROM
+            <include refid="sys_menu_table_name"/>
+        <where>
+            status = 0
+            <if test="menuIdList != null and menuIdList.size() != 0">
+                AND
+                <foreach collection="menuIdList" item="id" index="index" separator="OR" open="(" close=")">
+                    id = #{id}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY sort_no
+    </select>
+
+    <!-- 菜单权限管理 - 菜单权限 - 树数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <select id="queryMenuTreeList" resultMap="treeListQuery">
+        SELECT
+            id, parent_id, leaf_type, menu_type, name, icon, url, component, sort_no, status, description
+        FROM
+            <include refid="sys_menu_table_name"/>
+        ORDER BY sort_no
+    </select>
+
+    <!-- 2021年7月20日 14:36:07 ID查询 -->
+    <select id="queryById" resultMap="queryDataById">
+        SELECT
+            id, parent_id, leaf_type, menu_type, name, icon, url, component, sort_no, status, description
+        FROM
+            <include refid="sys_menu_table_name"/>
+        WHERE id = #{id}
+    </select>
+
+</mapper>

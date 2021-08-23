@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imis.agile.module.system.mapper.DictMapper">
+    <!-- 字典 - 项 通用查询结果列 -->
+    <sql id="sys_dict_base_column_list">
+        <!--@sql SELECT -->
+        id, create_by, create_time, update_by, update_time, dict_name, dict_code, dict_type, status, description
+        <!--@sql FROM sys_dict-->
+    </sql>
+
+    <!-- 字典 - 项 数据表名称 -->
+    <sql id="sys_dict_table_name">
+        <!--@sql SELECT TABLE_NAME -->
+        sys_dict
+        <!--@sql FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'sys_dict' -->
+    </sql>
+
+    <!-- 字典 - 项 - 数据分页 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="pageQuery" type="com.imis.agile.module.system.model.vo.DictPageVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="dict_name" property="dictName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="dict_code" property="dictCode" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="dict_type" property="dictType" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="status" property="status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="description" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 字典 - 项 - 数据列表 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="listQuery" type="com.imis.agile.module.api.model.vo.DictVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="dict_name" property="dictName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="dict_code" property="dictCode" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="dict_type" property="dictType" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 2021年7月20日 14:36:07 分页查询 -->
+    <select id="pagingQueryListByParameter" resultMap="pageQuery">
+        SELECT
+            id, dict_name, dict_code, dict_type, status, description
+        FROM
+        <include refid="sys_dict_table_name"/>
+        <where>
+            <if test="param.id!= null and param.id != '' ">
+                AND id = #{param.id}
+            </if>
+            <if test="param.dictName != null and param.dictName != '' ">
+                AND dict_name LIKE CONCAT('%', #{param.dictName}, '%')
+            </if>
+            <if test="param.dictCode != null and param.dictCode != '' ">
+                AND dict_code LIKE CONCAT('%', #{param.dictCode}, '%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 2021年7月20日 14:36:07 列表查询 -->
+    <select id="queryList" resultMap="listQuery">
+        SELECT
+            id, dict_name, dict_code, dict_type
+        FROM
+            <include refid="sys_dict_table_name"/>
+        WHERE status = 0
+    </select>
+
+</mapper>
