@@ -16,7 +16,23 @@ new Vue({
             menuTypeItem: [],
             // 冻结状态(0-正常，1-冻结）
             statusItem: [],
+            // 父级菜单
             parentMenu: [],
+            // 图标选择器
+            iconPicker: {
+                icon: '',
+                options: {
+                    FontAwesome: false,
+                    ElementUI: true,
+                    addIconList: [],
+                    removeIconList: []
+                },
+                disabled: false,
+                readonly: false,
+                placement: 'bottom',
+                style: {},
+                width: 800
+            },
             insertForm: {
                 parentId: '',
                 parentIcon: '',
@@ -76,7 +92,7 @@ new Vue({
                 });
         },
         // 查询树机构
-        queryMenuTree(){
+        queryMenuTree() {
             axios.get('/sys/menu/tree')
                 .then((res) => {
                     if (res.code === 6666) {

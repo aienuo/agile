@@ -64,7 +64,8 @@
                 <el-row>
                     <el-col :span="7">
                         <el-form-item label="图标" prop="icon">
-                            <el-input v-model="insertForm.icon"></el-input>
+                            <e-icon-picker v-model="insertForm.icon" :options="iconPicker.options" :disabled="iconPicker.disabled" :readonly="iconPicker.readonly"
+                                           :placement="iconPicker.placement" :styles="iconPicker.style" :width="iconPicker.width"></e-icon-picker>
                         </el-form-item>
                     </el-col>
                     <el-col :span="7">
@@ -143,7 +144,8 @@
                 <el-row>
                     <el-col :span="7">
                         <el-form-item label="图标" prop="icon">
-                            <el-input v-model="updateForm.icon"></el-input>
+                            <e-icon-picker v-model="updateForm.icon" :options="iconPicker.options" :disabled="iconPicker.disabled" :readonly="iconPicker.readonly"
+                                           :placement="iconPicker.placement" :styles="iconPicker.style" :width="iconPicker.width"></e-icon-picker>
                         </el-form-item>
                     </el-col>
                     <el-col :span="7">
@@ -203,6 +205,13 @@
 <script type="text/javascript" src="/static/common/util/axios.min.js"></script>
 <script type="text/javascript" src="/static/common/vue/vue.min.js"></script>
 <script type="text/javascript" src="/static/common/element/index.js"></script>
+
+<script type="text/javascript" src="https://unpkg.com/e-icon-picker@latest"></script>
+<link rel="stylesheet" href="https://unpkg.com/e-icon-picker@latest/lib/index.css"/>
+<link rel="stylesheet" href="https://unpkg.zhimg.com/font-awesome/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/icon.css"/>
+<script type="text/javascript" src="https://unpkg.com/e-icon-picker@latest/lib/symbol.js"></script>
+
 <script type="text/javascript" src="/static/common/api.js"></script>
 <script type="text/javascript" src="/static/common/module/sys/menu.js"></script>
 </html>
