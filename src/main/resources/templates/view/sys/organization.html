@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <base th:href="${#request.getContextPath()}+'/'">
+    <link rel="stylesheet" href="/static/common/element/index.css"/>
+</head>
+<body>
+<div id="organization">
+    <template>
+        <div style="margin-bottom:18px;">
+            <el-button type="warning" icon="el-icon-edit" v-if="button.edit" @click="editNode">编辑</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="submitQueryForm">查询</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="button.insert" @click="openInsertDialog">新增</el-button>
+            <el-button type="danger" icon="el-icon-success" v-if="button.updateBach && updateBachButton" @click="updateBach">保存</el-button>
+        </div>
+
+        <div>
+            <div style="float: left; width: 50%;">
+                <el-input size="small" prefix-icon="el-icon-search" placeholder="输入组织机构名称进行过滤" v-model="filterText" v-if="!updateBachButton" style="width: 60%;"></el-input>
+                <el-tree class="filter-tree" :data="tableData" node-key="id" show-checkbox default-expand-all highlight-current :draggable="draggable" :filter-node-method="filterNode" :allow-drop="allowDrop" :allow-drag="allowDrag" ref="tree"
+                         @check="queryDetailsById"
+                         @node-click="queryDetailsById"
+                         @node-drop="handleDrop">
+                    <span class="custom-tree-node" slot-scope="{ node, data }">
+                        <span>{{ node.label }}</span>
+                        <span>
+                            <el-button icon="el-icon-circle-plus" type="text" v-if="button.insert && !data.disabled" @click="() => openInsertDialog(node, data)"></el-button>
+                            <el-button icon="el-icon-remove" type="text" v-if="button.delete" @click="() => openRemoveMessageBox(node, data)"></el-button>
+                        </span>
+                    </span>
+                </el-tree>
+            </div>
+            <div style="float: left; width: 50%;">
+                <el-form :model="updateForm" ref="updateForm" :rules="rules" label-width="100px">
+                    <el-row>
+                        <el-col :span="10">
+                            <el-form-item label="机构名称" prop="organizationName">
+                                <el-input v-model="updateForm.organizationName"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10">
+                            <el-form-item label="机构编号" prop="organizationCode">
+                                <el-input v-model="updateForm.organizationCode" :disabled="true"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="10">
+                            <el-form-item label="机构状态" prop="status">
+                                <el-radio-group v-model="updateForm.status" size="medium">
+                                    <el-radio-button v-for="item in statusItem" :label="item.value" :name="item.name" :disabled="item.disabled">{{item.name}}</el-radio-button>
+                                </el-radio-group>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10">
+                            <el-form-item label="排序" prop="sortNo">
+                                <el-input-number v-model="updateForm.sortNo" :precision="2" :step="0.1" :min="0" :max="99"></el-input-number>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="20">
+                            <el-form-item label="上级机构" prop="parentId">
+                                <el-cascader v-model="updateForm.parentId" :options="parentOrganization"
+                                             :props="{value:'id', label:'label', checkStrictly:true, expandTrigger:'hover', emitPath:false}"
+                                             :show-all-levels="true" filterable clearable>
+                                    <template slot-scope="{ node, data }">
+                                        <span>{{ data.label }}</span>
+                                        <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+                                    </template>
+                                </el-cascader>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="20">
+                            <el-form-item label="描述" prop="description">
+                                <el-input type="textarea" autosize v-model="updateForm.description" maxlength="250" show-word-limit></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                </el-form>
+                <div slot="footer" class="dialog-footer" style="text-align: right">
+                    <el-button icon="el-icon-circle-close" @click="updateDialog = false">取 消</el-button>
+                    <el-button icon="el-icon-circle-check" type="primary" @click="update">确 定</el-button>
+                </div>
+            </div>
+        </div>
+
+        <el-dialog title="新增" width="90%" :visible.sync="insertDialog" :modal="false" :close-on-click-modal="false">
+            <el-form :model="insertForm" ref="insertForm" :rules="rules" label-width="100px">
+                <el-row>
+                    <el-col :span="10">
+                        <el-form-item label="机构名称" prop="organizationName">
+                            <el-input v-model="insertForm.organizationName"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                        <el-form-item label="机构状态" prop="status">
+                            <el-radio-group v-model="insertForm.status" size="medium">
+                                <el-radio-button v-for="item in statusItem" :label="item.value" :name="item.name" :disabled="item.disabled">{{item.name}}</el-radio-button>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="10">
+                        <el-form-item label="排序" prop="sortNo">
+                            <el-input-number v-model="insertForm.sortNo" :precision="2" :step="0.1" :min="0" :max="99"></el-input-number>
+                        </el-form-item>
+                    </el-col>
+                    <el-col v-if="insertForm.parentName" :span="10">
+                        <el-form-item label="上级机构" prop="parentName">
+                            <el-input v-model="insertForm.parentName" :disabled="true" :prefix-icon="insertForm.parentIcon"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col v-else :span="10">
+                        <el-form-item label="上级机构" prop="parentId">
+                            <el-cascader v-model="insertForm.parentId" :options="parentOrganization"
+                                         :props="{value:'id', label:'label', checkStrictly:true, expandTrigger:'hover', emitPath:false}"
+                                         :show-all-levels="true" filterable clearable>
+                                <template slot-scope="{ node, data }">
+                                    <span>{{ data.label }}</span>
+                                    <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+                                </template>
+                            </el-cascader>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="21">
+                        <el-form-item label="描述" prop="description">
+                            <el-input type="textarea" autosize v-model="insertForm.description" maxlength="250" show-word-limit></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button icon="el-icon-circle-close" @click="insertDialog = false">取 消</el-button>
+                <el-button icon="el-icon-circle-check" type="primary" @click="insert">确 定</el-button>
+            </div>
+        </el-dialog>
+    </template>
+</div>
+</body>
+<script type="text/javascript" src="/static/common/util/axios.min.js"></script>
+<script type="text/javascript" src="/static/common/vue/vue.min.js"></script>
+<script type="text/javascript" src="/static/common/element/index.js"></script>
+<script type="text/javascript" src="/static/common/api.js"></script>
+<script type="text/javascript" src="/static/common/module/sys/organization.js"></script>
+</html>

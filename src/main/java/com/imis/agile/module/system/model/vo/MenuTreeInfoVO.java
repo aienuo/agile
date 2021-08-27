@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 菜单权限 - 数查询 - 返回值
+ * 菜单权限 - 树查询 - 返回值
  * </p>
  *
  * @author XinLau
@@ -23,7 +23,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ApiModel(value = "菜单权限 - 数查询 - 返回值", description = "菜单权限 - 数查询 - 返回值")
+@ApiModel(value = "菜单权限 - 树查询 - 返回值", description = "菜单权限 - 树查询 - 返回值")
 public class MenuTreeInfoVO extends BaseTreeVO implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -5,7 +5,7 @@
     <!--  组织机构 通用查询结果列 -->
     <sql id="sys_organization_base_column_list">
         <!--@sql SELECT -->
-        id, create_by, create_time, update_by, update_time, parent_id, organization_name, organization_code, description, sort_order, del_flag
+        id, create_by, create_time, update_by, update_time, parent_id, organization_name, organization_code, sort_no, status, description
         <!--@sql FROM sys_organization -->
     </sql>
 
@@ -15,5 +15,64 @@
         sys_organization
         <!--@sql FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'sys_organization' -->
     </sql>
+
+    <!-- 组织机构管理 - 组织机构 - 数据树 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="treeListQuery" type="com.imis.agile.module.system.model.vo.OrganizationTreeInfoVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="parent_id" property="parentId" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="organization_code" property="code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="organization_name" property="label" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="sort_no" property="sortNo" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result column="status" property="disabled" javaType="java.lang.Boolean" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <!-- 组织机构管理 - 组织机构 - ID查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="queryDataById" type="com.imis.agile.module.system.model.vo.OrganizationInfoVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="parent_id" property="parentId" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="organization_code" property="organizationCode" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="organization_name" property="organizationName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="sort_no" property="sortNo" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result column="status" property="status" javaType="java.lang.Integer" jdbcType="TINYINT"/>
+        <result column="description" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 组织机构管理 - 组织机构 - 树数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <select id="queryOrganizationTreeList" resultMap="treeListQuery">
+        SELECT
+            id, parent_id, organization_name, organization_code, sort_no, status
+        FROM
+            <include refid="sys_organization_table_name"/>
+        ORDER BY sort_no
+    </select>
+
+    <!-- 2021年7月20日 14:36:07 ID查询 -->
+    <select id="queryById" resultMap="queryDataById">
+        SELECT
+            id, parent_id, organization_name, organization_code, sort_no, status, description
+        FROM
+            <include refid="sys_organization_table_name"/>
+        WHERE id = #{id}
+    </select>
+
+    <!-- 查询出最大的(靠后) 组织机构  最顶层的 \ 同一层的 2021年8月24日 17:57:16 -->
+    <select id="queryTopOrganization" resultMap="queryDataById">
+        SELECT
+            id, parent_id, organization_name, organization_code, sort_no, status, description
+        FROM
+            <include refid="sys_organization_table_name"/>
+        <where>
+            <choose>
+                <when test="parentId != null">
+                    AND parent_id = #{parentId}
+                </when>
+                <otherwise>
+                    AND parent_id IS NULL
+                </otherwise>
+            </choose>
+        </where>
+        ORDER BY organization_code DESC
+        LIMIT 1
+    </select>
 
 </mapper>

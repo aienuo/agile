@@ -200,7 +200,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言数组<code>arrays</code>大小不为0。如果数组<code>arrays</code>大小不为0，则抛出异常
+     * <p>断言数组<code>arrays</code>大小不为0。如果数组<code>arrays</code>大小为0，则抛出异常
      *
      * @param arrays - 待判断数组
      */
@@ -211,7 +211,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言数组<code>arrays</code>大小不为0。如果数组<code>arrays</code>大小不为0，则抛出异常
+     * <p>断言数组<code>arrays</code>大小不为0。如果数组<code>arrays</code>大小为0，则抛出异常
      * <p>异常信息<code>message</code>支持传递参数方式，避免在判断之前进行字符串拼接操作
      *
      * @param arrays - 待判断数组
@@ -224,7 +224,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言数组<code>arrays</code>大小不为0。如果数组<code>arrays</code>大小不为0，则抛出异常
+     * <p>断言数组<code>arrays</code>大小不为0。如果数组<code>arrays</code>大小为0，则抛出异常
      *
      * @param arrays       - 待判断数组
      * @param errorMessage - 自定义的错误信息
@@ -236,7 +236,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言数组<code>arrays</code>大小不为0。如果数组<code>arrays</code>大小不为0，则抛出异常
+     * <p>断言数组<code>arrays</code>大小不为0。如果数组<code>arrays</code>大小为0，则抛出异常
      * <p>异常信息<code>message</code>支持传递参数方式，避免在判断之前进行字符串拼接操作
      *
      * @param arrays       - 待判断数组
@@ -250,7 +250,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言数组<code>arrays</code>大小不为0。如果数组<code>arrays</code>大小不为0，则抛出异常
+     * <p>断言数组<code>arrays</code>大小不为0。如果数组<code>arrays</code>大小为0，则抛出异常
      *
      * @param arrays       - 待判断数组
      * @param errorMessage - 自定义的错误信息
@@ -262,7 +262,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言数组<code>arrays</code>大小不为0。如果数组<code>arrays</code>大小不为0，则抛出异常
+     * <p>断言数组<code>arrays</code>大小不为0。如果数组<code>arrays</code>大小为0，则抛出异常
      * <p>异常信息<code>message</code>支持传递参数方式，避免在判断之前进行字符串拼接操作
      *
      * @param arrays       - 待判断数组
@@ -276,7 +276,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言集合<code>c</code>大小不为0。如果集合<code>c</code>大小不为0，则抛出异常
+     * <p>断言集合<code>c</code>大小不为0。如果集合<code>c</code>大小为0，则抛出异常
      *
      * @param c - 待判断数组
      */
@@ -287,7 +287,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言集合<code>c</code>大小不为0。如果集合<code>c</code>大小不为0，则抛出异常
+     * <p>断言集合<code>c</code>大小不为0。如果集合<code>c</code>大小为0，则抛出异常
      *
      * @param c    - 待判断数组
      * @param args - message占位符对应的参数列表
@@ -299,7 +299,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言集合<code>c</code>大小不为0。如果集合<code>c</code>大小不为0，则抛出异常
+     * <p>断言集合<code>c</code>大小不为0。如果集合<code>c</code>大小为0，则抛出异常
      *
      * @param c            - 待判断数组
      * @param errorMessage - 自定义的错误信息
@@ -311,7 +311,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言集合<code>c</code>大小不为0。如果集合<code>c</code>大小不为0，则抛出异常
+     * <p>断言集合<code>c</code>大小不为0。如果集合<code>c</code>大小为0，则抛出异常
      *
      * @param c            - 待判断数组
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
@@ -324,7 +324,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言集合<code>c</code>大小不为0。如果集合<code>c</code>大小不为0，则抛出异常
+     * <p>断言集合<code>c</code>大小不为0。如果集合<code>c</code>大小为0，则抛出异常
      *
      * @param c            - 待判断数组
      * @param errorMessage - 自定义的错误信息
@@ -336,7 +336,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言集合<code>c</code>大小不为0。如果集合<code>c</code>大小不为0，则抛出异常
+     * <p>断言集合<code>c</code>大小不为0。如果集合<code>c</code>大小为0，则抛出异常
      *
      * @param c            - 待判断数组
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
@@ -349,7 +349,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言Map<code>map</code>大小不为0。如果Map<code>map</code>大小不为0，则抛出异常
+     * <p>断言Map<code>map</code>大小不为0。如果Map<code>map</code>大小为0，则抛出异常
      *
      * @param map - 待判断Map
      */
@@ -360,7 +360,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言Map<code>map</code>大小不为0。如果Map<code>map</code>大小不为0，则抛出异常
+     * <p>断言Map<code>map</code>大小不为0。如果Map<code>map</code>大小为0，则抛出异常
      *
      * @param map  - 待判断Map
      * @param args - message占位符对应的参数列表
@@ -372,7 +372,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言Map<code>map</code>大小不为0。如果Map<code>map</code>大小不为0，则抛出异常
+     * <p>断言Map<code>map</code>大小不为0。如果Map<code>map</code>大小为0，则抛出异常
      *
      * @param map          - 待判断Map
      * @param errorMessage - 自定义的错误信息
@@ -384,7 +384,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言Map<code>map</code>大小不为0。如果Map<code>map</code>大小不为0，则抛出异常
+     * <p>断言Map<code>map</code>大小不为0。如果Map<code>map</code>大小为0，则抛出异常
      *
      * @param map          - 待判断Map
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
@@ -397,7 +397,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言Map<code>map</code>大小不为0。如果Map<code>map</code>大小不为0，则抛出异常
+     * <p>断言Map<code>map</code>大小不为0。如果Map<code>map</code>大小为0，则抛出异常
      *
      * @param map          - 待判断Map
      * @param errorMessage - 自定义的错误信息
@@ -409,7 +409,7 @@ public interface Assert {
     }
 
     /**
-     * <p>断言Map<code>map</code>大小不为0。如果Map<code>map</code>大小不为0，则抛出异常
+     * <p>断言Map<code>map</code>大小不为0。如果Map<code>map</code>大小为0，则抛出异常
      *
      * @param map          - 待判断Map
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在

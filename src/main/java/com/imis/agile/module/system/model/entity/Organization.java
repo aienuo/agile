@@ -45,23 +45,21 @@ public class Organization extends BaseEntity implements Serializable {
     private String organizationCode;
 
     /**
+     * 排序号
+     */
+    @TableField(value = "sort_no")
+    private Double sortNo;
+
+    /**
+     * 冻结状态(0-正常，1-冻结）
+     */
+    @TableField(value = "status")
+    private Integer status;
+
+    /**
      * 描述
      */
     @TableField(value = "description")
     private String description;
-
-    /**
-     * 排序号
-     */
-    @TableField(value = "sort_order")
-    private Double sortOrder;
-
-    /**
-     * 删除状态（0-正常，1-已删除）
-     * 强制要求逻辑删除的注解字段要放在最后
-     * @TableLogic(value = "0")
-     */
-    @TableField(value = "del_flag")
-    private Integer delFlag;
 
 }

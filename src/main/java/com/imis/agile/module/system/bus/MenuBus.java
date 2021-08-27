@@ -57,12 +57,17 @@ public class MenuBus extends BaseBus {
      * 添加校验
      *
      * @param add - 添加参数
-     * @return Menu - 系统用户
+     * @return Menu - 菜单权限
      * @author XinLau
      * @creed The only constant is change ! ! !
      * @since 2020/3/9 9:47
      */
     private Menu menuAddVerification(final MenuAddDTO add) {
+        if (AgileUtil.isNotEmpty(add.getParentId())){
+            // 验证父级菜单权限是否存在
+            Menu parent = this.menuService.getById(add.getParentId());
+            ArgumentResponseEnum.MENU_VALID_ERROR_ADD_03.assertNotNull(parent);
+        }
         // 验证 菜单权限名称 是否存在重复
         Menu menu = this.menuService.getOne(Wrappers.<Menu>lambdaQuery()
                 .eq(Menu::getName, add.getName()).eq(Menu::getMenuType, add.getMenuType())
@@ -76,7 +81,7 @@ public class MenuBus extends BaseBus {
      * 更新校验
      *
      * @param update - 更新参数
-     * @return Menu - 系统用户
+     * @return Menu - 菜单权限
      * @author XinLau
      * @creed The only constant is change ! ! !
      * @since 2020/3/9 9:47
@@ -84,13 +89,18 @@ public class MenuBus extends BaseBus {
     private Menu menuUpdateVerification(final MenuUpdateDTO update) {
         Menu menu = this.menuService.getById(update.getId());
         ArgumentResponseEnum.MENU_VALID_ERROR_UPDATE_02.assertNotNull(menu);
+        if (AgileUtil.isNotEmpty(update.getParentId()) && !update.getParentId().equals(menu.getParentId())){
+            // 验证父级菜单权限是否存在
+            Menu parent = this.menuService.getById(update.getParentId());
+            ArgumentResponseEnum.MENU_VALID_ERROR_UPDATE_03.assertNotNull(parent);
+        }
         if (AgileUtil.isNotEmpty(update.getName()) && !menu.getName().equals(update.getName())) {
             // 验证 菜单权限名称 是否存在重复
             Menu menuById = this.menuService.getOne(Wrappers.<Menu>lambdaQuery()
                     .eq(Menu::getName, update.getName()).eq(Menu::getMenuType, update.getMenuType())
                     .eq(AgileUtil.isNotEmpty(update.getParentId()), Menu::getParentId, update.getParentId())
             );
-            ArgumentResponseEnum.MENU_VALID_ERROR_UPDATE_03.assertIsNull(menuById);
+            ArgumentResponseEnum.MENU_VALID_ERROR_UPDATE_04.assertIsNull(menuById);
         }
         MenuConverter.INSTANCE.getUpdateEntity(menu, update);
         return menu;

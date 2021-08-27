@@ -35,17 +35,17 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
      * 200 01 01 00 - 用户管理 - 添加
      */
     USER_VALID_ERROR_ADD_01(200010101, "用户添加失败，请确认信息后重新添加"),
-    USER_VALID_ERROR_ADD_02(200010102, "帐号&身份证号码存在重复"),
-    USER_VALID_ERROR_ADD_03(200010103, "手机号码存在重复"),
-    USER_VALID_ERROR_ADD_04(200010104, "电子邮箱存在重复"),
+    USER_VALID_ERROR_ADD_02(200010102, "用户添加失败，帐号&身份证号码存在重复"),
+    USER_VALID_ERROR_ADD_03(200010103, "用户添加失败，手机号码存在重复"),
+    USER_VALID_ERROR_ADD_04(200010104, "用户添加失败，电子邮箱存在重复"),
     /**
      * 200 01 02 00 - 用户管理 - 更新
      */
     USER_VALID_ERROR_UPDATE_01(200010201, "用户更新失败，请确认信息后重新更新"),
     USER_VALID_ERROR_UPDATE_02(200010202, "用户更新失败，用户信息不存在"),
-    USER_VALID_ERROR_UPDATE_03(200010203, "身份证号码存在重复"),
-    USER_VALID_ERROR_UPDATE_04(200010204, "手机号码存在重复"),
-    USER_VALID_ERROR_UPDATE_05(200010205, "电子邮箱存在重复"),
+    USER_VALID_ERROR_UPDATE_03(200010203, "用户更新失败，身份证号码存在重复"),
+    USER_VALID_ERROR_UPDATE_04(200010204, "用户更新失败，手机号码存在重复"),
+    USER_VALID_ERROR_UPDATE_05(200010205, "用户更新失败，电子邮箱存在重复"),
     USER_VALID_ERROR_UPDATE_06(200010206, "用户冻结失败，用户信息不存在"),
     USER_VALID_ERROR_UPDATE_07(200010207, "用户冻结失败，部分用户不存在"),
     USER_VALID_ERROR_UPDATE_08(200010208, "用户冻结失败，请确认信息后重新冻结"),
@@ -63,13 +63,13 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
      * 200 02 01 00 - 角色管理 - 添加
      */
     ROLE_VALID_ERROR_ADD_01(200020101, "角色添加失败，请确认信息后重新添加"),
-    ROLE_VALID_ERROR_ADD_02(200020102, "角色名称存在重复"),
+    ROLE_VALID_ERROR_ADD_02(200020102, "角色添加失败，角色名称存在重复"),
     /**
      * 200 02 02 00 - 角色管理 - 更新
      */
     ROLE_VALID_ERROR_UPDATE_01(200020201, "角色更新失败，请确认信息后重新更新"),
     ROLE_VALID_ERROR_UPDATE_02(200020202, "角色更新失败，角色信息不存在"),
-    ROLE_VALID_ERROR_UPDATE_03(200020203, "角色名称存在重复"),
+    ROLE_VALID_ERROR_UPDATE_03(200020203, "角色更新失败，角色名称存在重复"),
     /**
      * 200 02 03 00 - 角色管理 - 删除
      */
@@ -81,13 +81,15 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
      * 200 03 01 00 - 菜单权限 - 添加
      */
     MENU_VALID_ERROR_ADD_01(200030101, "菜单权限添加失败，请确认信息后重新添加"),
-    MENU_VALID_ERROR_ADD_02(200030102, "菜单权限名称存在重复"),
+    MENU_VALID_ERROR_ADD_02(200030102, "菜单权限添加失败，菜单权限名称存在重复"),
+    MENU_VALID_ERROR_ADD_03(200030103, "菜单权限添加失败，父级菜单权限信息不存在"),
     /**
      * 200 03 02 00 - 菜单权限 - 更新
      */
     MENU_VALID_ERROR_UPDATE_01(200030201, "菜单权限更新失败，请确认信息后重新更新"),
     MENU_VALID_ERROR_UPDATE_02(200030202, "菜单权限更新失败，菜单权限信息不存在"),
-    MENU_VALID_ERROR_UPDATE_03(200030203, "菜单权限名称存在重复"),
+    MENU_VALID_ERROR_UPDATE_03(200030203, "菜单权限更新失败，父级菜单权限信息不存在"),
+    MENU_VALID_ERROR_UPDATE_04(200030204, "菜单权限更新失败，菜单权限名称存在重复"),
     /**
      * 200 03 03 00 - 菜单权限 - 删除
      */
@@ -99,15 +101,15 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
      * 200 04 01 00 - 字典 - 项 - 添加
      */
     DICT_VALID_ERROR_ADD_01(200040101, "字典 - 项添加失败，请确认信息后重新添加"),
-    DICT_VALID_ERROR_ADD_02(200040102, "字典 - 项名称存在重复"),
-    DICT_VALID_ERROR_ADD_03(200040103, "字典 - 项编码存在重复"),
+    DICT_VALID_ERROR_ADD_02(200040102, "字典 - 项添加失败，项名称存在重复"),
+    DICT_VALID_ERROR_ADD_03(200040103, "字典 - 项添加失败，项编码存在重复"),
     /**
      * 200 04 02 00 - 字典 - 项 - 更新
      */
     DICT_VALID_ERROR_UPDATE_01(200040201, "字典 - 项更新失败，请确认信息后重新更新"),
     DICT_VALID_ERROR_UPDATE_02(200040202, "字典 - 项更新失败，字典 - 项信息不存在"),
-    DICT_VALID_ERROR_UPDATE_03(200040203, "字典 - 项名称存在重复"),
-    DICT_VALID_ERROR_UPDATE_04(200040204, "字典 - 项编码存在重复"),
+    DICT_VALID_ERROR_UPDATE_03(200040203, "字典 - 项更新失败，项名称存在重复"),
+    DICT_VALID_ERROR_UPDATE_04(200040204, "字典 - 项更新失败，项编码存在重复"),
     /**
      * 200 04 03 00 - 字典 - 项 - 删除
      */
@@ -118,13 +120,13 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
      * 200 05 01 00 - 字典 - 值 - 添加
      */
     DICT_ITEM_VALID_ERROR_ADD_01(200050101, "字典 - 值添加失败，请确认信息后重新添加"),
-    DICT_ITEM_VALID_ERROR_ADD_02(200050102, "字典 - 值名称存在重复"),
+    DICT_ITEM_VALID_ERROR_ADD_02(200050102, "字典 - 值添加失败，值名称存在重复"),
     /**
      * 200 05 02 00 - 字典 - 值 - 更新
      */
     DICT_ITEM_VALID_ERROR_UPDATE_01(200050201, "字典 - 值更新失败，请确认信息后重新更新"),
     DICT_ITEM_VALID_ERROR_UPDATE_02(200050202, "字典 - 值更新失败，字典 - 值信息不存在"),
-    DICT_ITEM_VALID_ERROR_UPDATE_03(200050203, "字典 - 值名称存在重复"),
+    DICT_ITEM_VALID_ERROR_UPDATE_03(200050203, "字典 - 值更新失败，值名称存在重复"),
     /**
      * 200 05 03 00 - 字典 - 值 - 删除
      */
@@ -132,6 +134,25 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
     DICT_ITEM_VALID_ERROR_DELETE_02(200050302, "字典 - 值删除失败，部分字典 - 值下存在子节点"),
 
 
+    /**
+     * 200 06 01 00 - 组织机构 - 添加
+     */
+    ORGANIZATION_VALID_ERROR_ADD_01(200060101, "组织机构添加失败，请确认信息后重新添加"),
+    ORGANIZATION_VALID_ERROR_ADD_02(200060102, "组织机构添加失败，组织机构名称存在重复"),
+    ORGANIZATION_VALID_ERROR_ADD_03(200060103, "组织机构添加失败，父级组织机构信息不存在"),
+    /**
+     * 200 06 02 00 - 组织机构 - 更新
+     */
+    ORGANIZATION_VALID_ERROR_UPDATE_01(200060201, "组织机构更新失败，请确认信息后重新更新"),
+    ORGANIZATION_VALID_ERROR_UPDATE_02(200060202, "组织机构更新失败，组织机构信息不存在"),
+    ORGANIZATION_VALID_ERROR_UPDATE_03(200060203, "组织机构更新失败，父级组织机构信息不存在"),
+    ORGANIZATION_VALID_ERROR_UPDATE_04(200060204, "组织机构更新失败，组织机构名称存在重复"),
+    /**
+     * 200 06 03 00 - 组织机构 - 删除
+     */
+    ORGANIZATION_VALID_ERROR_DELETE_01(200060301, "组织机构删除失败，请确认信息后重新删除"),
+    ORGANIZATION_VALID_ERROR_DELETE_02(200060302, "组织机构删除失败，部分组织机构下存在子节点"),
+    ORGANIZATION_VALID_ERROR_DELETE_03(200060303, "组织机构删除失败，部分组织机构已分配给用户使用"),
 
 
 

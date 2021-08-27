@@ -10,6 +10,7 @@
     <template>
         <div style="margin-bottom:18px;">
             <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="button.insert" @click="openInsertDialog">新增</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="submitQueryForm">查询</el-button>
         </div>
 
         <el-table :data="tableData" :row-style="{height:'40px'}" :cell-style="{padding:'0px'}" :header-cell-style="{'text-align':'center'}" style="margin-bottom:10px;font-size: 14px"
@@ -35,7 +36,7 @@
                 <template slot-scope="scope">
                     <el-button type="primary" size="mini" v-if="scope.row.menuType != 2 && button.insert" type="text" @click="openInsertDialog(scope.row)">新增下级</el-button>
                     <el-button type="success" size="mini" v-if="button.update" type="text" @click="openUpdateDialog(scope.row)">修改</el-button>
-                    <el-button type="danger" size="mini" v-if="button.delete" type="text" @click="openRemoveDialog(scope.row)">删除</el-button>
+                    <el-button type="danger" size="mini" v-if="button.delete" type="text" @click="openRemoveMessageBox(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -94,7 +95,7 @@
                     </el-col>
                     <el-col v-else :span="7">
                         <el-form-item label="上级菜单" prop="parentId">
-                            <el-cascader v-model="updateForm.parentId" :options="parentMenu"
+                            <el-cascader v-model="insertForm.parentId" :options="parentMenu"
                                          :props="{value:'id', label:'name', checkStrictly:true, expandTrigger:'hover', emitPath:false}"
                                          :show-all-levels="true" filterable clearable>
                                 <template slot-scope="{ node, data }">

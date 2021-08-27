@@ -43,7 +43,7 @@
         <result column="description" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <!-- 人事管理 - 人员信息 - ID查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <!-- 菜单权限 - 菜单权限 - ID查询 - 查询返回值 2020年10月10日 10:24:00 -->
     <resultMap id="queryDataById" type="com.imis.agile.module.system.model.vo.MenuInfoVO">
         <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
         <result column="parent_id" property="parentId" javaType="java.lang.String" jdbcType="BIGINT"/>

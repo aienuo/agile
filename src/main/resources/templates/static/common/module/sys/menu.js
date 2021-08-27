@@ -24,6 +24,8 @@ new Vue({
                 options: {
                     FontAwesome: false,
                     ElementUI: true,
+                    eIcon: false,
+                    eIconSymbol: false,
                     addIconList: [],
                     removeIconList: []
                 },
@@ -82,6 +84,13 @@ new Vue({
         formatMenuType: function (row, column, cellValue, index) {
             return this.menuTypeItem.find(item => item.value == row.menuType).name
         },
+        // 判断按钮权限
+        buttonPermissions(){
+            let buttons = JSON.parse(localStorage.getItem("X-Data-Buttons-List"));
+            this.button.insert = buttons.indexOf("/sys/menu/add") > -1;
+            this.button.update = buttons.indexOf("/sys/menu/update") > -1;
+            this.button.delete = buttons.indexOf("/sys/menu/delete") > -1;
+        },
         // 查询表单提交
         submitQueryForm() {
             axios.get('/sys/menu/tree')
@@ -90,6 +99,7 @@ new Vue({
                         this.tableData = res.data;
                     }
                 });
+            this.buttonPermissions();
         },
         // 查询树机构
         queryMenuTree() {
@@ -148,8 +158,8 @@ new Vue({
                 }
             });
         },
-        // 开启移除表单
-        openRemoveDialog(row) {
+        // 开启删除弹框
+        openRemoveMessageBox(row) {
             this.$confirm('您确定删除吗', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -161,7 +171,8 @@ new Vue({
                         message: '父菜单，禁止删除'
                     });
                 } else {
-                    axios.delete('/sys/menu/delete/' + row.id)
+                    let params = {idList: row.id};
+                    axios.delete('/sys/menu/delete/', {params})
                         .then((res) => {
                             if (res.code === 6666) {
                                 this.submitQueryForm();
@@ -217,10 +228,6 @@ new Vue({
     },
     created() {
         this.submitQueryForm();
-        let buttons = JSON.parse(localStorage.getItem("X-Data-Buttons-List"));
-        this.button.insert = buttons.indexOf("/sys/menu/add") > -1;
-        this.button.update = buttons.indexOf("/sys/menu/update") > -1;
-        this.button.delete = buttons.indexOf("/sys/menu/delete") > -1;
         let dictList = JSON.parse(localStorage.getItem("X-Data-Dict-List"));
         this.menuTypeItem = dictList.find(dict => dict.dictCode === "menuType").itemList;
         this.statusItem = dictList.find(dict => dict.dictCode === "status").itemList;

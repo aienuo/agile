@@ -22,7 +22,7 @@
         <result column="parent_id" property="parentId" javaType="java.lang.String" jdbcType="BIGINT"/>
         <result column="name" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="value" property="value" javaType="java.lang.String" jdbcType="VARCHAR"/>
-        <result column="disabled" property="disabled" javaType="java.lang.Boolean" jdbcType="INTEGER"/>
+        <result column="disabled" property="disabled" javaType="java.lang.Boolean" jdbcType="TINYINT"/>
         <result column="sort_no" property="sortNo" javaType="java.lang.Double" jdbcType="DOUBLE"/>
         <result column="description" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
@@ -34,7 +34,7 @@
         <result column="parent_id" property="parentId" javaType="java.lang.String" jdbcType="BIGINT"/>
         <result column="name" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="value" property="value" javaType="java.lang.String" jdbcType="VARCHAR"/>
-        <result column="disabled" property="disabled" javaType="java.lang.Boolean" jdbcType="INTEGER"/>
+        <result column="disabled" property="disabled" javaType="java.lang.Boolean" jdbcType="TINYINT"/>
     </resultMap>
 
     <!-- 字典 - 项 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->

@@ -45,13 +45,22 @@ new Vue({
     mounted() {
     },
     methods: {
+        // 当前页码发生变更
         handleCurrentChange(val) {
             this.currentPage = val;
             this.submitQueryForm();
         },
+        // 当前页长发生变化
         handleSizeChange(val) {
             this.pageSize = val;
             this.submitQueryForm();
+        },
+        // 判断按钮权限
+        buttonPermissions(){
+            let buttons = JSON.parse(localStorage.getItem("X-Data-Buttons-List"));
+            this.button.insert = buttons.indexOf("/sys/role/add") > -1;
+            this.button.update = buttons.indexOf("/sys/role/update") > -1;
+            this.button.delete = buttons.indexOf("/sys/role/delete") > -1;
         },
         // 查询表单提交
         submitQueryForm() {
@@ -68,6 +77,7 @@ new Vue({
                         this.total = res.data.total;
                     }
                 });
+            this.buttonPermissions();
         },
         // 查询表单清空
         clearQueryForm() {
@@ -184,10 +194,5 @@ new Vue({
     },
     created() {
         this.submitQueryForm();
-        // 按钮权限
-        let buttons = JSON.parse(localStorage.getItem("X-Data-Buttons-List"));
-        this.button.insert = buttons.indexOf("/sys/role/add") > -1;
-        this.button.update = buttons.indexOf("/sys/role/update") > -1;
-        this.button.delete = buttons.indexOf("/sys/role/delete") > -1;
     }
 });

@@ -126,15 +126,15 @@ CREATE TABLE `sys_organization`
 (
     `id`                bigint(20)                                             NOT NULL COMMENT '主键',
     `parent_id`         bigint(20)                                             NULL     DEFAULT NULL COMMENT '父级编号',
-    `organization_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '组织机构名称',
-    `organization_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '组织机构编号',
+    `organization_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin  NOT NULL COMMENT '组织机构名称',
+    `organization_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '组织机构编号',
+    `sort_no`           double(3, 2)                                           NULL     DEFAULT NULL COMMENT '排序号',
+    `status`            tinyint(1)                                             NOT NULL DEFAULT 0 COMMENT '冻结状态(0-正常，1-冻结）',
     `description`       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL     DEFAULT NULL COMMENT '描述',
-    `sort_order`        double(3, 2)                                           NULL     DEFAULT NULL COMMENT '排序号',
     `create_by`         varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin  NOT NULL COMMENT '创建人',
     `create_time`       datetime(0)                                            NOT NULL COMMENT '创建时间',
     `update_by`         varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin  NULL     DEFAULT NULL COMMENT '更新人',
     `update_time`       datetime(0)                                            NULL     DEFAULT NULL COMMENT '更新时间',
-    `del_flag`          tinyint(1)                                             NOT NULL DEFAULT 0 COMMENT '删除状态（0-正常，1-已删除）',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4

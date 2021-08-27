@@ -86,13 +86,25 @@ new Vue({
     mounted() {
     },
     methods: {
+        // 当前页码发生变更
         handleCurrentChange(val) {
             this.currentPage = val;
             this.submitQueryForm();
         },
+        // 当前页长发生变化
         handleSizeChange(val) {
             this.pageSize = val;
             this.submitQueryForm();
+        },
+        // 判断按钮权限
+        buttonPermissions(){
+            let buttons = JSON.parse(localStorage.getItem("X-Data-Buttons-List"));
+            this.button.insert = buttons.indexOf("/sys/dict/add") > -1;
+            this.button.update = buttons.indexOf("/sys/dict/update") > -1;
+            this.button.delete = buttons.indexOf("/sys/dict/delete") > -1;
+            this.button.insertItem = buttons.indexOf("/sys/dict/item/add") > -1;
+            this.button.updateItem = buttons.indexOf("/sys/dict/item/update") > -1;
+            this.button.deleteItem = buttons.indexOf("/sys/dict/item/delete") > -1;
         },
         // 查询表单提交
         submitQueryForm() {
@@ -110,6 +122,7 @@ new Vue({
                         this.total = res.data.total;
                     }
                 });
+            this.buttonPermissions();
         },
         // 查询表单清空
         clearQueryForm() {
@@ -337,14 +350,6 @@ new Vue({
     },
     created() {
         this.submitQueryForm();
-        // 按钮权限
-        let buttons = JSON.parse(localStorage.getItem("X-Data-Buttons-List"));
-        this.button.insert = buttons.indexOf("/sys/dict/add") > -1;
-        this.button.update = buttons.indexOf("/sys/dict/update") > -1;
-        this.button.delete = buttons.indexOf("/sys/dict/delete") > -1;
-        this.button.insertItem = buttons.indexOf("/sys/dict/item/add") > -1;
-        this.button.updateItem = buttons.indexOf("/sys/dict/item/update") > -1;
-        this.button.deleteItem = buttons.indexOf("/sys/dict/item/delete") > -1;
         let dictList = JSON.parse(localStorage.getItem("X-Data-Dict-List"));
         this.dictTypeItem = dictList.find(dict => dict.dictCode === "dictType").itemList;
     }

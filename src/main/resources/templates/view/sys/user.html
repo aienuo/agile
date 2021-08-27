@@ -21,7 +21,7 @@
             <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="button.insert" @click="openInsertDialog">新增</el-button>
             <el-button type="danger" icon="el-icon-video-pause" v-if="button.freeze" @click="openFreezeDialog">冻结</el-button>
             <el-button type="danger" icon="el-icon-video-play" v-if="button.unFreeze" @click="openUnFreezeDialog">解冻</el-button>
-            <el-button type="danger" icon="el-icon-remove-outline" v-if="button.remove" @click="openRemoveDialog">删除</el-button>
+            <el-button type="danger" icon="el-icon-remove-outline" v-if="button.remove" @click="openRemoveMessageBox">删除</el-button>
         </div>
 
         <el-table :data="tableData" :row-style="{height:'40px'}" :cell-style="{padding:'0px'}" :header-cell-style="{'text-align':'center'}" style="margin-bottom:10px;font-size: 14px"

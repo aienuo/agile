@@ -70,7 +70,7 @@ public class MenuAddDTO implements Serializable {
     /**
      * 菜单排序
      */
-    @ApiModelProperty(value = "菜单排序")
+    @ApiModelProperty(value = "菜单排序", required = true)
     @NotNull(message = "排序号不能为空")
     private Double sortNo;
 
