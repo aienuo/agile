@@ -152,9 +152,9 @@ public class SerialCodeUtil {
      */
     public static synchronized String getNextSerialCode(String parentCode, final String localCode) {
         if (localCode == null || StringPool.EMPTY.equals(localCode.trim()) || StringPool.NULL.equals(localCode.trim())) {
-            return getNextSerialCode(localCode);
-        } else {
             parentCode = parentCode + LETTER_A + getNextStrNum(0);
+        } else {
+            return getNextSerialCode(localCode);
         }
         return parentCode;
     }
