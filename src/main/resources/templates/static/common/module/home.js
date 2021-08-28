@@ -1,5 +1,8 @@
 new Vue({
     el: '#home',
+    components:{
+
+    },
     data() {
         // 此处即表单发送之前验证
         let validateNewPassword = (rule, value, callback) => {
@@ -26,6 +29,7 @@ new Vue({
             roleList: [],
             menuTreeList: [],
             buttons: [],
+            sexItem: [],
             avatar: '',
             actionUrl: '/sys/common/upload',
             userCenterModel: 'first',
@@ -267,6 +271,7 @@ new Vue({
                         this.parseButtonsData(res.data.menuTreeList);
                         localStorage.setItem('X-Data-Buttons-List', JSON.stringify(this.buttons));
                         localStorage.setItem('X-Data-Dict-List', JSON.stringify(res.data.dictList));
+                        this.sexItem = res.data.dictList.find(dict => dict.dictCode === "sex").itemList;
                     } else {
                         this.$message.error(res.message);
                     }

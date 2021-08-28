@@ -71,9 +71,7 @@
                         </el-form-item>
                         <el-form-item label="性别" prop="sex">
                             <el-radio-group v-model="updateForm.sex" :disabled="true">
-                                <el-radio :label="0">女</el-radio>
-                                <el-radio :label="1">男</el-radio>
-                                <el-radio :label="2">未知</el-radio>
+                                <el-radio-button v-for="item in sexItem" :label="item.value" :name="item.name">{{item.name}}</el-radio-button>
                             </el-radio-group>
                         </el-form-item>
                         <el-form-item label="年龄" prop="age">
