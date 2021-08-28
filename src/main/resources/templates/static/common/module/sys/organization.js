@@ -134,6 +134,27 @@ new Vue({
                 this.editNodeForm.push(parameter);
             }
         },
+        // 构建子级数据
+        buildChildren(nodeData) {
+            // 同时变更旗下子级节点
+            if (nodeData.children) {
+                for (let i = 0; i < nodeData.children.length; i++) {
+                    const childrenData = nodeData.children[i];
+                    let parameterChildren = {
+                        id: childrenData.id,
+                        name: childrenData.label,
+                        parentId: nodeData.id,
+                        parentName: nodeData.label,
+                        sortNo: childrenData.sortNo
+                    }
+                    this.buildEditNodeForm(parameterChildren);
+                    // 判断子级数否拥有数据
+                    if (childrenData.children) {
+                        this.buildChildren(childrenData);
+                    }
+                }
+            }
+        },
         // 拖拽成功完成时触发的事件
         handleDrop(draggingNode, dropNode, type, event) {
             // 被拖拽的节点数据
@@ -154,26 +175,38 @@ new Vue({
                     sortNo: 1.00
                 }
                 this.buildEditNodeForm(parameter);
+                // 同时变更旗下子级节点
+                if (draggingNodeData.children) {
+                    this.buildChildren(draggingNodeData);
+                }
             }
             // 'prev' 放置在目标节点前
             if (type === 'before') {
                 let parameter = {
                     id: draggingNodeData.id,
                     name: draggingNodeData.label,
-                    parentId: dropNodeData.parentId ? dropNodeData.parentId : 0,
+                    parentId: dropNodeData.parentId ? dropNodeData.parentId : null,
                     sortNo: dropNodeData.sortNo - 0.1
                 }
                 this.buildEditNodeForm(parameter);
+                // 同时变更旗下子级节点
+                if (draggingNodeData.children) {
+                    this.buildChildren(draggingNodeData);
+                }
             }
             // 'next' 放置在目标节点后
             if (type === 'after') {
                 let parameter = {
                     id: draggingNodeData.id,
                     name: draggingNodeData.label,
-                    parentId: dropNodeData.parentId ? dropNodeData.parentId : 0,
+                    parentId: dropNodeData.parentId ? dropNodeData.parentId : null,
                     sortNo: dropNodeData.sortNo + 0.1
                 }
                 this.buildEditNodeForm(parameter);
+                // 同时变更旗下子级节点
+                if (draggingNodeData.children) {
+                    this.buildChildren(draggingNodeData);
+                }
             }
         },
         // 保存

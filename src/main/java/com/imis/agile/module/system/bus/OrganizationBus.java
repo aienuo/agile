@@ -115,6 +115,44 @@ public class OrganizationBus extends BaseBus {
     }
 
     /**
+     * 重新构建组织机构编号数据
+     *
+     * @param code        - 原 - 组织机构编号
+     * @param oldParentId - 原 - 父级节点
+     * @param newParentId - 新 - 父级节点
+     * @author XinLau
+     * @creed The only constant is change ! ! !
+     * @since 2020/3/9 9:47
+     */
+    private String buildTheData(String code, final Long oldParentId, final Long newParentId) {
+        boolean newNull = AgileUtil.isNotEmpty(newParentId);
+        boolean oldNull = AgileUtil.isNotEmpty(oldParentId);
+        boolean notNull = newNull || oldNull;
+        // 默认不一致
+        boolean equals = Boolean.FALSE;
+        if (newNull) {
+            equals = newParentId.equals(oldParentId);
+        }
+        if (oldNull) {
+            equals = oldParentId.equals(newParentId);
+        }
+        String parentCode = StringPool.EMPTY;
+        if (notNull && !equals) {
+            if (newNull) {
+                // 验证父级组织机构是否存在
+                Organization parent = this.organizationService.getById(newParentId);
+                ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_03.assertNotNull(parent);
+                parentCode = parent.getOrganizationCode();
+            }
+            // 生成组织机构编码
+            String[] codeSpecimenArray = this.generateCode(newParentId, parentCode);
+            code = codeSpecimenArray[codeSpecimenArray.length - 1];
+            ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_01.assertIsTrue(AgileUtil.isNotEmpty(code));
+        }
+        return code;
+    }
+
+    /**
      * 更新校验
      *
      * @param update - 更新参数
@@ -126,22 +164,10 @@ public class OrganizationBus extends BaseBus {
     private Organization organizationUpdateVerification(final OrganizationUpdateDTO update) {
         Organization organization = this.organizationService.getById(update.getId());
         ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_02.assertNotNull(organization);
-        String parentCode = StringPool.EMPTY;
-        boolean updateNull = AgileUtil.isNotEmpty(update.getParentId());
-        boolean entityNull = AgileUtil.isNotEmpty(organization.getParentId());
-        boolean equals = organization.getParentId().equals(update.getParentId());
-        if ((updateNull || entityNull) && !equals) {
-            if (AgileUtil.isNotEmpty(update.getParentId())) {
-                // 验证父级组织机构是否存在
-                Organization parent = this.organizationService.getById(update.getParentId());
-                ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_03.assertNotNull(parent);
-                parentCode = parent.getOrganizationCode();
-            }
-            // 生成组织机构编码
-            String[] codeSpecimenArray = this.generateCode(update.getParentId(), parentCode);
-            String code = codeSpecimenArray[codeSpecimenArray.length - 1];
-            ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_01.assertIsTrue(AgileUtil.isNotEmpty(code));
-            update.setOrganizationCode(code);
+        if (AgileUtil.isNotEmpty(update.getParentId())) {
+            // 验证父级组织机构是否存在
+            Organization parent = this.organizationService.getById(update.getParentId());
+            ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_03.assertNotNull(parent);
         }
         if (AgileUtil.isNotEmpty(update.getOrganizationName()) && !organization.getOrganizationName().equals(update.getOrganizationName())) {
             // 验证 组织机构名称 是否存在重复
@@ -151,6 +177,11 @@ public class OrganizationBus extends BaseBus {
             );
             ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_04.assertIsNull(organizationById);
         }
+        // 原 - 组织机构编号
+        String code = organization.getOrganizationCode();
+        // 构建新 组织机构编码
+        String newCode = buildTheData(code, organization.getParentId(), update.getParentId());
+        update.setOrganizationCode(newCode);
         OrganizationConverter.INSTANCE.getUpdateEntity(organization, update);
         return organization;
     }
@@ -191,24 +222,14 @@ public class OrganizationBus extends BaseBus {
                     if (organizationEditMap.containsKey(organization.getId())) {
                         OrganizationEditDTO organizationEdit = organizationEditMap.get(organization.getId());
                         organization.setSortNo(organizationEdit.getSortNo());
-                        organization.setParentId(organizationEdit.getParentId());
-                        String parentCode = StringPool.EMPTY;
-                        boolean updateNull = AgileUtil.isNotEmpty(organizationEdit.getParentId());
-                        boolean entityNull = AgileUtil.isNotEmpty(organization.getParentId());
-                        boolean equals = organization.getParentId().equals(organizationEdit.getParentId());
-                        if ((updateNull || entityNull) && !equals) {
-                            if (updateNull) {
-                                // 验证父级组织机构是否存在
-                                Organization parent = this.organizationService.getById(organizationEdit.getParentId());
-                                ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_03.assertNotNull(parent);
-                                parentCode = parent.getOrganizationCode();
-                            }
-                            // 生成组织机构编码
-                            String[] codeSpecimenArray = this.generateCode(organizationEdit.getParentId(), parentCode);
-                            String code = codeSpecimenArray[codeSpecimenArray.length - 1];
-                            ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_01.assertIsTrue(AgileUtil.isNotEmpty(code));
-                            organization.setOrganizationCode(code);
-                        }
+                        // 原 - 组织机构编号
+                        String code = organization.getOrganizationCode();
+                        // 新父级组织机构
+                        Long newParentId = organizationEdit.getParentId();
+                        // 构建新 组织机构编码
+                        String newCode = buildTheData(code, organization.getParentId(), newParentId);
+                        organization.setOrganizationCode(newCode);
+                        organization.setParentId(newParentId);
                     }
                 }
         );
