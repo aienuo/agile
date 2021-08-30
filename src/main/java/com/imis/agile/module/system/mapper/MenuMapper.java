@@ -1,6 +1,7 @@
 package com.imis.agile.module.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.imis.agile.module.api.model.vo.ButtonVO;
 import com.imis.agile.module.api.model.vo.MenuTreeVO;
 import com.imis.agile.module.system.model.entity.Menu;
 import com.imis.agile.module.system.model.vo.MenuInfoVO;
@@ -20,7 +21,7 @@ import java.util.List;
 public interface MenuMapper extends BaseMapper<Menu> {
 
     /**
-     * 查询角色信息
+     * 查询菜单权限信息
      *
      * @param menuIdList - 菜单权限编号
      * @return List<MenuTreeVO> - 菜单权限
@@ -28,7 +29,18 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @creed The only constant is change ! ! !
      * @since 2020/3/6 14:26
      */
-    List<MenuTreeVO> queryMenuTreeListByIdList(@Param("menuIdList") final  List<Long> menuIdList);
+    List<MenuTreeVO> queryMenuTreeListByIdList(@Param("menuIdList") final List<Long> menuIdList);
+
+    /**
+     * 查询按钮权限信息
+     *
+     * @param buttonIdList - 按钮权限编号
+     * @return List<ButtonVO> - 按钮权限
+     * @author XinLau
+     * @creed The only constant is change ! ! !
+     * @since 2020/3/6 14:26
+     */
+    List<ButtonVO> queryButtonListByIdList(@Param("buttonIdList") final List<Long> buttonIdList);
 
     /**
      * 树查询

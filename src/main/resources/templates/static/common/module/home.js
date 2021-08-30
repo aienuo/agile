@@ -1,8 +1,24 @@
-new Vue({
-    el: '#home',
-    components:{
+// 自定义无限极菜单组件
+Vue.component('agile-menu-tree', {
+    template: '<div class="menuTreeList"><template v-for="(item, index) in menuTreeList"><!-- 有子类型 --><el-submenu v-if="item.children" :key="index" :data="item" :index="item.name + \'_\' + index"><template slot="title"><i :class="item.icon"></i><span slot="title">{{item.name}}</span></template><agile-menu-tree :menuTreeList="item.children"></agile-menu-tree></el-submenu><!-- 无子类型 --><el-menu-item v-else :key="index" :data="item" :index="item.name + \'_\' + index" :route="item.url"><template slot="title"><i :class="item.icon"></i><span slot="title">{{item.name}}</span></template></el-menu-item></template></div>',
+    props: ['menuTreeList'],
+    data() {
+        return {}
+    },
+    mounted() {
 
     },
+    methods: {
+
+    },
+    created() {
+
+    }
+});
+
+new Vue({
+    el: '#home',
+    components: {},
     data() {
         // 此处即表单发送之前验证
         let validateNewPassword = (rule, value, callback) => {
@@ -28,7 +44,7 @@ new Vue({
             user: {},
             roleList: [],
             menuTreeList: [],
-            buttons: [],
+            buttonList: [],
             sexItem: [],
             avatar: '',
             actionUrl: '/sys/common/upload',
@@ -89,20 +105,6 @@ new Vue({
 
     },
     methods: {
-        // 构建按钮数据
-        parseButtonsData(menuTreeList) {
-            if (menuTreeList !== undefined && menuTreeList.length > 0) {
-                for (let i = 0; i < menuTreeList.length; i++) {
-                    if (menuTreeList[i].menuType && menuTreeList[i].menuType === 2) {
-                        this.buttons.push(menuTreeList[i].url);
-                    }
-                    let child = menuTreeList[i].children;
-                    if (child && child.length > 0) {
-                        this.parseButtonsData(child);
-                    }
-                }
-            }
-        },
         // 点击按钮，切换菜单的折叠与展开
         toggleCollapse() {
             this.isCollapse = !this.isCollapse
@@ -265,11 +267,11 @@ new Vue({
                 .then((res) => {
                     if (res.code === 6666) {
                         this.roleList = res.data.roleList;
-                        this.menuTreeList = res.data.menuTreeList;
                         localStorage.setItem('X-Data-Role-List', JSON.stringify(this.roleList));
+                        this.buttonList = res.data.buttonList;
+                        localStorage.setItem('X-Data-Buttons-List', JSON.stringify(this.buttonList));
+                        this.menuTreeList = res.data.menuTreeList;
                         localStorage.setItem('X-Data-Menu-Tree', JSON.stringify(this.menuTreeList));
-                        this.parseButtonsData(res.data.menuTreeList);
-                        localStorage.setItem('X-Data-Buttons-List', JSON.stringify(this.buttons));
                         localStorage.setItem('X-Data-Dict-List', JSON.stringify(res.data.dictList));
                         this.sexItem = res.data.dictList.find(dict => dict.dictCode === "sex").itemList;
                     } else {
@@ -280,6 +282,5 @@ new Vue({
             localStorage.clear();
             parent.location.href = '/';
         }
-
     }
 });

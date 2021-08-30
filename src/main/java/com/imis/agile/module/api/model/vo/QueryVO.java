@@ -39,6 +39,12 @@ public class QueryVO {
     private List<MenuTreeVO> menuTreeList;
 
     /**
+     * 按钮权限
+     */
+    @ApiModelProperty(value = "按钮权限")
+    private List<ButtonVO> buttonList;
+
+    /**
      * 字典
      */
     @ApiModelProperty(value = "字典")

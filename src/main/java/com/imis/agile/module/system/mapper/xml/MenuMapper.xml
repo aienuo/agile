@@ -28,6 +28,14 @@
         <result column="component" property="component" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <!-- 菜单权限管理 - 菜单权限 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="buttonListQuery" type="com.imis.agile.module.api.model.vo.ButtonVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="name" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="icon" property="icon" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="url" property="url" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <!-- 菜单权限管理 - 菜单权限 - 数据树 - 查询返回值 2020年10月10日 10:24:00 -->
     <resultMap id="treeListQuery" type="com.imis.agile.module.system.model.vo.MenuTreeInfoVO">
         <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
@@ -65,7 +73,7 @@
         FROM
             <include refid="sys_menu_table_name"/>
         <where>
-            status = 0
+            status = 0 AND menu_type != 2
             <if test="menuIdList != null and menuIdList.size() != 0">
                 AND
                 <foreach collection="menuIdList" item="id" index="index" separator="OR" open="(" close=")">
@@ -74,6 +82,24 @@
             </if>
         </where>
         ORDER BY sort_no
+    </select>
+
+    <!-- 菜单权限管理 - 按钮权限 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <select id="queryButtonListByIdList" resultMap="buttonListQuery">
+        SELECT
+            id, name, icon, url
+        FROM
+            <include refid="sys_menu_table_name"/>
+        <where>
+            status = 0 AND menu_type = 2
+            <if test="buttonIdList != null and buttonIdList.size() != 0">
+                AND
+                <foreach collection="buttonIdList" item="id" index="index" separator="OR" open="(" close=")">
+                    id = #{id}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY parent_id, sort_no
     </select>
 
     <!-- 菜单权限管理 - 菜单权限 - 树数据查询 - 查询返回值 2020年10月10日 10:24:00 -->

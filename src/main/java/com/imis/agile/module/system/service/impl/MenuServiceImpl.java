@@ -4,6 +4,7 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imis.agile.constant.DataBaseConstant;
+import com.imis.agile.module.api.model.vo.ButtonVO;
 import com.imis.agile.module.api.model.vo.MenuTreeVO;
 import com.imis.agile.module.system.mapper.MenuMapper;
 import com.imis.agile.module.system.model.entity.Menu;
@@ -83,6 +84,33 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             }
         }
         return menuTreeList;
+    }
+
+    /**
+     * 查询系统用户的按钮权限信息
+     *
+     * @param userId - 系统用户编号
+     * @return List<ButtonVO> - 按钮权限
+     * @author XinLau
+     * @creed The only constant is change ! ! !
+     * @since 2020/3/6 14:26
+     */
+    @Override
+    public List<ButtonVO> queryButtonListByUserId(final Long userId) {
+        List<ButtonVO> buttonList = new ArrayList<>();
+        // 用户角色关联
+        List<UserRole> userRoleList = this.userRoleService.list(Wrappers.<UserRole>lambdaQuery().eq(UserRole::getUserId, userId));
+        if (AgileUtil.isNotEmpty(userRoleList)) {
+            // 角色编号
+            List<Long> roleIdList = userRoleList.stream().map(UserRole::getRoleId).filter(AgileUtil::isNotEmpty).distinct().collect(Collectors.toList());
+            // 角色按钮权限关联
+            List<RoleMenu> roleMenuList = this.roleMenuService.list(Wrappers.<RoleMenu>lambdaQuery().in(RoleMenu::getRoleId, roleIdList));
+            if (AgileUtil.isNotEmpty(userRoleList)) {
+                List<Long> buttonIdList = roleMenuList.stream().map(RoleMenu::getMenuId).filter(AgileUtil::isNotEmpty).distinct().collect(Collectors.toList());
+                buttonList = this.baseMapper.queryButtonListByIdList(buttonIdList);
+            }
+        }
+        return buttonList;
     }
 
     /**

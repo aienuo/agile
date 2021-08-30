@@ -1,6 +1,7 @@
 package com.imis.agile.module.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.imis.agile.module.api.model.vo.ButtonVO;
 import com.imis.agile.module.api.model.vo.MenuTreeVO;
 import com.imis.agile.module.system.model.entity.Menu;
 import com.imis.agile.module.system.model.vo.MenuInfoVO;
@@ -19,7 +20,7 @@ import java.util.List;
 public interface IMenuService extends IService<Menu> {
 
     /**
-     * 查询系统用户的角色信息
+     * 查询系统用户的菜单权限信息
      *
      * @param userId - 系统用户编号
      * @return List<MenuTreeVO> - 菜单权限
@@ -28,6 +29,17 @@ public interface IMenuService extends IService<Menu> {
      * @since 2020/3/6 14:26
      */
     List<MenuTreeVO> queryMenuTreeListByUserId(final Long userId);
+
+    /**
+     * 查询系统用户的按钮权限信息
+     *
+     * @param userId - 系统用户编号
+     * @return List<MenuTreeVO> - 按钮权限
+     * @author XinLau
+     * @creed The only constant is change ! ! !
+     * @since 2020/3/6 14:26
+     */
+    List<ButtonVO> queryButtonListByUserId(final Long userId);
 
     /**
      * 树查询

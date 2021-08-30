@@ -206,7 +206,7 @@ public class LoginBus extends BaseBus {
      * @creed The only constant is change ! ! !
      * @since 2020/3/6 14:26
      */
-    public CommonResponse<QueryVO> queryById(final String username) {
+    public CommonResponse<QueryVO> queryByUserName(final String username) {
         QueryVO query = new QueryVO();
         // 判断角色是否存在
         User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
@@ -218,6 +218,9 @@ public class LoginBus extends BaseBus {
             // 菜单权限
             List<MenuTreeVO> menuTreeList = this.menuService.queryMenuTreeListByUserId(id);
             query.setMenuTreeList(menuTreeList);
+            // 按钮权限
+            List<ButtonVO> buttonList = this.menuService.queryButtonListByUserId(id);
+            query.setButtonList(buttonList);
             // 字典
             List<DictVO> dictList = this.buildingData();
             query.setDictList(dictList);

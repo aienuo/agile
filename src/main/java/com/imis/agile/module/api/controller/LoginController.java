@@ -45,8 +45,8 @@ public class LoginController extends BaseController<LoginBus> {
     @ApiOperation(value = "基础信息", notes = "基础信息")
     @ApiImplicitParam(name = "username", value = "用户标识", dataType = "String", dataTypeClass = String.class, required = true)
     @ApiOperationSupport(order = 2, author = "XinLau")
-    public CommonResponse<QueryVO> queryById(@PathVariable(name = "username", required = true) String username) {
-        return service.queryById(username);
+    public CommonResponse<QueryVO> queryByUserName(@PathVariable(name = "username", required = true) String username) {
+        return service.queryByUserName(username);
     }
 
     @PutMapping(path = "/update")
