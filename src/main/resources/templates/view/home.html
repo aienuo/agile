@@ -28,7 +28,7 @@
                 </div>
             </el-header>
             <el-container>
-                <el-aside :width="isCollapse?'64px':'200px'" class="index-aside">
+                <el-aside :collapse="isCollapse" :width="isCollapse?'64px':'200px'" class="index-aside">
                     <el-menu unique-opened background-color="#545c64" text-color="#fff" active-text-color="#409EFF" :collapse="isCollapse" :collapse-transition="false" :router="true" :default-active="activePath">
                         <template v-for="(item,index) in menuTreeList">
                             <el-submenu :key="index" :index="index+''">

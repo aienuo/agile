@@ -8,9 +8,7 @@ Vue.component('agile-menu-tree', {
     mounted() {
 
     },
-    methods: {
-
-    },
+    methods: {},
     created() {
 
     }
@@ -262,13 +260,15 @@ new Vue({
         if (localStorage.getItem("X-Access-Token")) {
             this.user = JSON.parse(localStorage.getItem("X-Data-User"));
             this.avatar = this.user.avatar;
-            this.activePath = window.sessionStorage.getItem('activePath')
+            this.activePath = window.sessionStorage.getItem('activePath');
             axios.get('/' + this.user.username)
                 .then((res) => {
                     if (res.code === 6666) {
                         this.roleList = res.data.roleList;
                         localStorage.setItem('X-Data-Role-List', JSON.stringify(this.roleList));
-                        this.buttonList = res.data.buttonList;
+                        res.data.buttonList.forEach(button => {
+                            this.buttonList.push(button.url)
+                        });
                         localStorage.setItem('X-Data-Buttons-List', JSON.stringify(this.buttonList));
                         this.menuTreeList = res.data.menuTreeList;
                         localStorage.setItem('X-Data-Menu-Tree', JSON.stringify(this.menuTreeList));

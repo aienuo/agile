@@ -40,9 +40,9 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-                       :page-sizes="[10, 50, 100]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
-                       :total="total">
+
+        <el-pagination background :page-size="10" :total="total" :current-page="currentPage" layout="total, sizes, prev, pager, next, jumper" :page-sizes="[10, 50, 100]"
+                        @size-change="handleSizeChange" @current-change="handleCurrentChange">
         </el-pagination>
 
         <el-dialog title="新增" width="70%" :visible.sync="insertDialog" :modal="false" :close-on-click-modal="false">
