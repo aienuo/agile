@@ -107,6 +107,22 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
+                <el-row v-if="insertForm.menuType && insertForm.menuType==2">
+                    <el-col :span="14">
+                        <el-form-item label="按钮样式" prop="buttonType">
+                            <el-radio-group v-model="insertForm.buttonType" size="medium">
+                                <el-radio-button v-for="item in buttonTypeItem" :label="item.value" :name="item.name" :disabled="item.disabled">{{item.name}}</el-radio-button>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="按钮尺寸" prop="buttonSize">
+                            <el-radio-group v-model="insertForm.buttonSize" size="medium">
+                                <el-radio-button v-for="item in buttonSizeItem" :label="item.value" :name="item.name" :disabled="item.disabled">{{item.name}}</el-radio-button>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
                 <el-row>
                     <el-col :span="21">
                         <el-form-item label="描述" prop="description">
@@ -184,6 +200,22 @@
                                     <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
                                 </template>
                             </el-cascader>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row v-if="updateForm.menuType && updateForm.menuType==2">
+                    <el-col :span="14">
+                        <el-form-item label="按钮样式" prop="buttonType">
+                            <el-radio-group v-model="updateForm.buttonType" size="medium">
+                                <el-radio-button v-for="item in buttonTypeItem" :label="item.value" :name="item.name" :disabled="item.disabled">{{item.name}}</el-radio-button>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="7">
+                        <el-form-item label="按钮尺寸" prop="buttonSize">
+                            <el-radio-group v-model="updateForm.buttonSize" size="medium">
+                                <el-radio-button v-for="item in buttonSizeItem" :label="item.value" :name="item.name" :disabled="item.disabled">{{item.name}}</el-radio-button>
+                            </el-radio-group>
                         </el-form-item>
                     </el-col>
                 </el-row>

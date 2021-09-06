@@ -33,15 +33,27 @@ public class ButtonVO implements Serializable {
     private String id;
 
     /**
-     * 菜单名称
+     * 按钮类型（primary / success / warning / danger / info / text）
      */
-    @ApiModelProperty(value = "按钮名称")
+    @ApiModelProperty(value = "按钮类型（primary / success / warning / danger / info / text）")
+    private String type;
+
+    /**
+     * 按钮名称（textName）
+     */
+    @ApiModelProperty(value = "按钮名称（textName）")
     private String name;
 
     /**
-     * 路径
+     * 按钮尺寸（medium / small / mini）
      */
-    @ApiModelProperty(value = "路径")
+    @ApiModelProperty(value = "组件尺寸（medium / small / mini）")
+    private String size;
+
+    /**
+     * 按钮（name）
+     */
+    @ApiModelProperty(value = "按钮（name）")
     private String url;
 
     /**

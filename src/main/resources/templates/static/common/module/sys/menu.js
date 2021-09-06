@@ -18,6 +18,10 @@ new Vue({
             statusItem: [],
             // 父级菜单
             parentMenu: [],
+            // 按钮类型
+            buttonTypeItem: [],
+            // 按钮尺寸
+            buttonSizeItem: [],
             // 图标选择器
             iconPicker: {
                 icon: '',
@@ -46,7 +50,9 @@ new Vue({
                 component: '',
                 sortNo: 1.00,
                 status: '',
-                description: ''
+                description: '',
+                buttonType: '',
+                buttonSize: ''
             },
             updateForm: {
                 id: '',
@@ -60,7 +66,9 @@ new Vue({
                 component: '',
                 sortNo: '',
                 status: '',
-                description: ''
+                description: '',
+                buttonType: '',
+                buttonSize: ''
             },
             // 校验规则
             rules: {
@@ -231,5 +239,7 @@ new Vue({
         let dictList = JSON.parse(localStorage.getItem("X-Data-Dict-List"));
         this.menuTypeItem = dictList.find(dict => dict.dictCode === "menuType").itemList;
         this.statusItem = dictList.find(dict => dict.dictCode === "status").itemList;
+        this.buttonTypeItem = dictList.find(dict => dict.dictCode === "buttonType").itemList;
+        this.buttonSizeItem = dictList.find(dict => dict.dictCode === "buttonSize").itemList;
     }
 });

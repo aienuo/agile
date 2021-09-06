@@ -59,6 +59,8 @@
         <result column="parent_id" property="parentId" javaType="java.lang.String" jdbcType="BIGINT"/>
         <result column="leaf_type" property="leafType" javaType="java.lang.Integer" jdbcType="TINYINT"/>
         <result column="menu_type" property="menuType" javaType="java.lang.Integer" jdbcType="TINYINT"/>
+        <result column="button_type" property="buttonType" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="button_size" property="buttonSize" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="name" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="icon" property="icon" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="url" property="url" javaType="java.lang.String" jdbcType="VARCHAR"/>
@@ -116,7 +118,7 @@
     <!-- 2021年7月20日 14:36:07 ID查询 -->
     <select id="queryById" resultMap="queryDataById">
         SELECT
-            id, parent_id, leaf_type, menu_type, name, icon, url, component, sort_no, status, description
+            id, parent_id, leaf_type, menu_type, button_type, button_size, name, icon, url, component, sort_no, status, description
         FROM
             <include refid="sys_menu_table_name"/>
         WHERE id = #{id}
