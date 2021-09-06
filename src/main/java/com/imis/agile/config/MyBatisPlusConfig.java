@@ -1,6 +1,9 @@
 package com.imis.agile.config;
 
-import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,27 +23,20 @@ import org.springframework.context.annotation.Configuration;
 public class MyBatisPlusConfig {
 
     /**
-     * 分页插件，自动识别数据库类型
-     * @return PaginationInterceptor - 分页拦截器
+     * 插件
+     * @return MybatisPlusInterceptor - 分页拦截器
      * @author XinLau
      * @since 2020/7/31 10:08
      * @creed The only constant is change ! ! !
      */
     @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        return new PaginationInterceptor();
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        // 自动分页
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+        // 防止全表更新与删除
+        interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
+        return interceptor;
     }
-
-    /**
-     * mybatis-plus SQL执行效率插件
-     * @return PerformanceInterceptor - 性能拦截器
-     * @author XinLau
-     * @since 2020/7/31 10:06
-     * @creed The only constant is change ! ! !
-     */
-    /*@Bean
-    public PerformanceInterceptor performanceInterceptor() {
-        return new PerformanceInterceptor();
-    }*/
 
 }

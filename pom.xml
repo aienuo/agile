@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.example</groupId>
     <artifactId>agile</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>agile</name>
     <description>前后端不分离</description>
 
@@ -15,7 +15,7 @@
         <spring-boot.version>2.3.7.RELEASE</spring-boot.version>
         <jwt.version>3.7.0</jwt.version>
         <druid.version>1.1.23</druid.version>
-        <mybatis-plus.version>3.3.0</mybatis-plus.version>
+        <mybatis-plus.version>3.4.3.3</mybatis-plus.version>
         <dynamic-datasource.version>3.2.0</dynamic-datasource.version>
         <knife4j.version>2.0.8</knife4j.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
@@ -60,7 +60,6 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>${mybatis-plus.version}</version>
         </dependency>
-
         <!-- MyBatis-Plus data-source 引入 -->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -89,7 +88,19 @@
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
-
+        <!-- 服务器性能监控组件 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!-- 热部署插件，用于修改内容后自动重启或者重新加载 -->
+        <!-- 使用方法：https://www.cnblogs.com/chenkeyu/p/10296588.html -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
 
         <!-- 测试组件引入 -->
         <dependency>

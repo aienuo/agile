@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<deployHelperConfiguration>
+    <!-- 指定deployHelper自动上传时所连接的服务器以及要使用的deploy配置 -->
+    <profile server="dev" deploy="dev"></profile>
+    <!-- Linux服务器节点配置，主要包含的属性：profile(名称)、host(主机号)、port(端口号)、username(登陆用户名)、password(登陆密码) -->
+    <servers>
+        <!-- 可以配置多个server节点,代表的是目标服务器 -->
+        <server profile="dev" host="172.25.19.34" port="22" username="root" password="root"></server>
+        <server profile="prod" host="172.25.19.34" port="22" username="root" password="root"></server>
+    </servers>
+    <deploys>
+        <!--
+            deploy：该节点是最终做自动化部署时的配置,可以配置多个,在profile节点时可以自动指定,区分开发环境&生成环境，属性如下：
+                profile:                节点名称
+                source:                 需要上传的jar文件,可以是相对目录下的文件,也可以使用绝对路径
+                target:                 目标服务器路径,需要注意的时该属性必须配置完整的路径+文件名,不能只包含目录,上传是覆盖策略（如果该目录不存在,则会自动创建该目录）
+                processName:            该参数主要用于在服务上用于查询进程号的名称，越完整越好,通过该名称通过ps命令查找时可以精准定位到程序的pid,如果stopShell停止脚本存在的话则该参数可以不传
+                backup:                 由于插件目前的策略是直接覆盖服务器上文件,有时候我们希望保留上一个版本,此时可以设置该参数为true,帮助我们进行备份,该参数为true时,会在目标目录创建一个backup的文件夹,将服务器的文件进行备份
+                activeDefaultStart：    是否自动生成启动jar包的启动命令，该参数的优先级低于startShell
+                startShell:             启动脚本，必须配置完整路径，必须存在，并且必须是可执行的，需要有 Linux 的 x 权限
+                stopShell:              停止脚本,必须配置完整路径，必须存在，并且必须是可执行的，需要有 Linux 的 x 权限
+        -->
+        <!-- 开发环境 使用自带脚本 -->
+        <deploy profile="dev"
+                source="target/agile-1.0.jar"
+                target="/home/agile/dev/agile-1.0.jar"
+                processName="agile-1.0.jar"
+                activeDefaultStart="true"
+                startShell="/home/agile/dev/startup.sh">
+        </deploy>
+
+        <!-- 生产环境 -->
+        <deploy profile="prod"
+                source="target/agile-1.0.jar"
+                target="/home/agile/prod/agile-1.0.jar"
+                processName="agile-1.0.jar"
+                backup="true"
+                activeDefaultStart="true">
+        </deploy>
+    </deploys>
+</deployHelperConfiguration>

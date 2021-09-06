@@ -77,5 +77,5 @@ mybatis-plus:
 logging:
   config: classpath:config/logbackConfig/logback-${spring.profiles.active}.xml
   level:
-    root: INFO
-    com.zzdz: INFO
+    root: ERROR
+    com.imis: INFO

@@ -6,7 +6,7 @@
     <sql id="sys_menu_base_column_list">
         <!--@sql SELECT -->
         id, create_by, create_time, update_by, update_time,
-        parent_id, leaf_type, menu_type, name, icon, url, component, sort_no, status, description
+        parent_id, leaf_type, menu_type, button_type, button_size, name, icon, url, component, sort_no, status, description
         <!--@sql FROM sys_menu -->
     </sql>
 
@@ -28,10 +28,12 @@
         <result column="component" property="component" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <!-- 菜单权限管理 - 菜单权限 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <!-- 菜单权限管理 - 按钮权限 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
     <resultMap id="buttonListQuery" type="com.imis.agile.module.api.model.vo.ButtonVO">
         <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
         <result column="name" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="button_type" property="type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="button_size" property="size" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="icon" property="icon" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="url" property="url" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
@@ -87,7 +89,7 @@
     <!-- 菜单权限管理 - 按钮权限 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
     <select id="queryButtonListByIdList" resultMap="buttonListQuery">
         SELECT
-            id, name, icon, url
+            id, name, button_type, button_size, icon, url
         FROM
             <include refid="sys_menu_table_name"/>
         <where>

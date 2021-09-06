@@ -179,9 +179,9 @@ public class MenuBus extends BaseBus {
      * @since 2020/3/5 17:25
      */
     public BaseResponse deleteByIdList(final List<Long> idList) {
-        int count = this.menuService.count(Wrappers.<Menu>lambdaQuery().in(Menu::getParentId, idList));
+        long count = this.menuService.count(Wrappers.<Menu>lambdaQuery().in(Menu::getParentId, idList));
         ArgumentResponseEnum.MENU_VALID_ERROR_DELETE_02.assertIsTrue(count == 0);
-        int roleMenuCount = this.roleMenuService.count(Wrappers.<RoleMenu>lambdaQuery().in(RoleMenu::getMenuId, idList));
+        long roleMenuCount = this.roleMenuService.count(Wrappers.<RoleMenu>lambdaQuery().in(RoleMenu::getMenuId, idList));
         ArgumentResponseEnum.MENU_VALID_ERROR_DELETE_03.assertIsTrue(roleMenuCount == 0);
         boolean delete = this.menuService.removeByIds(idList);
         ArgumentResponseEnum.MENU_VALID_ERROR_DELETE_01.assertIsTrue(delete);

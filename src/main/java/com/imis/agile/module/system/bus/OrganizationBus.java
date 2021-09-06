@@ -309,9 +309,9 @@ public class OrganizationBus extends BaseBus {
      * @since 2020/3/5 17:25
      */
     public BaseResponse deleteByIdList(final List<Long> idList) {
-        int count = this.organizationService.count(Wrappers.<Organization>lambdaQuery().in(Organization::getParentId, idList));
+        long count = this.organizationService.count(Wrappers.<Organization>lambdaQuery().in(Organization::getParentId, idList));
         ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_DELETE_02.assertIsTrue(count == 0);
-        int userOrganizationCount = this.userOrganizationService.count(Wrappers.<UserOrganization>lambdaQuery().in(UserOrganization::getOrganizationId, idList));
+        long userOrganizationCount = this.userOrganizationService.count(Wrappers.<UserOrganization>lambdaQuery().in(UserOrganization::getOrganizationId, idList));
         ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_DELETE_03.assertIsTrue(userOrganizationCount == 0);
         boolean delete = this.organizationService.removeByIds(idList);
         ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_DELETE_01.assertIsTrue(delete);

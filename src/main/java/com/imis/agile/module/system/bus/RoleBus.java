@@ -182,7 +182,7 @@ public class RoleBus extends BaseBus {
      */
     @Transactional(rollbackFor = Exception.class)
     public BaseResponse deleteByIdList(final List<Long> idList) {
-        int number = this.userRoleService.count(Wrappers.<UserRole>lambdaQuery().in(UserRole::getRoleId, idList));
+        long number = this.userRoleService.count(Wrappers.<UserRole>lambdaQuery().in(UserRole::getRoleId, idList));
         ArgumentResponseEnum.ROLE_VALID_ERROR_DELETE_02.assertIsTrue(number == 0);
         boolean delete = this.roleMenuService.remove(Wrappers.<RoleMenu>lambdaQuery().in(RoleMenu::getRoleId, idList));
         ArgumentResponseEnum.ROLE_VALID_ERROR_DELETE_03.assertIsTrue(delete);

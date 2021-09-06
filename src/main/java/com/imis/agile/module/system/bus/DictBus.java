@@ -269,7 +269,7 @@ public class DictBus extends BaseBus {
      * @since 2020/3/5 17:25
      */
     public BaseResponse deleteDictItemByIdList(final List<Long> idList) {
-        int count = this.dictItemService.count(Wrappers.<DictItem>lambdaQuery().in(DictItem::getParentId, idList));
+        long count = this.dictItemService.count(Wrappers.<DictItem>lambdaQuery().in(DictItem::getParentId, idList));
         ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_DELETE_02.assertIsTrue(count == 0);
         boolean delete = this.dictItemService.removeByIds(idList);
         ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_DELETE_01.assertIsTrue(delete);

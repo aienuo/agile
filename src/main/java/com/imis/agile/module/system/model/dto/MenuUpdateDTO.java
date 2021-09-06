@@ -50,6 +50,18 @@ public class MenuUpdateDTO implements Serializable {
     private Integer menuType;
 
     /**
+     * 按钮类型（primary / success / warning / danger / info / text）
+     */
+    @ApiModelProperty(value = "按钮类型（primary / success / warning / danger / info / text）")
+    private String buttonType;
+
+    /**
+     * 按钮尺寸（medium / small / mini）
+     */
+    @ApiModelProperty(value = "按钮尺寸（medium / small / mini）")
+    private String buttonSize;
+
+    /**
      * 菜单名称
      */
     @ApiModelProperty(value = "菜单名称", required = true)

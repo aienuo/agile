@@ -45,6 +45,18 @@ public class Menu extends BaseEntity implements Serializable {
     private Integer menuType;
 
     /**
+     * 按钮类型（primary / success / warning / danger / info / text）
+     */
+    @TableField(value = "button_type")
+    private String buttonType;
+
+    /**
+     * 按钮尺寸（medium / small / mini）
+     */
+    @TableField(value = "button_size")
+    private String buttonSize;
+
+    /**
      * 菜单名称
      */
     @TableField(value = "name")

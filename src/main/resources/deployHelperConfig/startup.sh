@@ -1,0 +1,1 @@
+nohup java -Xms512m -Xmx1024m -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8181,suspend=n -jar /home/agile/dev/agile-1.0.jar  >> /dev/agile.log 2>&1 &
