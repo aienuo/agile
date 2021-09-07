@@ -110,9 +110,15 @@ public class DictBus extends BaseBus {
      * @since 2020/3/9 9:47
      */
     private DictItem dictItemAddVerification(final DictItemAddDTO add) {
+        // 验证 字典 - 项名称 是否存在重复
+        Dict dict = this.dictService.getById(add.getDictId());
+        ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_ADD_02.assertIsNull(dict);
+        if (dict.getDictType().equals(1)){
+            ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_ADD_03.assertIsTrue(AgileUtil.isNumeric(add.getValue()));
+        }
         // 验证 字典 - 值名称 是否存在重复
         DictItem dictItem = this.dictItemService.getOne(Wrappers.<DictItem>lambdaQuery().eq(DictItem::getName, add.getName()));
-        ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_ADD_02.assertIsNull(dictItem);
+        ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_ADD_04.assertIsNull(dictItem);
         return DictConverter.INSTANCE.getAddEntity(add);
     }
 
@@ -126,12 +132,18 @@ public class DictBus extends BaseBus {
      * @since 2020/3/9 9:47
      */
     private DictItem dictItemUpdateVerification(final DictItemUpdateDTO update) {
+        // 验证 字典 - 项名称 是否存在重复
+        Dict dict = this.dictService.getById(update.getDictId());
+        ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_UPDATE_02.assertIsNull(dict);
+        if (dict.getDictType().equals(1)){
+            ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_UPDATE_03.assertIsTrue(AgileUtil.isNumeric(update.getValue()));
+        }
         DictItem dictItem = this.dictItemService.getById(update.getId());
-        ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_UPDATE_02.assertNotNull(dictItem);
+        ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_UPDATE_04.assertNotNull(dictItem);
         if (AgileUtil.isNotEmpty(update.getName()) && !dictItem.getName().equals(update.getName())) {
             // 验证 字典 - 值名称 是否存在重复
             DictItem dictItemByName = this.dictItemService.getOne(Wrappers.<DictItem>lambdaQuery().eq(DictItem::getName, update.getName()));
-            ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_UPDATE_03.assertIsNull(dictItemByName);
+            ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_UPDATE_05.assertIsNull(dictItemByName);
         }
         DictConverter.INSTANCE.getUpdateEntity(dictItem, update);
         return dictItem;

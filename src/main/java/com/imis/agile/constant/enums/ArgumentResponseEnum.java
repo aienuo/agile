@@ -46,13 +46,17 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
      * 200 02 01 00 - 字典 - 值 - 添加
      */
     DICT_ITEM_VALID_ERROR_ADD_01(200020101, "字典 - 值添加失败，请确认信息后重新添加"),
-    DICT_ITEM_VALID_ERROR_ADD_02(200020102, "字典 - 值添加失败，值名称存在重复"),
+    DICT_ITEM_VALID_ERROR_ADD_02(200020102, "字典 - 值添加失败，字典 - 项信息不存在"),
+    DICT_ITEM_VALID_ERROR_ADD_03(200020103, "字典 - 值添加失败，值类型不正确"),
+    DICT_ITEM_VALID_ERROR_ADD_04(200020104, "字典 - 值添加失败，值名称存在重复"),
     /**
      * 200 02 02 00 - 字典 - 值 - 更新
      */
     DICT_ITEM_VALID_ERROR_UPDATE_01(200020201, "字典 - 值更新失败，请确认信息后重新更新"),
-    DICT_ITEM_VALID_ERROR_UPDATE_02(200020202, "字典 - 值更新失败，字典 - 值信息不存在"),
-    DICT_ITEM_VALID_ERROR_UPDATE_03(200020203, "字典 - 值更新失败，值名称存在重复"),
+    DICT_ITEM_VALID_ERROR_UPDATE_02(200020202, "字典 - 值更新失败，字典 - 项信息不存在"),
+    DICT_ITEM_VALID_ERROR_UPDATE_03(200020203, "字典 - 值更新失败，值类型不正确"),
+    DICT_ITEM_VALID_ERROR_UPDATE_04(200020204, "字典 - 值更新失败，字典 - 值信息不存在"),
+    DICT_ITEM_VALID_ERROR_UPDATE_05(200020205, "字典 - 值更新失败，值名称存在重复"),
     /**
      * 200 02 03 00 - 字典 - 值 - 删除
      */

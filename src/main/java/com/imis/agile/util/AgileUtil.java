@@ -30,7 +30,7 @@ public class AgileUtil {
      * @param object 被判断的对象
      * @return 是否为空，如果类型不支持，返回false
      */
-    public static Boolean isEmpty(Object object) {
+    public static Boolean isEmpty(final Object object) {
         if (null == object) {
             return Boolean.TRUE;
         }
@@ -79,7 +79,7 @@ public class AgileUtil {
      * @param object 被判断的对象
      * @return 是否为空，如果类型不支持，返回true
      */
-    public static Boolean isNotEmpty(Object object) {
+    public static Boolean isNotEmpty(final Object object) {
         return !isEmpty(object);
     }
 
@@ -92,5 +92,16 @@ public class AgileUtil {
     public static Boolean isNotEmpty(Object... objects) {
         return !isEmpty(objects);
     }
+
+    /**
+     * 判断对象是否为纯数字
+     *
+     * @param object - 最少一个对象
+     * @return Boolean - true - 纯数字
+     */
+    public static Boolean isNumeric(final Object object) {
+        return isNotEmpty(object) && object.toString().chars().allMatch(Character::isDigit);
+    }
+
 
 }
