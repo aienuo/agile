@@ -253,7 +253,7 @@ new Vue({
                 this.queryOrganizationTree();
             }
         },
-        // 新增
+        // 新增表单提交
         insert() {
             this.$refs.insertForm.validate((valid) => {
                 if (valid) {
@@ -306,7 +306,7 @@ new Vue({
             }).catch(() => {
             });
         },
-        // 更新
+        // 更新表单提交
         update() {
             this.$refs.updateForm.validate((valid) => {
                 if (valid) {

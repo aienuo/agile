@@ -101,7 +101,7 @@ public class BasePageDTO implements Serializable {
      * 排序字段
      */
     @ApiModelProperty(value = "排序字段")
-    List<OrderItem> sortFieldList;
+    private List<OrderItem> sortFieldList;
 
     /**
      * 超级查询参数 这个参数方便自定义SQL条件查询（要考虑SQL注入，查询条件与数据权限冲突）

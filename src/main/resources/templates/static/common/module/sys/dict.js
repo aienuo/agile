@@ -140,7 +140,7 @@ new Vue({
                 this.$refs.insertForm.resetFields();
             }
         },
-        // 新增
+        // 新增表单提交
         insert() {
             this.$refs.insertForm.validate((valid) => {
                 if (valid) {
@@ -198,7 +198,7 @@ new Vue({
                 this.updateForm = row;
             }
         },
-        // 更新
+        // 更新表单提交
         update() {
             this.$refs.updateForm.validate((valid) => {
                 if (valid) {
@@ -268,7 +268,7 @@ new Vue({
                 }
             }
         },
-        // 新增
+        // 新增表单提交
         insertItem() {
             this.$refs.insertItemForm.validate((valid) => {
                 if (valid) {
@@ -300,7 +300,7 @@ new Vue({
                 this.updateItemForm.disabled = row.disabled ? 1 : 0;
             }
         },
-        // 更新
+        // 更新表单提交
         updateItem() {
             this.$refs.updateItemForm.validate((valid) => {
                 if (valid) {
