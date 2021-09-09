@@ -112,7 +112,7 @@ public class DictBus extends BaseBus {
     private DictItem dictItemAddVerification(final DictItemAddDTO add) {
         // 验证 字典 - 项名称 是否存在重复
         Dict dict = this.dictService.getById(add.getDictId());
-        ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_ADD_02.assertIsNull(dict);
+        ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_ADD_02.assertNotNull(dict);
         if (dict.getDictType().equals(1)){
             ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_ADD_03.assertIsTrue(AgileUtil.isNumeric(add.getValue()));
         }
@@ -134,7 +134,7 @@ public class DictBus extends BaseBus {
     private DictItem dictItemUpdateVerification(final DictItemUpdateDTO update) {
         // 验证 字典 - 项名称 是否存在重复
         Dict dict = this.dictService.getById(update.getDictId());
-        ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_UPDATE_02.assertIsNull(dict);
+        ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_UPDATE_02.assertNotNull(dict);
         if (dict.getDictType().equals(1)){
             ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_UPDATE_03.assertIsTrue(AgileUtil.isNumeric(update.getValue()));
         }

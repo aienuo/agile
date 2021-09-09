@@ -144,7 +144,6 @@ new Vue({
         insert() {
             this.$refs.insertForm.validate((valid) => {
                 if (valid) {
-                    this.insertDialog = false;
                     let insertParam = this.insertForm;
                     axios.post('/sys/dict/add', JSON.parse(JSON.stringify(insertParam)))
                         .then((res) => {
@@ -154,6 +153,7 @@ new Vue({
                                     type: 'success',
                                     message: '新增成功'
                                 });
+                                this.insertDialog = false;
                             } else {
                                 this.$message.error(res.message);
                             }
@@ -202,7 +202,6 @@ new Vue({
         update() {
             this.$refs.updateForm.validate((valid) => {
                 if (valid) {
-                    this.updateDialog = false;
                     let updateParam = this.updateForm;
                     axios.put('/sys/dict/update', JSON.parse(JSON.stringify(updateParam)))
                         .then((res) => {
@@ -212,6 +211,7 @@ new Vue({
                                     type: 'success',
                                     message: '修改成功'
                                 });
+                                this.updateDialog = false;
                             } else {
                                 this.$message.error(res.message);
                             }
@@ -272,7 +272,6 @@ new Vue({
         insertItem() {
             this.$refs.insertItemForm.validate((valid) => {
                 if (valid) {
-                    this.insertItemDialog = false;
                     this.insertItemForm.dictId = this.queryItemForm.dictId;
                     let insertParam = this.insertItemForm;
                     axios.post('/sys/dict/item/add', JSON.parse(JSON.stringify(insertParam)))
@@ -283,6 +282,7 @@ new Vue({
                                     type: 'success',
                                     message: '新增成功'
                                 });
+                                this.insertItemDialog = false;
                             } else {
                                 this.$message.error(res.message);
                             }
@@ -304,7 +304,6 @@ new Vue({
         updateItem() {
             this.$refs.updateItemForm.validate((valid) => {
                 if (valid) {
-                    this.updateItemDialog = false;
                     let updateParam = this.updateItemForm;
                     axios.put('/sys/dict/item/update', JSON.parse(JSON.stringify(updateParam)))
                         .then((res) => {
@@ -314,6 +313,7 @@ new Vue({
                                     type: 'success',
                                     message: '修改成功'
                                 });
+                                this.updateItemDialog = false;
                             } else {
                                 this.$message.error(res.message);
                             }

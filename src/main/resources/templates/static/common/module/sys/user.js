@@ -209,7 +209,6 @@ new Vue({
         insert() {
             this.$refs.insertForm.validate((valid) => {
                 if (valid) {
-                    this.insertDialog = false;
                     let insertParam = this.insertForm;
                     axios.post('/sys/user/add', JSON.parse(JSON.stringify(insertParam)))
                         .then((res) => {
@@ -219,6 +218,7 @@ new Vue({
                                     type: 'success',
                                     message: '新增成功'
                                 });
+                                this.insertDialog = false;
                             } else {
                                 this.$message.error(res.message);
                             }
@@ -330,7 +330,6 @@ new Vue({
         update() {
             this.$refs.updateForm.validate((valid) => {
                 if (valid) {
-                    this.updateDialog = false;
                     let updateParam = this.updateForm;
                     axios.put('/sys/user/update', JSON.parse(JSON.stringify(updateParam)))
                         .then((res) => {
@@ -340,6 +339,7 @@ new Vue({
                                     type: 'success',
                                     message: '修改成功'
                                 });
+                                this.updateDialog = false;
                             } else {
                                 this.$message.error(res.message);
                             }
@@ -359,7 +359,6 @@ new Vue({
         reset() {
             this.$refs.passwordResetForm.validate((valid) => {
                 if (valid) {
-                    this.resetDialog = false;
                     let updateParam = this.passwordResetForm;
                     axios.put('/sys/user/reset', JSON.parse(JSON.stringify(updateParam)))
                         .then((res) => {
@@ -369,6 +368,7 @@ new Vue({
                                     type: 'success',
                                     message: '密码重置成功'
                                 });
+                                this.resetDialog = false;
                             } else {
                                 this.$message.error(res.message);
                             }

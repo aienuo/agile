@@ -1,9 +1,6 @@
 package com.imis.agile.constant.base;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -64,13 +61,15 @@ public abstract class BaseEntity implements Serializable {
     @TableField(value = DataBaseConstant.UPDATE_BY_FIELD, fill = FieldFill.UPDATE)
     private String updateBy;
     /**
-     * 更新时间
+     * 更新时间（乐观锁）
      */
-    @ApiModelProperty(value = "更新时间")
+    @Version
+    @ApiModelProperty(value = "更新时间（乐观锁）")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = DataBaseConstant.UPDATE_TIME_FIELD, fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
+
 }

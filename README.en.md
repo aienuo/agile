@@ -12,6 +12,7 @@ Java Framework For Enterprise Web Applications
 | :---: | :--- | :--- | :--- |
 | 1 | organization | EditSave | Edit the organization tree. When saving, the child number cannot be updated to the latest in time. Because the parent and son are updated together, the child uses the old parent number instead of the latest parent number |
 | 2 | Menu permissions | Infinitus menu display | Custom Infinitus Menu Components |
+| 3 | authority management | Control access | shiro |
 
 #### Thanks
 
