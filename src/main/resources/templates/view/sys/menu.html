@@ -34,9 +34,9 @@
             <el-table-column prop="sortNo" label="排序" width="50" align="center"></el-table-column>
             <el-table-column label="操作" width="250" align="center" fixed="right">
                 <template slot-scope="scope">
-                    <el-button type="primary" size="mini" v-if="scope.row.menuType != 2 && button.insert" type="text" @click="openInsertDialog(scope.row)">新增下级</el-button>
-                    <el-button type="success" size="mini" v-if="button.update" type="text" @click="openUpdateDialog(scope.row)">修改</el-button>
-                    <el-button type="danger" size="mini" v-if="button.delete" type="text" @click="openRemoveMessageBox(scope.row)">删除</el-button>
+                    <el-button type="primary" size="mini" v-if="scope.row.menuType != 2 && button.insert" @click="openInsertDialog(scope.row)">新增下级</el-button>
+                    <el-button type="success" size="mini" v-if="button.update" @click="openUpdateDialog(scope.row)">修改</el-button>
+                    <el-button type="danger" size="mini" v-if="button.delete" @click="openRemoveMessageBox(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>

@@ -27,7 +27,7 @@
             <el-table-column prop="description" label="描述"></el-table-column>
             <el-table-column label="操作" width="160" align="center" fixed="right">
                 <template slot-scope="scope">
-                    <el-button type="success" size="mini" v-if="button.update" type="text" @click="openUpdateDialog(scope.row)">修改</el-button>
+                    <el-button type="success" size="mini" v-if="button.update" @click="openUpdateDialog(scope.row)">修改</el-button>
                 </template>
             </el-table-column>
         </el-table>

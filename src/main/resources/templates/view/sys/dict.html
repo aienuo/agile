@@ -35,8 +35,8 @@
             <el-table-column prop="description" label="描述"></el-table-column>
             <el-table-column label="操作" width="220" align="center" fixed="right">
                 <template slot-scope="scope">
-                    <el-button type="success" icon="el-icon-edit" size="mini" v-if="button.update" type="text" @click="openUpdateDialog(scope.row)">修改</el-button>
-                    <el-button type="primary" icon="el-icon-setting" size="mini" type="text" @click="openConfigurationDrawer(scope.row)">字典配置</el-button>
+                    <el-button type="success" icon="el-icon-edit" size="mini" v-if="button.update" @click="openUpdateDialog(scope.row)">修改</el-button>
+                    <el-button type="primary" icon="el-icon-setting" size="mini" @click="openConfigurationDrawer(scope.row)">字典配置</el-button>
                 </template>
             </el-table-column>
         </el-table>

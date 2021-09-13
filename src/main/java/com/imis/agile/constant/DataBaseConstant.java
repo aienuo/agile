@@ -49,27 +49,4 @@ public interface DataBaseConstant extends StringPool {
     String UPDATE_TIME_FIELD = "UPDATE_TIME";
     String UPDATE_TIME = "updateTime";
 
-    //*********转换器忽略转换的对象字段****************************************
-
-    /**
-     * 分页对象-升序-多个
-     */
-    String ASCS = "ascs";
-    /**
-     * 分页对象-升序
-     */
-    String ASC = "asc";
-    /**
-     * 分页对象-降序-多个
-     */
-    String DESCS = "descs";
-    /**
-     * 分页对象-降序
-     */
-    String DESC = "desc";
-    /**
-     * 分页对象-优化计数SQL
-     */
-    String OPTIMIZE_COUNT_SQL = "optimizeCountSql";
-
 }

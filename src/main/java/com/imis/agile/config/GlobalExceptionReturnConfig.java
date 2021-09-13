@@ -193,7 +193,7 @@ public class GlobalExceptionReturnConfig {
      * @return ErrorResponse - 错误返回结果
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ErrorResponse MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
+    public ErrorResponse methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
         // 从异常对象中拿到 BindingResult 对象
         return wrapperBindingResult(e.getBindingResult());
@@ -206,7 +206,7 @@ public class GlobalExceptionReturnConfig {
      * @return ErrorResponse - 错误返回结果
      */
     @ExceptionHandler(BindException.class)
-    public ErrorResponse BindExceptionHandler(BindException e) {
+    public ErrorResponse bindExceptionHandler(BindException e) {
         log.error(e.getMessage(), e);
         // 从异常对象中拿到 BindingResult 对象
         return wrapperBindingResult(e);

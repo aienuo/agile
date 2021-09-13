@@ -11,6 +11,7 @@ import java.util.Map;
 /**
  * <p> 身份证号码解析工具类 </p>
  *
+ * @author XinLau
  * @remarks 根据《中华人民共和国国家标准GB 11643-1999》中有关公民身份号码的规定，
  * 公民身份号码是特征组合码，由十七位数字本体码和一位数字校验码组成。排列顺序从左至右依次为：
  * 六位数字地址码，八位数字出生日期码，三位数字顺序码和一位数字校验码。
@@ -31,47 +32,47 @@ import java.util.Map;
  **/
 public class IdCardUtil {
 
-    final static Map<Integer, String> zoneNum = new HashMap<Integer, String>();
+    final static Map<Integer, String> ZONE_NUM = new HashMap<>();
     final static int[] PARITY_BIT = {'1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'};
     final static int[] POWER_LIST = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10,
             5, 8, 4, 2};
 
     static {
-        zoneNum.put(11, "北京");
-        zoneNum.put(12, "天津");
-        zoneNum.put(13, "河北");
-        zoneNum.put(14, "山西");
-        zoneNum.put(15, "内蒙古");
-        zoneNum.put(21, "辽宁");
-        zoneNum.put(22, "吉林");
-        zoneNum.put(23, "黑龙江");
-        zoneNum.put(31, "上海");
-        zoneNum.put(32, "江苏");
-        zoneNum.put(33, "浙江");
-        zoneNum.put(34, "安徽");
-        zoneNum.put(35, "福建");
-        zoneNum.put(36, "江西");
-        zoneNum.put(37, "山东");
-        zoneNum.put(41, "河南");
-        zoneNum.put(42, "湖北");
-        zoneNum.put(43, "湖南");
-        zoneNum.put(44, "广东");
-        zoneNum.put(45, "广西");
-        zoneNum.put(46, "海南");
-        zoneNum.put(50, "重庆");
-        zoneNum.put(51, "四川");
-        zoneNum.put(52, "贵州");
-        zoneNum.put(53, "云南");
-        zoneNum.put(54, "西藏");
-        zoneNum.put(61, "陕西");
-        zoneNum.put(62, "甘肃");
-        zoneNum.put(63, "青海");
-        zoneNum.put(64, "宁夏");
-        zoneNum.put(65, "新疆");
-        zoneNum.put(71, "台湾");
-        zoneNum.put(81, "香港");
-        zoneNum.put(82, "澳门");
-        zoneNum.put(91, "外国");
+        ZONE_NUM.put(11, "北京");
+        ZONE_NUM.put(12, "天津");
+        ZONE_NUM.put(13, "河北");
+        ZONE_NUM.put(14, "山西");
+        ZONE_NUM.put(15, "内蒙古");
+        ZONE_NUM.put(21, "辽宁");
+        ZONE_NUM.put(22, "吉林");
+        ZONE_NUM.put(23, "黑龙江");
+        ZONE_NUM.put(31, "上海");
+        ZONE_NUM.put(32, "江苏");
+        ZONE_NUM.put(33, "浙江");
+        ZONE_NUM.put(34, "安徽");
+        ZONE_NUM.put(35, "福建");
+        ZONE_NUM.put(36, "江西");
+        ZONE_NUM.put(37, "山东");
+        ZONE_NUM.put(41, "河南");
+        ZONE_NUM.put(42, "湖北");
+        ZONE_NUM.put(43, "湖南");
+        ZONE_NUM.put(44, "广东");
+        ZONE_NUM.put(45, "广西");
+        ZONE_NUM.put(46, "海南");
+        ZONE_NUM.put(50, "重庆");
+        ZONE_NUM.put(51, "四川");
+        ZONE_NUM.put(52, "贵州");
+        ZONE_NUM.put(53, "云南");
+        ZONE_NUM.put(54, "西藏");
+        ZONE_NUM.put(61, "陕西");
+        ZONE_NUM.put(62, "甘肃");
+        ZONE_NUM.put(63, "青海");
+        ZONE_NUM.put(64, "宁夏");
+        ZONE_NUM.put(65, "新疆");
+        ZONE_NUM.put(71, "台湾");
+        ZONE_NUM.put(81, "香港");
+        ZONE_NUM.put(82, "澳门");
+        ZONE_NUM.put(91, "外国");
     }
 
     /**
@@ -82,7 +83,7 @@ public class IdCardUtil {
      * @author liuyadong
      * @since 2020/9/16 10:11
      */
-    public static boolean isIDCard(String certNo) {
+    public static boolean isIdCard(String certNo) {
         if (certNo == null || (certNo.length() != 15 && certNo.length() != 18)) {
             return false;
         }
@@ -102,7 +103,7 @@ public class IdCardUtil {
         }
 
         //校验区位码
-        if (!zoneNum.containsKey(Integer.valueOf(certNo.substring(0, 2)))) {
+        if (!ZONE_NUM.containsKey(Integer.valueOf(certNo.substring(0, 2)))) {
             return false;
         }
 
@@ -113,7 +114,8 @@ public class IdCardUtil {
 
         final int iyear = Integer.parseInt(year);
         if (iyear < 1900 || iyear > Calendar.getInstance().get(Calendar.YEAR)) {
-            return false;//1900年的PASS，超过今年的PASS
+            // 1900年的PASS，超过今年的PASS
+            return false;
         }
 
         //校验月份

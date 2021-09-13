@@ -49,9 +49,9 @@
             <el-table-column prop="age" label="年龄" width="60" align="center"></el-table-column>
             <el-table-column label="操作" width="250" align="center" fixed="right">
                 <template slot-scope="scope">
-                    <el-button type="primary" size="mini" type="text" @click="openDetailDialog(scope.row)">详情</el-button>
-                    <el-button type="success" size="mini" v-if="button.update" type="text" @click="openUpdateDialog(scope.row)">修改</el-button>
-                    <el-button type="danger" size="mini" v-if="button.reset" type="text" @click="openResetDialog(scope.row)">密码重置</el-button>
+                    <el-button type="primary" size="mini" @click="openDetailDialog(scope.row)">详情</el-button>
+                    <el-button type="success" size="mini" v-if="button.update" @click="openUpdateDialog(scope.row)">修改</el-button>
+                    <el-button type="danger" size="mini" v-if="button.reset" @click="openResetDialog(scope.row)">密码重置</el-button>
                 </template>
             </el-table-column>
         </el-table>

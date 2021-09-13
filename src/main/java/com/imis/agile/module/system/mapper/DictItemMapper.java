@@ -22,6 +22,7 @@ public interface DictItemMapper extends BaseMapper<DictItem> {
     /**
      * 字典 - 值查询
      *
+     * @param query - 值查询参数
      * @return List<DictItemVO>
      * @author XinLau
      * @creed The only constant is change ! ! !
