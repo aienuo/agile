@@ -151,7 +151,7 @@ new Vue({
         // 查询表单提交
         submitQueryForm() {
             let params = {
-                pageNo: this.currentPage,
+                pageNumber: this.currentPage,
                 pageSize: this.pageSize,
                 // sortFieldList: this.sortFieldList,
                 realname: this.queryForm.realname,
@@ -171,11 +171,7 @@ new Vue({
         },
         // 查询表单清空
         clearQueryForm() {
-            this.queryForm.realname = '';
-            this.queryForm.username = '';
-            this.queryForm.identityNumber = '';
-            this.queryForm.email = '';
-            this.queryForm.phone = '';
+            this.queryForm = {};
         },
         // 文件上传成功
         handleAvatarSuccess(idx, res, file, name) {

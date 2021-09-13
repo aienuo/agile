@@ -56,7 +56,7 @@ new Vue({
             this.submitQueryForm();
         },
         // 判断按钮权限
-        buttonPermissions(){
+        buttonPermissions() {
             let buttons = JSON.parse(localStorage.getItem("X-Data-Buttons-List"));
             this.button.insert = buttons.indexOf("/sys/role/add") > -1;
             this.button.update = buttons.indexOf("/sys/role/update") > -1;
@@ -65,7 +65,7 @@ new Vue({
         // 查询表单提交
         submitQueryForm() {
             let params = {
-                pageNo: this.currentPage,
+                pageNumber: this.currentPage,
                 pageSize: this.pageSize,
                 // sortFieldList: this.sortFieldList,
                 roleName: this.queryForm.roleName
@@ -81,7 +81,7 @@ new Vue({
         },
         // 查询表单清空
         clearQueryForm() {
-            this.queryForm.roleName = ''
+            this.queryForm = {};
         },
         // 开启新增表单
         openInsertDialog() {

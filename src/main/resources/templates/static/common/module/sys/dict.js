@@ -73,7 +73,7 @@ new Vue({
                 ],
                 dictCode: [
                     {required: true, message: '请输入字典编码', trigger: 'blur'},
-                    {min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur'}
+                    {min: 2, max: 10, message: '长度在 2 到 100 个字符', trigger: 'blur'}
                 ],
                 name: [
                     {required: true, message: '请输入字典项名', trigger: 'blur'},
@@ -109,7 +109,7 @@ new Vue({
         // 查询表单提交
         submitQueryForm() {
             let params = {
-                pageNo: this.currentPage,
+                pageNumber: this.currentPage,
                 pageSize: this.pageSize,
                 // sortFieldList: this.sortFieldList,
                 dictName: this.queryForm.dictName,
@@ -126,8 +126,7 @@ new Vue({
         },
         // 查询表单清空
         clearQueryForm() {
-            this.queryForm.dictName = ''
-            this.queryForm.dictCode = ''
+            this.queryForm = {};
         },
         // 字典类型格式化展示
         formatDictType: function (row, column, cellValue, index) {
