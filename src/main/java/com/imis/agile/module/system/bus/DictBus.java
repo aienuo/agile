@@ -2,6 +2,7 @@ package com.imis.agile.module.system.bus;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.imis.agile.constant.CommonConstant;
 import com.imis.agile.constant.base.BaseBus;
 import com.imis.agile.constant.enums.ArgumentResponseEnum;
 import com.imis.agile.module.system.model.converter.DictConverter;
@@ -113,7 +114,7 @@ public class DictBus extends BaseBus {
         // 验证 字典 - 项名称 是否存在重复
         Dict dict = this.dictService.getById(add.getDictId());
         ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_ADD_02.assertNotNull(dict);
-        if (dict.getDictType().equals(1)){
+        if (CommonConstant.DICT_TYPE_1.equals(dict.getDictType())){
             ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_ADD_03.assertIsTrue(AgileUtil.isNumeric(add.getValue()));
         }
         // 验证 字典 - 值名称 是否存在重复
@@ -135,7 +136,7 @@ public class DictBus extends BaseBus {
         // 验证 字典 - 项名称 是否存在重复
         Dict dict = this.dictService.getById(update.getDictId());
         ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_UPDATE_02.assertNotNull(dict);
-        if (dict.getDictType().equals(1)){
+        if (CommonConstant.DICT_TYPE_1.equals(dict.getDictType())){
             ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_UPDATE_03.assertIsTrue(AgileUtil.isNumeric(update.getValue()));
         }
         DictItem dictItem = this.dictItemService.getById(update.getId());

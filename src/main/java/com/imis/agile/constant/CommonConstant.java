@@ -39,6 +39,12 @@ public interface CommonConstant {
     String UPLOAD_TYPE_LOCAL = "local";
 
     /**
+     * 字典类型（0-String，1-Number）
+     */
+    Integer DICT_TYPE_0 = 0;
+    Integer DICT_TYPE_1 = 1;
+
+    /**
      * 冻结状态(0-正常，1-冻结）
      */
     Integer USER_FREEZE_0 = 0;
@@ -49,36 +55,5 @@ public interface CommonConstant {
      */
     Integer DEL_FLAG_0 = 0;
     Integer DEL_FLAG_1 = 1;
-
-    /**
-     * 是否负责部门（0-不负责，1-负责）
-     */
-    Integer RESPONSIBLE_0 = 0;
-    Integer RESPONSIBLE_1 = 1;
-
-    /**
-     * 是否叶子节点（0-不是，1-是）
-     */
-    Integer LEAF_TYPE_0 = 0;
-    Integer LEAF_TYPE_1 = 1;
-
-    /**
-     * 菜单类型（0-一级菜单，1-子菜单，2-按钮权限）
-     */
-    Integer MENU_TYPE_0 = 2;
-    Integer MENU_TYPE_1 = 1;
-    Integer MENU_TYPE_2 = 2;
-
-    /**
-     * 权限策略（0-显示，1-禁用）
-     */
-    Integer PERMS_TYPE_0 = 0;
-    Integer PERMS_TYPE_1 = 1;
-
-    /**
-     * 字典类型（0-String，1-Number）
-     */
-    Integer DICT_TYPE_0 = 0;
-    Integer DICT_TYPE_1 = 1;
 
 }
