@@ -92,4 +92,31 @@ public class DictItemServiceImpl extends ServiceImpl<DictItemMapper, DictItem> i
         return dictItemList;
     }
 
+    /**
+     * 字典 - 数据库表名称
+     *
+     * @return List<ItemVO>
+     * @author XinLau
+     * @creed The only constant is change ! ! !
+     * @since 2020/3/5 17:25
+     */
+    @Override
+    public List<ItemVO> queryTableItemList(){
+        return this.baseMapper.queryTableItemList();
+    }
+
+    /**
+     * 字典 - 数据库表字段名称
+     *
+     * @param tableName - 数据库表名称
+     * @return List<ItemVO>
+     * @author XinLau
+     * @creed The only constant is change ! ! !
+     * @since 2020/3/5 17:25
+     */
+    @Override
+    public List<ItemVO> queryTableColumnItemListByTableName(final String tableName){
+        return this.baseMapper.queryTableColumnItemListByTableName(tableName);
+    }
+
 }

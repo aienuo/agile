@@ -51,4 +51,25 @@ public interface IDictItemService extends IService<DictItem> {
      */
     List<ItemVO> queryDictItemListByDictCode(final String dictCode);
 
+    /**
+     * 字典 - 数据库表名称
+     *
+     * @return List<ItemVO>
+     * @author XinLau
+     * @creed The only constant is change ! ! !
+     * @since 2020/3/5 17:25
+     */
+    List<ItemVO> queryTableItemList();
+
+    /**
+     * 字典 - 数据库表字段名称
+     *
+     * @param tableName - 数据库表名称
+     * @return List<ItemVO>
+     * @author XinLau
+     * @creed The only constant is change ! ! !
+     * @since 2020/3/5 17:25
+     */
+    List<ItemVO> queryTableColumnItemListByTableName(final String tableName);
+
 }

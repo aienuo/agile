@@ -175,6 +175,8 @@ public class LoginBus extends BaseBus {
                         }
                     }
             );
+            // 字典 - 数据库表名称
+            dictList.add(new DictVO().setDictCode("tableName").setItemList(this.dictItemService.queryTableItemList()));
         }
         return dictList;
     }

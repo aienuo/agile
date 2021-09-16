@@ -89,4 +89,26 @@
         ORDER BY i.sort_no
     </select>
 
+    <!-- 字典 - 数据库表名称 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <select id="queryTableItemList" resultMap="listQueryByDictIdList">
+        SELECT
+            TABLE_NAME AS value,
+            TABLE_COMMENT AS name
+        FROM
+            information_schema.TABLES
+        WHERE
+            table_schema = 'agile' AND table_type = 'BASE TABLE';
+    </select>
+
+    <!-- 字典 - 数据库表字段名称 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <select id="queryTableColumnItemListByTableName" resultMap="listQueryByDictIdList">
+        SELECT
+            COLUMN_NAME AS value,
+            COLUMN_COMMENT AS name
+        FROM
+            information_schema.COLUMNS
+        WHERE
+            table_schema = 'agile' AND table_name = #{tableName}
+    </select>
+
 </mapper>
