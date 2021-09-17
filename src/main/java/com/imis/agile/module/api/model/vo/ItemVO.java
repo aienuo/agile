@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 字典 - 值
+ * 字典 - 简化版值
  * </p>
  *
  * @author XinLau
@@ -22,7 +22,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ApiModel(value = "字典值 - 查询返回值", description = "字典值 - 查询返回值")
+@ApiModel(value = "简化版字典值 - 查询返回值", description = "简化版字典值 - 查询返回值")
 public class ItemVO extends BaseTreeVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,5 +50,23 @@ public class ItemVO extends BaseTreeVO implements Serializable {
      */
     @ApiModelProperty(value = "禁用状态(true1-禁用，false0-不禁用）")
     private Boolean disabled;
+
+    /**
+     * 字典项文本
+     *
+     * @return 字典项文本
+     */
+    public String getTitle() {
+        return this.name;
+    }
+
+    /**
+     * 字典项文本
+     *
+     * @return 字典项文本
+     */
+    public String getText() {
+        return this.name;
+    }
 
 }

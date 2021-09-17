@@ -47,13 +47,19 @@
                         <!--<agile-menu-tree :menu-tree-list="menuTreeList"></agile-menu-tree>-->
                     </el-menu>
                 </el-aside>
-                <el-main>
-                    <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
-                        <el-tab-pane :key="item.name" v-for="(item) in editableTabs" :label="item.title" :name="item.name">
-                            <iframe :src="item.content" style="height: 570px;width: 100%;border: none"></iframe>
-                        </el-tab-pane>
-                    </el-tabs>
-                </el-main>
+                <el-container>
+                    <el-main>
+                        <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
+                            <el-tab-pane :key="item.name" v-for="(item) in editableTabs" :label="item.title" :name="item.name">
+                                <iframe :src="item.content" style="height: 715px;width: 100%;border: none"></iframe>
+                            </el-tab-pane>
+                        </el-tabs>
+                    </el-main>
+                    <el-footer class="index-footer">
+                        <el-link type="primary" icon="el-icon-hot-water" href="https://cn.vuejs.org/v2/api" :underline="false">Vue</el-link>
+                        <el-link type="primary" icon="el-icon-eleme" href="https://element.eleme.io" :underline="false">Element</el-link>
+                    </el-footer>
+                </el-container>
             </el-container>
         </el-container>
 
@@ -148,13 +154,22 @@
 
     .index-aside {
         background-color: #545c64;
+        text-align: center;
+        line-height: 200px;
+    }
+
+    .index-footer {
+        background-color: #f0f2f5;
+        color: #333;
+        text-align: center;
+        line-height: 50px;
     }
 
     .index-title {
         color: #fff;
-        font-size: 22px;
+        font-size: 25px;
         display: inline;
-        margin-left: 18px;
+        margin-left: 70px;
     }
 
     .index-login-user {
