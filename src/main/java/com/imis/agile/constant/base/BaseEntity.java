@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.imis.agile.constant.CommonConstant;
 import com.imis.agile.constant.DataBaseConstant;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -50,8 +51,8 @@ public abstract class BaseEntity implements Serializable {
     @ApiModelProperty(value = "创建时间")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = CommonConstant.NORM_DATETIME_PATTERN)
+    @DateTimeFormat(pattern = CommonConstant.NORM_DATETIME_PATTERN)
     @TableField(value = DataBaseConstant.CREATE_TIME_FIELD, fill = FieldFill.INSERT)
     private LocalDateTime createTime;
     /**
@@ -67,8 +68,8 @@ public abstract class BaseEntity implements Serializable {
     @ApiModelProperty(value = "更新时间（乐观锁）")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = CommonConstant.NORM_DATETIME_PATTERN)
+    @DateTimeFormat(pattern = CommonConstant.NORM_DATETIME_PATTERN)
     @TableField(value = DataBaseConstant.UPDATE_TIME_FIELD, fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
 

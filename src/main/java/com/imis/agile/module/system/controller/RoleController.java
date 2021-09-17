@@ -58,7 +58,7 @@ public class RoleController extends BaseController<RoleBus> {
     @ApiOperation(value = "查看接口", notes = "单条查看")
     @ApiImplicitParam(name = DataBaseConstant.P_KEY, value = "角色标识", dataType = "Long", dataTypeClass = Long.class, required = true)
     @ApiOperationSupport(order = 3, author = "XinLau")
-    public CommonResponse<RoleInfoVO> queryById(@PathVariable(name = "id", required = true) Long id) {
+    public CommonResponse<RoleInfoVO> queryById(@PathVariable(name = DataBaseConstant.P_KEY, required = true) Long id) {
         return service.queryById(id);
     }
 

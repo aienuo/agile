@@ -75,7 +75,7 @@ public class UserController extends BaseController<UserBus> {
     @ApiOperation(value = "查看接口", notes = "单条查看")
     @ApiImplicitParam(name = DataBaseConstant.P_KEY, value = "用户标识", dataType = "Long", dataTypeClass = Long.class, required = true)
     @ApiOperationSupport(order = 5, author = "XinLau")
-    public CommonResponse<UserInfoVO> queryById(@PathVariable(name = "id", required = true) Long id) {
+    public CommonResponse<UserInfoVO> queryById(@PathVariable(name = DataBaseConstant.P_KEY, required = true) Long id) {
         return service.queryById(id);
     }
 

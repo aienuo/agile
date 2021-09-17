@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.imis.agile.constant.CommonConstant;
 import com.imis.agile.constant.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -86,8 +87,8 @@ public class User extends BaseEntity implements Serializable {
      */
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(timezone = "GMT+8", pattern = CommonConstant.NORM_DATE_PATTERN)
+    @DateTimeFormat(pattern = CommonConstant.NORM_DATE_PATTERN)
     @TableField(value = "birthday")
     private LocalDate birthday;
 

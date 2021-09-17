@@ -1,5 +1,7 @@
 package com.imis.agile.constant;
 
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
+
 /**
  * <p>
  * CommonConstant<br>
@@ -37,6 +39,31 @@ public interface CommonConstant {
      * 文件上传类型
      */
     String UPLOAD_TYPE_LOCAL = "local";
+
+    /**
+     * 标准日期格式：yyyy-MM-dd
+     */
+    String NORM_DATE_PATTERN = "yyyy-MM-dd";
+    /**
+     * 标准日期格式：yyyy年MM月dd日
+     */
+    String CHINESE_DATE_PATTERN = "yyyy年MM月dd日";
+    /**
+     * 标准时间格式：HH:mm:ss
+     */
+    String NORM_TIME_PATTERN = "HH:mm:ss";
+    /**
+     * 标准时间格式：HH时mm分ss秒
+     */
+    String CHINESE_TIME_PATTERN = "HH时mm分ss秒";
+    /**
+     * 标准日期时间格式，精确到秒：yyyy-MM-dd HH:mm:ss
+     */
+    String NORM_DATETIME_PATTERN = NORM_DATE_PATTERN + StringPool.SPACE + NORM_TIME_PATTERN;
+    /**
+     * 标准日期格式：yyyy年MM月dd日 HH时mm分ss秒
+     */
+    String CHINESE_DATE_TIME_PATTERN = CHINESE_DATE_PATTERN + StringPool.SPACE + CHINESE_TIME_PATTERN;
 
     /**
      * 字典类型（0-String，1-Number）

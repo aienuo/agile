@@ -56,7 +56,7 @@ public class OrganizationController extends BaseController<OrganizationBus> {
     @ApiOperation(value = "查看接口", notes = "单条查看")
     @ApiImplicitParam(name = DataBaseConstant.P_KEY, value = "组织机构标识", dataType = "Long", dataTypeClass = Long.class, required = true)
     @ApiOperationSupport(order = 3, author = "XinLau")
-    public CommonResponse<OrganizationInfoVO> queryById(@PathVariable(name = "id", required = true) Long id) {
+    public CommonResponse<OrganizationInfoVO> queryById(@PathVariable(name = DataBaseConstant.P_KEY, required = true) Long id) {
         return service.queryById(id);
     }
 

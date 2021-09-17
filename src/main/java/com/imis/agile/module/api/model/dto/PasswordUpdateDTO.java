@@ -17,7 +17,7 @@ import javax.validation.constraints.NotBlank;
  * @since 2020年03月26日 14:23
  */
 @Data
-@ApiModel(value="自助密码修改对象", description="自助密码修改对象")
+@ApiModel(value = "自助密码修改对象", description = "自助密码修改对象")
 public class PasswordUpdateDTO {
 
     @ApiModelProperty(value = "登录账号", required = true)

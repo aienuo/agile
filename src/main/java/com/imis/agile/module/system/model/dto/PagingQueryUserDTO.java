@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.imis.agile.constant.CommonConstant;
 import com.imis.agile.constant.base.BasePageDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -26,7 +27,7 @@ import java.time.LocalDate;
  * @since 2020年03月11日 09:18
  */
 @Data
-@ApiModel(value="系统用户 - 分页查询参数", description="系统用户 - 分页查询参数")
+@ApiModel(value = "系统用户 - 分页查询参数", description = "系统用户 - 分页查询参数")
 @EqualsAndHashCode(callSuper = false)
 public class PagingQueryUserDTO extends BasePageDTO implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -61,14 +62,14 @@ public class PagingQueryUserDTO extends BasePageDTO implements Serializable {
     @ApiModelProperty(value = "出生日期-始")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(timezone = "GMT+8", pattern = CommonConstant.NORM_DATE_PATTERN)
+    @DateTimeFormat(pattern = CommonConstant.NORM_DATE_PATTERN)
     private LocalDate birthday;
     @ApiModelProperty(value = "出生日期-终")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(timezone = "GMT+8", pattern = CommonConstant.NORM_DATE_PATTERN)
+    @DateTimeFormat(pattern = CommonConstant.NORM_DATE_PATTERN)
     private LocalDate birthdayEnd;
 
     /**

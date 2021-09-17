@@ -11,8 +11,8 @@ import java.io.Serializable;
 
 /**
  * <p>
- * RoleAddDTO<br>
- * 系统角色 - 角色添加参数
+ * RoleUpdateDTO<br>
+ * 系统角色 - 角色更新参数
  * </p>
  *
  * @author XinLau
@@ -20,7 +20,7 @@ import java.io.Serializable;
  * @since 2020年03月11日 09:18
  */
 @Data
-@ApiModel(value = "系统角色 - 角色添加参数", description = "系统角色 - 角色添加参数")
+@ApiModel(value = "系统角色 - 角色更新参数", description = "系统角色 - 角色更新参数")
 @EqualsAndHashCode(callSuper = false)
 public class RoleUpdateDTO implements Serializable {
 

@@ -4,18 +4,24 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
 import com.imis.agile.constant.CommonConstant;
 import com.imis.agile.interceptor.AuthenticationInterceptor;
+import com.imis.agile.response.BaseResponse;
+import com.imis.agile.response.CommonResponse;
+import com.imis.agile.response.ErrorResponse;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Parameter;
@@ -38,11 +44,12 @@ import java.util.Locale;
  */
 @Configuration
 @EnableSwagger2WebMvc
+@Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfiguration implements WebMvcConfigurer {
 
     private final OpenApiExtensionResolver openApiExtensionResolver;
 
-    @Autowired
+    @Autowired(required = false)
     public SwaggerConfiguration(OpenApiExtensionResolver openApiExtensionResolver) {
         this.openApiExtensionResolver = openApiExtensionResolver;
     }
@@ -73,7 +80,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
     }
 
     /**
-     * JWT token
+     * 全局参数
      *
      * @return List<Parameter>
      */
@@ -86,11 +93,11 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 // 更新参数的默认值
                 .defaultValue(StringPool.EMPTY)
                 // 更新参数说明
-                .description("全局参数：Token")
+                .description("全局请求头参数：X-Access-Token")
                 // 表示推断模型参考的便捷方法合并或弄清楚哪些内容可以汇总
-                // .modelRef(new ModelRef(type))
+                .modelRef(new ModelRef("string"))
                 // 更新参数类型
-                // .parameterType(paramType)
+                .parameterType("header")
                 // 更新参数是否为必需或可选
                 .required(Boolean.TRUE)
                 // 构建
@@ -120,8 +127,9 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 // .securitySchemes()
                 // 添加将应用于所有操作的默认参数
                 .globalOperationParameters(getGlobalOperationParameters())
-                // 添加忽略类型
-                // .ignoredParameterTypes(MultipartHttpServletRequest.class)
+                // 添加忽略类（不再生成 swaggerModel）
+                .ignoredParameterTypes(BaseResponse.class, CommonResponse.class, ErrorResponse.class)
+                // 进行插件赋值
                 .extensions(openApiExtensionResolver.buildExtensions(groupName))
                 ;
     }
@@ -197,6 +205,11 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
     @Bean
     public Docket createSystemManagementApi() {
         return createRestApi("系统管理模块", "com.imis.agile.module.system.controller", "用户管理、角色管理、功能菜单、组织机构、字典管理、系统日志");
+    }
+
+    @Bean
+    public Docket createOnlineDevelopmentApi() {
+        return createRestApi("在线开发模块", "com.imis.agile.module.online.controller", "在线开发");
     }
 
 }

@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * <p>
- * 系统角色 - 查询返回值
+ * 系统角色 - 信息查询返回值
  * </p>
  *
  * @author: XinLau
@@ -22,7 +22,7 @@ import java.util.List;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ApiModel(value = "系统角色 - 查询返回值", description = "系统角色 - 查询返回值")
+@ApiModel(value = "系统角色 - 信息查询返回值", description = "系统角色 - 信息查询返回值")
 public class RoleInfoVO implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -41,7 +41,7 @@ public class LoginController extends BaseController<LoginBus> {
     }
 
 
-    @GetMapping(path = "/{username}")
+    @GetMapping(path = "/info/{username}")
     @ApiOperation(value = "基础信息", notes = "基础信息")
     @ApiImplicitParam(name = "username", value = "用户标识", dataType = "String", dataTypeClass = String.class, required = true)
     @ApiOperationSupport(order = 2, author = "XinLau")

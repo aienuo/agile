@@ -19,7 +19,7 @@ import java.io.Serializable;
  * @since 2020年03月11日 09:18
  */
 @Data
-@ApiModel(value="字典 - 值 - 分页查询参数", description="字典 - 值 - 分页查询参数")
+@ApiModel(value = "字典 - 值 - 分页查询参数", description = "字典 - 值 - 分页查询参数")
 @EqualsAndHashCode(callSuper = false)
 public class QueryDictItemDTO implements Serializable {
     private static final long serialVersionUID = 1L;

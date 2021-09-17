@@ -261,7 +261,7 @@ new Vue({
             this.user = JSON.parse(localStorage.getItem("X-Data-User"));
             this.avatar = this.user.avatar;
             this.activePath = window.sessionStorage.getItem('activePath');
-            axios.get('/' + this.user.username)
+            axios.get('/info/' + this.user.username)
                 .then((res) => {
                     if (res.code === 6666) {
                         this.roleList = res.data.roleList;

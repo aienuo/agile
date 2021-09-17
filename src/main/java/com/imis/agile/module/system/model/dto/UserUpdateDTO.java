@@ -23,7 +23,7 @@ import java.time.LocalDate;
  * @since 2020年03月11日 09:18
  */
 @Data
-@ApiModel(value="系统用户 - 用户更新参数", description="系统用户 - 用户更新参数")
+@ApiModel(value = "系统用户 - 用户更新参数", description = "系统用户 - 用户更新参数")
 @EqualsAndHashCode(callSuper = false)
 public class UserUpdateDTO implements Serializable {
     private static final long serialVersionUID = 1L;
