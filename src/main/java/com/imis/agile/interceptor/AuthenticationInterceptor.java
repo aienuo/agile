@@ -94,7 +94,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         String username = JwtUtil.getUsername(token);
         CommonResponseEnum.TOKEN_500.assertNotEmpty(username);
         // 判断用户状态
-        User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
+        User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username), Boolean.FALSE);
         CommonResponseEnum.ERROR_500.assertNotNullWithMsg(user, "用户不存在");
         // 删除状态（0-正常，1-已删除）
         CommonResponseEnum.ERROR_500.assertIsTrueWithMsg(CommonConstant.DEL_FLAG_0.equals(user.getDelFlag()), "账号注销");

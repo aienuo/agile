@@ -40,7 +40,7 @@
         FROM
         <include refid="sys_dict_table_name"/>
         <where>
-            <if test="param.id!= null and param.id != '' ">
+            <if test="param.id != null and param.id != '' ">
                 AND id = #{param.id}
             </if>
             <if test="param.dictName != null and param.dictName != '' ">

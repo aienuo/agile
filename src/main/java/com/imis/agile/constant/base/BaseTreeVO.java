@@ -1,6 +1,5 @@
 package com.imis.agile.constant.base;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -35,7 +34,7 @@ public class BaseTreeVO implements Serializable {
     /**
      * 父级ID
      */
-    @TableField(value = "父级ID")
+    @ApiModelProperty(value = "父级ID")
     private String parentId;
 
     /**

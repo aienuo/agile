@@ -71,7 +71,7 @@ public class MenuBus extends BaseBus {
         // 验证 菜单权限名称 是否存在重复
         Menu menu = this.menuService.getOne(Wrappers.<Menu>lambdaQuery()
                 .eq(Menu::getName, add.getName()).eq(Menu::getMenuType, add.getMenuType())
-                .eq(AgileUtil.isNotEmpty(add.getParentId()), Menu::getParentId, add.getParentId())
+                .eq(AgileUtil.isNotEmpty(add.getParentId()), Menu::getParentId, add.getParentId()), Boolean.FALSE
         );
         ArgumentResponseEnum.MENU_VALID_ERROR_ADD_02.assertIsNull(menu);
         return MenuConverter.INSTANCE.getAddEntity(add);
@@ -98,7 +98,7 @@ public class MenuBus extends BaseBus {
             // 验证 菜单权限名称 是否存在重复
             Menu menuById = this.menuService.getOne(Wrappers.<Menu>lambdaQuery()
                     .eq(Menu::getName, update.getName()).eq(Menu::getMenuType, update.getMenuType())
-                    .eq(AgileUtil.isNotEmpty(update.getParentId()), Menu::getParentId, update.getParentId())
+                    .eq(AgileUtil.isNotEmpty(update.getParentId()), Menu::getParentId, update.getParentId()), Boolean.FALSE
             );
             ArgumentResponseEnum.MENU_VALID_ERROR_UPDATE_04.assertIsNull(menuById);
         }

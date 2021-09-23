@@ -67,10 +67,10 @@ public class DictBus extends BaseBus {
      */
     private Dict dictAddVerification(final DictAddDTO add) {
         // 验证 字典 - 项名称 是否存在重复
-        Dict dict = this.dictService.getOne(Wrappers.<Dict>lambdaQuery().eq(Dict::getDictName, add.getDictName()));
+        Dict dict = this.dictService.getOne(Wrappers.<Dict>lambdaQuery().eq(Dict::getDictName, add.getDictName()), Boolean.FALSE);
         ArgumentResponseEnum.DICT_VALID_ERROR_ADD_02.assertIsNull(dict);
         // 验证 字典 - 项编码 是否存在重复
-        dict = this.dictService.getOne(Wrappers.<Dict>lambdaQuery().eq(Dict::getDictCode, add.getDictCode()));
+        dict = this.dictService.getOne(Wrappers.<Dict>lambdaQuery().eq(Dict::getDictCode, add.getDictCode()), Boolean.FALSE);
         ArgumentResponseEnum.DICT_VALID_ERROR_ADD_03.assertIsNull(dict);
         return DictConverter.INSTANCE.getAddEntity(add);
     }
@@ -89,12 +89,12 @@ public class DictBus extends BaseBus {
         ArgumentResponseEnum.DICT_VALID_ERROR_UPDATE_02.assertNotNull(dict);
         if (AgileUtil.isNotEmpty(update.getDictName()) && !dict.getDictName().equals(update.getDictName())) {
             // 验证 字典 - 项名称 是否存在重复
-            Dict dictByDictName = this.dictService.getOne(Wrappers.<Dict>lambdaQuery().eq(Dict::getDictName, update.getDictName()));
+            Dict dictByDictName = this.dictService.getOne(Wrappers.<Dict>lambdaQuery().eq(Dict::getDictName, update.getDictName()), Boolean.FALSE);
             ArgumentResponseEnum.DICT_VALID_ERROR_UPDATE_03.assertIsNull(dictByDictName);
         }
         if (AgileUtil.isNotEmpty(update.getDictCode()) && !dict.getDictCode().equals(update.getDictCode())) {
             // 验证 字典 - 项编码 是否存在重复
-            Dict dictByDictCode = this.dictService.getOne(Wrappers.<Dict>lambdaQuery().eq(Dict::getDictCode, update.getDictCode()));
+            Dict dictByDictCode = this.dictService.getOne(Wrappers.<Dict>lambdaQuery().eq(Dict::getDictCode, update.getDictCode()), Boolean.FALSE);
             ArgumentResponseEnum.DICT_VALID_ERROR_UPDATE_04.assertIsNull(dictByDictCode);
         }
         DictConverter.INSTANCE.getUpdateEntity(dict, update);
@@ -118,7 +118,7 @@ public class DictBus extends BaseBus {
             ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_ADD_03.assertIsTrue(AgileUtil.isNumeric(add.getValue()));
         }
         // 验证 字典 - 值名称 是否存在重复
-        DictItem dictItem = this.dictItemService.getOne(Wrappers.<DictItem>lambdaQuery().eq(DictItem::getName, add.getName()));
+        DictItem dictItem = this.dictItemService.getOne(Wrappers.<DictItem>lambdaQuery().eq(DictItem::getName, add.getName()), Boolean.FALSE);
         ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_ADD_04.assertIsNull(dictItem);
         return DictConverter.INSTANCE.getAddEntity(add);
     }
@@ -143,7 +143,7 @@ public class DictBus extends BaseBus {
         ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_UPDATE_04.assertNotNull(dictItem);
         if (AgileUtil.isNotEmpty(update.getName()) && !dictItem.getName().equals(update.getName())) {
             // 验证 字典 - 值名称 是否存在重复
-            DictItem dictItemByName = this.dictItemService.getOne(Wrappers.<DictItem>lambdaQuery().eq(DictItem::getName, update.getName()));
+            DictItem dictItemByName = this.dictItemService.getOne(Wrappers.<DictItem>lambdaQuery().eq(DictItem::getName, update.getName()), Boolean.FALSE);
             ArgumentResponseEnum.DICT_ITEM_VALID_ERROR_UPDATE_05.assertIsNull(dictItemByName);
         }
         DictConverter.INSTANCE.getUpdateEntity(dictItem, update);

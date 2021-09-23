@@ -124,13 +124,13 @@ public class LoginBus extends BaseBus {
      * @since 2020/3/9 9:47
      */
     private User userUpdateVerification(final UserUpdateDTO update) {
-        User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, update.getUsername()));
+        User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, update.getUsername()), Boolean.FALSE);
         ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_02.assertNotNull(user);
         if (AgileUtil.isNotEmpty(update.getIdentityNumber()) && !user.getIdentityNumber().equals(update.getIdentityNumber())) {
             // 身份证件号码
             String identityNumber = update.getIdentityNumber();
             // 验证 身份证号码 是否存在重复
-            User userByIdentityNumber = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getIdentityNumber, identityNumber));
+            User userByIdentityNumber = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getIdentityNumber, identityNumber), Boolean.FALSE);
             ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_03.assertIsNull(userByIdentityNumber);
             // 根据身份证件号码 获取 出生日期、性别
             update.setBirthday(IdCardUtil.getBirthByIdCard(identityNumber));
@@ -138,12 +138,12 @@ public class LoginBus extends BaseBus {
         }
         if (AgileUtil.isNotEmpty(update.getPhone()) && !user.getPhone().equals(update.getPhone())) {
             // 验证 手机号码 是否存在重复
-            User userByPhone = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getPhone, update.getPhone()));
+            User userByPhone = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getPhone, update.getPhone()), Boolean.FALSE);
             ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_04.assertIsNull(userByPhone);
         }
         if (AgileUtil.isNotEmpty(update.getEmail()) && !user.getEmail().equals(update.getEmail())) {
             // 验证 电子邮箱 是否存在重复
-            User userByEmail = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, update.getEmail()));
+            User userByEmail = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, update.getEmail()), Boolean.FALSE);
             ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_05.assertIsNull(userByEmail);
         }
         UserConverter.INSTANCE.getUserUpdateEntity(user, update);
@@ -193,7 +193,7 @@ public class LoginBus extends BaseBus {
     public CommonResponse<LoginVO> login(final LoginDTO login) {
         // 用户名
         String username = login.getUsername();
-        User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
+        User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username), Boolean.FALSE);
         ArgumentResponseEnum.USER_VALID_ERROR_LOGIN_01.assertNotNull(user);
         // 构建登录返回值
         return buildingData(user, login.getPassword());
@@ -211,7 +211,7 @@ public class LoginBus extends BaseBus {
     public CommonResponse<QueryVO> queryByUserName(final String username) {
         QueryVO query = new QueryVO();
         // 判断角色是否存在
-        User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
+        User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username), Boolean.FALSE);
         if (AgileUtil.isNotEmpty(user)) {
             Long id = user.getId();
             // 角色管理
@@ -259,7 +259,7 @@ public class LoginBus extends BaseBus {
      */
     public CommonResponse<String> password(final PasswordUpdateDTO update) {
         // 1、验证用户存在
-        User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, update.getUsername()));
+        User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, update.getUsername()), Boolean.FALSE);
         ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_02.assertNotNull(user);
         // 2、判断密码是否正确
         String encrypt = PasswordUtil.encrypt(update.getUsername(), update.getOldPassword(), user.getSalt());

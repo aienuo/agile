@@ -80,7 +80,7 @@ public class RoleBus extends BaseBus {
      */
     private Role roleAddVerification(final RoleAddDTO add) {
         // 验证 角色名称 是否存在重复
-        Role role = this.roleService.getOne(Wrappers.<Role>lambdaQuery().eq(Role::getRoleName, add.getRoleName()));
+        Role role = this.roleService.getOne(Wrappers.<Role>lambdaQuery().eq(Role::getRoleName, add.getRoleName()), Boolean.FALSE);
         ArgumentResponseEnum.ROLE_VALID_ERROR_ADD_02.assertIsNull(role);
         return RoleConverter.INSTANCE.getAddEntity(add);
     }
@@ -99,7 +99,7 @@ public class RoleBus extends BaseBus {
         ArgumentResponseEnum.ROLE_VALID_ERROR_UPDATE_02.assertNotNull(role);
         if (AgileUtil.isNotEmpty(update.getRoleName()) && !role.getRoleName().equals(update.getRoleName())) {
             // 验证 角色名称 是否存在重复
-            Role roleByRoleName = this.roleService.getOne(Wrappers.<Role>lambdaQuery().eq(Role::getRoleName, update.getRoleName()));
+            Role roleByRoleName = this.roleService.getOne(Wrappers.<Role>lambdaQuery().eq(Role::getRoleName, update.getRoleName()), Boolean.FALSE);
             ArgumentResponseEnum.ROLE_VALID_ERROR_UPDATE_03.assertIsNull(roleByRoleName);
         }
         RoleConverter.INSTANCE.getUpdateEntity(role, update);

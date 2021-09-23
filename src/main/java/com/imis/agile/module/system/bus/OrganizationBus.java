@@ -103,7 +103,7 @@ public class OrganizationBus extends BaseBus {
         // 验证 组织机构名称 是否存在重复
         Organization organization = this.organizationService.getOne(Wrappers.<Organization>lambdaQuery()
                 .eq(Organization::getOrganizationName, add.getOrganizationName())
-                .eq(AgileUtil.isNotEmpty(add.getParentId()), Organization::getParentId, add.getParentId())
+                .eq(AgileUtil.isNotEmpty(add.getParentId()), Organization::getParentId, add.getParentId()), Boolean.FALSE
         );
         // 生成组织机构编码
         String[] codeSpecimenArray = this.generateCode(add.getParentId(), parentCode);
@@ -173,7 +173,7 @@ public class OrganizationBus extends BaseBus {
             // 验证 组织机构名称 是否存在重复
             Organization organizationById = this.organizationService.getOne(Wrappers.<Organization>lambdaQuery()
                     .eq(Organization::getOrganizationName, update.getOrganizationName())
-                    .eq(AgileUtil.isNotEmpty(update.getParentId()), Organization::getParentId, update.getParentId())
+                    .eq(AgileUtil.isNotEmpty(update.getParentId()), Organization::getParentId, update.getParentId()), Boolean.FALSE
             );
             ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_04.assertIsNull(organizationById);
         }

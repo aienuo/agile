@@ -80,7 +80,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             if (AgileUtil.isNotEmpty(userRoleList)) {
                 List<Long> menuIdList = roleMenuList.stream().map(RoleMenu::getMenuId).filter(AgileUtil::isNotEmpty).distinct().collect(Collectors.toList());
                 BuildingTreeData<MenuTreeVO> buildingTreeData = new BuildingTreeData<>();
-                menuTreeList = buildingTreeData.buildingTreeData(this.baseMapper.queryMenuTreeListByIdList(menuIdList));
+                return buildingTreeData.buildingTreeData(this.baseMapper.queryMenuTreeListByIdList(menuIdList));
             }
         }
         return menuTreeList;

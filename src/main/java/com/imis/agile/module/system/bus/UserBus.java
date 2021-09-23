@@ -60,16 +60,16 @@ public class UserBus extends BaseBus {
         // 身份证件号码
         String identityNumber = add.getIdentityNumber();
         // 验证 用户帐号\身份证号码 是否存在重复
-        User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, add.getUsername()).or().eq(User::getIdentityNumber, identityNumber));
+        User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, add.getUsername()).or().eq(User::getIdentityNumber, identityNumber), Boolean.FALSE);
         ArgumentResponseEnum.USER_VALID_ERROR_ADD_02.assertIsNull(user);
         if (AgileUtil.isNotEmpty(add.getPhone())) {
             // 验证 手机号码 是否存在重复
-            user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getPhone, add.getPhone()));
+            user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getPhone, add.getPhone()), Boolean.FALSE);
             ArgumentResponseEnum.USER_VALID_ERROR_ADD_03.assertIsNull(user);
         }
         if (AgileUtil.isNotEmpty(add.getEmail())) {
             // 验证 电子邮箱 是否存在重复
-            user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, add.getEmail()));
+            user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, add.getEmail()), Boolean.FALSE);
             ArgumentResponseEnum.USER_VALID_ERROR_ADD_04.assertIsNull(user);
         }
         // 根据身份证件号码 获取 出生日期、性别
@@ -94,7 +94,7 @@ public class UserBus extends BaseBus {
             // 身份证件号码
             String identityNumber = update.getIdentityNumber();
             // 验证 身份证号码 是否存在重复
-            User userByIdentityNumber = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getIdentityNumber, identityNumber));
+            User userByIdentityNumber = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getIdentityNumber, identityNumber), Boolean.FALSE);
             ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_03.assertIsNull(userByIdentityNumber);
             // 根据身份证件号码 获取 出生日期、性别
             update.setBirthday(IdCardUtil.getBirthByIdCard(identityNumber));
@@ -102,12 +102,12 @@ public class UserBus extends BaseBus {
         }
         if (AgileUtil.isNotEmpty(update.getPhone()) && !user.getPhone().equals(update.getPhone())) {
             // 验证 手机号码 是否存在重复
-            User userByPhone = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getPhone, update.getPhone()));
+            User userByPhone = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getPhone, update.getPhone()), Boolean.FALSE);
             ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_04.assertIsNull(userByPhone);
         }
         if (AgileUtil.isNotEmpty(update.getEmail()) && !user.getEmail().equals(update.getEmail())) {
             // 验证 电子邮箱 是否存在重复
-            User userByEmail = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, update.getEmail()));
+            User userByEmail = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, update.getEmail()), Boolean.FALSE);
             ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_05.assertIsNull(userByEmail);
         }
         UserConverter.INSTANCE.getUpdateEntity(user, update);
