@@ -1,6 +1,7 @@
 package com.imis.agile.constant.base;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -28,7 +29,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public abstract class BaseEntity implements Serializable {
+public abstract class BaseEntity extends Model<BaseEntity> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
