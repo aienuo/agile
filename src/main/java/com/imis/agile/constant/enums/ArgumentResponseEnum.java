@@ -78,6 +78,7 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
     USER_VALID_ERROR_ADD_02(200030102, "用户添加失败，帐号&身份证号码存在重复"),
     USER_VALID_ERROR_ADD_03(200030103, "用户添加失败，手机号码存在重复"),
     USER_VALID_ERROR_ADD_04(200030104, "用户添加失败，电子邮箱存在重复"),
+    USER_VALID_ERROR_ADD_05(200030105, "用户添加失败，用户与角色关联失败"),
     /**
      * 200 03 02 00 - 用户管理 - 更新
      */
@@ -92,6 +93,7 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
     USER_VALID_ERROR_UPDATE_09(200030209, "用户解冻失败，用户信息不存在"),
     USER_VALID_ERROR_UPDATE_10(200030210, "用户解冻失败，部分用户不存在"),
     USER_VALID_ERROR_UPDATE_11(200030211, "用户解冻失败，请确认信息后重新解冻"),
+    USER_VALID_ERROR_UPDATE_12(200030212, "用户更新失败，用户与角色关联失败"),
     /**
      * 200 03 03 00 - 用户管理 - 删除
      */

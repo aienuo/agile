@@ -307,7 +307,7 @@ new Vue({
         // 开启更新表单
         openUpdateDialog(row) {
             this.updateDialog = true;
-            axios.post('/sys/role/list')
+            axios.get('/sys/role/list')
                 .then((res) => {
                     if (res.code === 6666) {
                         this.roleList = res.data;

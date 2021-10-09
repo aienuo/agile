@@ -153,6 +153,8 @@ public class CommonBus extends BaseBus {
                             // 文件本地保存
                             boolean upload = this.doFileUploadForLocal(uploadPath, newName, multipartFileBytes);
                             ArgumentResponseEnum.FILE_ADD_ERR.assertIsTrue(upload, originalFilename);
+                        } else {
+                            // TODO：自己整合其他
                         }
                     } catch (IOException e) {
                         ArgumentResponseEnum.FILE_ADD_ERR.assertFail(originalFilename);

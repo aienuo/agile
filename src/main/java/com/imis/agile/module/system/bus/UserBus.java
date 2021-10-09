@@ -11,8 +11,10 @@ import com.imis.agile.module.system.model.dto.ResetPasswordDTO;
 import com.imis.agile.module.system.model.dto.UserAddDTO;
 import com.imis.agile.module.system.model.dto.UserUpdateDTO;
 import com.imis.agile.module.system.model.entity.User;
+import com.imis.agile.module.system.model.entity.UserRole;
 import com.imis.agile.module.system.model.vo.UserInfoVO;
 import com.imis.agile.module.system.model.vo.UserPageVO;
+import com.imis.agile.module.system.service.IUserRoleService;
 import com.imis.agile.module.system.service.IUserService;
 import com.imis.agile.response.BaseResponse;
 import com.imis.agile.response.CommonResponse;
@@ -45,6 +47,16 @@ public class UserBus extends BaseBus {
     @Autowired
     public void setUserService(IUserService userService) {
         this.userService = userService;
+    }
+
+    /**
+     * 用户角色关联 服务类
+     */
+    private IUserRoleService userRoleService;
+
+    @Autowired
+    public void setUserRoleService(IUserRoleService userRoleService) {
+        this.userRoleService = userRoleService;
     }
 
     /**
@@ -111,6 +123,9 @@ public class UserBus extends BaseBus {
             ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_05.assertIsNull(userByEmail);
         }
         UserConverter.INSTANCE.getUpdateEntity(user, update);
+        // 清除原来的 用户角色关联
+        boolean clean = this.userRoleService.remove(Wrappers.<UserRole>lambdaQuery().eq(UserRole::getUserId, user.getId()));
+        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_01.assertIsTrue(clean);
         return user;
     }
 
@@ -143,6 +158,13 @@ public class UserBus extends BaseBus {
         // 2、创建新用户
         boolean save = this.userService.save(user);
         ArgumentResponseEnum.USER_VALID_ERROR_ADD_01.assertIsTrue(save);
+        // 3、更新用户角色关联
+        List<Long> roleList = add.getRoleList();
+        if (AgileUtil.isNotEmpty(roleList)) {
+            List<UserRole> userRoleList = UserConverter.INSTANCE.getUserRoleEntity(user.getId(), roleList);
+            boolean saveUserRole = this.userRoleService.saveBatch(userRoleList);
+            ArgumentResponseEnum.USER_VALID_ERROR_ADD_05.assertIsTrue(saveUserRole);
+        }
         return new CommonResponse<>();
     }
 
@@ -220,6 +242,13 @@ public class UserBus extends BaseBus {
         // 2、更新用户
         boolean save = this.userService.updateById(user);
         ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_01.assertIsTrue(save);
+        // 3、更新用户角色关联
+        List<Long> roleList = update.getRoleList();
+        if (AgileUtil.isNotEmpty(roleList)) {
+            List<UserRole> userRoleList = UserConverter.INSTANCE.getUserRoleEntity(user.getId(), roleList);
+            boolean saveUserRole = this.userRoleService.saveBatch(userRoleList);
+            ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_12.assertIsTrue(saveUserRole);
+        }
         return new CommonResponse<>();
     }
 

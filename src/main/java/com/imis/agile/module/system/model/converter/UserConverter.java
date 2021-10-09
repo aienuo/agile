@@ -5,11 +5,15 @@ import com.imis.agile.module.api.model.vo.UserVO;
 import com.imis.agile.module.system.model.dto.UserAddDTO;
 import com.imis.agile.module.system.model.dto.UserUpdateDTO;
 import com.imis.agile.module.system.model.entity.User;
+import com.imis.agile.module.system.model.entity.UserRole;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -108,12 +112,29 @@ public interface UserConverter {
     /**
      * PO 转 VO
      *
-     * @param user
+     * @param user - 用户
      * @return UserVO
      */
     @Mappings({
             @Mapping(target = "age", expression = "java(com.imis.agile.util.IdCardUtil.getAge(user.getIdentityNumber()))"),
     })
     UserVO getReturnValue(User user);
+
+    /**
+     * 用户角色关联
+     *
+     * @param userId     - 用户编号
+     * @param roleIdList - 角色编号列表
+     * @return List<UserRole> - 用户角色关联
+     */
+    default List<UserRole> getUserRoleEntity(final Long userId, final List<Long> roleIdList) {
+        List<UserRole> userRoleList = new ArrayList<>();
+        roleIdList.forEach(
+                roleId -> {
+                    userRoleList.add(new UserRole().setUserId(userId).setRoleId(roleId));
+                }
+        );
+        return userRoleList;
+    }
 
 }

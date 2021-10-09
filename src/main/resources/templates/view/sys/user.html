@@ -112,7 +112,7 @@
                 <el-row>
                     <el-col :span="21">
                         <el-form-item label="角色" prop="roleId">
-                            <el-select v-model="insertForm.roleId" multiple placeholder="请选择" style="width:100%">
+                            <el-select v-model="insertForm.roleList" multiple placeholder="请选择" style="width:100%">
                                 <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id"></el-option>
                             </el-select>
                         </el-form-item>
@@ -190,8 +190,8 @@
                 </el-row>
                 <el-row>
                     <el-col :span="21">
-                        <el-form-item label="角色" prop="roleId">
-                            <el-select v-model="updateForm.roleId" multiple placeholder="请选择" style="width:100%">
+                        <el-form-item label="角色" prop="roleList">
+                            <el-select v-model="updateForm.roleList" multiple placeholder="请选择" style="width:100%">
                                 <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id"></el-option>
                             </el-select>
                         </el-form-item>

@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * <p>
@@ -80,5 +81,11 @@ public class UserUpdateDTO implements Serializable {
      */
     @ApiModelProperty(value = "头像")
     private String avatar;
+
+    /**
+     * 角色列表
+     */
+    @ApiModelProperty(value = "角色列表")
+    private List<Long> roleList;
 
 }
