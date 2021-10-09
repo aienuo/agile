@@ -34,7 +34,6 @@ new Vue({
                 id: '',
                 parentId: '',
                 organizationName: '',
-                organizationCode: '',
                 sortNo: 0.0,
                 status: 1,
                 description: ''
