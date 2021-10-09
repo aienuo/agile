@@ -207,9 +207,4 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
         return createRestApi("2、系统管理模块", "com.imis.agile.module.system.controller", "用户管理、角色管理、功能菜单、组织机构、字典管理、系统日志");
     }
 
-    @Bean
-    public Docket createOnlineDevelopmentApi() {
-        return createRestApi("3、在线开发模块", "com.imis.agile.module.online.controller", "在线开发");
-    }
-
 }
