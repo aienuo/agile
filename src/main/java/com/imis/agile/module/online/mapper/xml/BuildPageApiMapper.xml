@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imis.agile.module.online.mapper.BuildPageApiMapper">
+
+    <!-- 判断外键主表名、外键主键字段 是否存在 2020年11月20日 17:08:42 -->
+    <select id="countMainFieldByParameter" resultType="java.lang.Integer">
+        SELECT
+            COUNT( COLUMN_NAME ) = #{number}
+        FROM
+            INFORMATION_SCHEMA.COLUMNS
+        WHERE
+            TABLE_SCHEMA = 'agile'
+            AND TABLE_NAME = #{tableName}
+            AND
+            <foreach collection="tableField" item="field" index="index" separator="OR" open="(" close=")">
+                COLUMN_NAME = #{field}
+            </foreach>
+    </select>
+
+    <!-- 执行数据库模式定义语言（DDL） -->
+    <update id="executeDataDefinitionLanguage" parameterType="java.lang.String">
+        ${ddl}
+    </update>
+
+    <!-- 统计索引数量（SQL） -->
+    <select id="countTheNumberOfIndexes" parameterType="java.lang.String" resultType="java.lang.Long">
+        ${sql}
+    </select>
+
+    <!-- 执行 DELETE SQL语句 2020年11月20日 17:08:42 -->
+    <update id="executeDeleteStructuredQueryLanguage">
+        ${sql}
+    </update>
+
+    <!-- 查询指定数据库表的指定数据所有字段内容 2020年11月20日 14:20:42 -->
+    <select id="queryTableDataByTableNameAndDataId" resultType="java.util.Map">
+        <!--@ignoreSql-->
+        SELECT * FROM ${tableName}
+        <where>
+            id = #{dataId}
+        </where>
+    </select>
+
+    <!-- 查询子节点数量 2020年11月20日 17:08:48 -->
+    <select id="queryNumberOfChildNodes" resultType="java.lang.Long">
+        <!--@ignoreSql-->
+        SELECT COUNT(*) FROM #{tableName}
+        <where>
+            ${treeParentIdFieldName} = #{parentId}
+        </where>
+    </select>
+
+    <!-- 执行 UPDATE SQL语句 2020年11月20日 17:08:42   可以防注入？ -->
+    <update id="executeUpdateStructuredQueryLanguage">
+        ${execute_structured_query_language_string}
+    </update>
+
+    <!-- 执行 SELECT SQL语句 2020年11月20日 17:08:42 -->
+    <select id="executeQueryStructuredQueryLanguage" resultType="java.util.Map">
+        ${sql}
+    </select>
+
+    <!-- 执行 INSERT SQL语句 2020年11月20日 17:08:42   可以防注入？ -->
+    <insert id="executeInsertStructuredQueryLanguage">
+        ${execute_structured_query_language_string}
+    </insert>
+
+    <!-- 执行 SELECT SQL语句 2020年11月20日 17:08:42 -->
+    <select id="executeQueryTableDataListByStructuredQueryLanguage" resultType="java.util.Map">
+        ${sql}
+    </select>
+
+    <!-- 执行分页 SELECT SQL语句2020年11月20日 17:08:42 -->
+    <select id="executePagingQueryTableDataListByStructuredQueryLanguage" resultType="java.util.Map">
+        ${sql}
+    </select>
+
+</mapper>

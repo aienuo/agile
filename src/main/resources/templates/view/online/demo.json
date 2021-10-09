@@ -1,0 +1,616 @@
+{
+  "code": 6666,
+  "data": {
+    "id": "1400748191783063555",
+    "name": "在线开发",
+    "searchList": [
+      {
+        "type": "radio",
+        "name": "sex",
+        "textName": "性别",
+        "optionList": [
+          {
+            "value": "0",
+            "name": "女",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "name": "男",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "name": "未知",
+            "disabled": false
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "name": "hobby",
+        "textName": "爱好",
+        "size": "medium",
+        "min": 1,
+        "max": 2,
+        "optionList": [
+          {
+            "value": "0",
+            "name": "琴",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "name": "棋",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "name": "书",
+            "disabled": false
+          },
+          {
+            "value": "3",
+            "name": "画",
+            "disabled": false
+          }
+        ]
+      },
+      {
+        "type": "input",
+        "name": "name",
+        "textName": "名字",
+        "min": 2,
+        "max": 20,
+        "placeholder": "请输入名字",
+        "size": "medium",
+        "prefixIcon": "el-icon-search",
+        "suffixIcon": "el-icon-search"
+      },
+      {
+        "type": "number",
+        "name": "age",
+        "textName": "年龄",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "precision": 1,
+        "size": "medium",
+        "placeholder": "请输入年龄"
+      },
+      {
+        "type": "select",
+        "name": "job",
+        "textName": "职业",
+        "multiple": false,
+        "size": "medium",
+        "multipleLimit": 1,
+        "placeholder": "请选择职业",
+        "optionList": [
+          {
+            "value": "0",
+            "name": "老师",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "name": "医生",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "name": "公务员",
+            "disabled": false
+          },
+          {
+            "value": "3",
+            "name": "铁饭碗",
+            "disabled": false
+          }
+        ]
+      },
+      {
+        "type": "cascader",
+        "name": "address",
+        "textName": "地址",
+        "optionList": [
+          {
+            "value": "37",
+            "name": "泰安",
+            "disabled": false,
+            "children": [
+              {
+                "value": "3709",
+                "name": "泰安",
+                "disabled": false,
+                "children": [
+                  {
+                    "value": "370911",
+                    "name": "岱岳区",
+                    "disabled": false
+                  },
+                  {
+                    "value": "370901",
+                    "name": "泰山区",
+                    "disabled": false
+                  }
+                ]
+              },
+              {
+                "value": "3701",
+                "name": "济南",
+                "disabled": false
+              }
+            ]
+          },
+          {
+            "value": "10",
+            "name": "北京",
+            "disabled": false
+          }
+        ],
+        "size": "medium",
+        "placeholder": "请选择地址"
+      },
+      {
+        "type": "switch",
+        "name": "switch",
+        "textName": "开关"
+      },
+      {
+        "type": "slider",
+        "name": "slider",
+        "textName": "滑块",
+        "min": 1,
+        "max": 10
+      },
+      {
+        "type": "time",
+        "name": "time",
+        "textName": "时分秒",
+        "size": "medium",
+        "placeholder": "选择时间范围"
+      },
+      {
+        "type": "daterange",
+        "name": "data",
+        "textName": "年月日",
+        "size": "medium",
+        "placeholder": "选择日期范围"
+      },
+      {
+        "type": "datetimerange",
+        "name": "dataTime",
+        "textName": "年月日时分秒",
+        "size": "medium",
+        "placeholder": "选择日期时间范围"
+      }
+    ],
+    "headerButtonList": [
+      {
+        "type": "primary",
+        "name": "add",
+        "size": "medium",
+        "textName": "添加",
+        "icon": "el-icon-circle-plus-outline"
+      },
+      {
+        "type": "danger",
+        "name": "delete",
+        "size": "medium",
+        "textName": "删除",
+        "icon": "el-icon-remove-outline"
+      }
+    ,
+      {
+        "type": "info",
+        "name": "details",
+        "size": "medium",
+        "textName": "详情",
+        "icon": "el-icon-remove-outline"
+      }
+    ],
+    "tableColumnList": [
+      {
+        "name": "字段标题",
+        "prop": "字段名",
+        "width": "800",
+        "minWidth": "80",
+        "align": "center"
+      },
+      {
+        "name": "字段标题",
+        "prop": "字段名",
+        "width": "800",
+        "minWidth": "80",
+        "align": "center"
+      },
+      {
+        "name": "字段标题",
+        "prop": "字段名",
+        "width": "800",
+        "minWidth": "80",
+        "align": "center"
+      }
+    ],
+    "tableButtonList": [
+      {
+        "type": "success",
+        "name": "update",
+        "size": "mini",
+        "textName": "修改",
+        "icon": "el-icon-circle-plus-outline"
+      }
+    ],
+    "paging": true,
+    "sortFieldList": [],
+    "insertStyle": "dialog",
+    "insertColumnList": [
+      {
+        "type": "radio",
+        "name": "sex",
+        "textName": "性别",
+        "optionList": [
+          {
+            "value": "0",
+            "name": "女",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "name": "男",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "name": "未知",
+            "disabled": false
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "name": "hobby",
+        "textName": "爱好",
+        "size": "medium",
+        "min": 1,
+        "max": 2,
+        "optionList": [
+          {
+            "value": "0",
+            "name": "琴",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "name": "棋",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "name": "书",
+            "disabled": false
+          },
+          {
+            "value": "3",
+            "name": "画",
+            "disabled": false
+          }
+        ]
+      },
+      {
+        "type": "input",
+        "name": "name",
+        "textName": "名字",
+        "min": 2,
+        "max": 20,
+        "placeholder": "请输入名字",
+        "size": "medium",
+        "prefixIcon": "el-icon-search",
+        "suffixIcon": "el-icon-search"
+      },
+      {
+        "type": "number",
+        "name": "age",
+        "textName": "年龄",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "precision": 1,
+        "size": "medium",
+        "placeholder": "请输入年龄"
+      },
+      {
+        "type": "select",
+        "name": "job",
+        "textName": "职业",
+        "multiple": false,
+        "size": "medium",
+        "multipleLimit": 1,
+        "placeholder": "请选择职业",
+        "optionList": [
+          {
+            "value": "0",
+            "name": "老师",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "name": "医生",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "name": "公务员",
+            "disabled": false
+          },
+          {
+            "value": "3",
+            "name": "铁饭碗",
+            "disabled": false
+          }
+        ]
+      },
+      {
+        "type": "cascader",
+        "name": "address",
+        "textName": "地址",
+        "optionList": [
+          {
+            "value": "37",
+            "name": "泰安",
+            "disabled": false,
+            "children": [
+              {
+                "value": "3709",
+                "name": "泰安",
+                "disabled": false,
+                "children": [
+                  {
+                    "value": "370911",
+                    "name": "岱岳区",
+                    "disabled": false
+                  },
+                  {
+                    "value": "370901",
+                    "name": "泰山区",
+                    "disabled": false
+                  }
+                ]
+              },
+              {
+                "value": "3701",
+                "name": "济南",
+                "disabled": false
+              }
+            ]
+          },
+          {
+            "value": "10",
+            "name": "北京",
+            "disabled": false
+          }
+        ],
+        "size": "medium",
+        "placeholder": "请选择地址"
+      },
+      {
+        "type": "switch",
+        "name": "switch",
+        "textName": "开关"
+      },
+      {
+        "type": "slider",
+        "name": "slider",
+        "textName": "滑块",
+        "min": 1,
+        "max": 10
+      },
+      {
+        "type": "time",
+        "name": "time",
+        "textName": "时分秒",
+        "size": "medium",
+        "placeholder": "选择时间范围"
+      },
+      {
+        "type": "daterange",
+        "name": "data",
+        "textName": "年月日",
+        "size": "medium",
+        "placeholder": "选择日期范围"
+      },
+      {
+        "type": "datetimerange",
+        "name": "dataTime",
+        "textName": "年月日时分秒",
+        "size": "medium",
+        "placeholder": "选择日期时间范围"
+      }
+    ],
+    "updateStyle": "drawer",
+    "updateColumnList": [
+      {
+        "type": "radio",
+        "name": "sex",
+        "textName": "性别",
+        "optionList": [
+          {
+            "value": "0",
+            "name": "女",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "name": "男",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "name": "未知",
+            "disabled": false
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "name": "hobby",
+        "textName": "爱好",
+        "size": "medium",
+        "min": 1,
+        "max": 2,
+        "optionList": [
+          {
+            "value": "0",
+            "name": "琴",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "name": "棋",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "name": "书",
+            "disabled": false
+          },
+          {
+            "value": "3",
+            "name": "画",
+            "disabled": false
+          }
+        ]
+      },
+      {
+        "type": "input",
+        "name": "name",
+        "textName": "名字",
+        "min": 2,
+        "max": 20,
+        "placeholder": "请输入名字",
+        "size": "medium",
+        "prefixIcon": "el-icon-search",
+        "suffixIcon": "el-icon-search"
+      },
+      {
+        "type": "number",
+        "name": "age",
+        "textName": "年龄",
+        "min": 0,
+        "max": 99,
+        "step": 1,
+        "precision": 1,
+        "size": "medium",
+        "placeholder": "请输入年龄"
+      },
+      {
+        "type": "select",
+        "name": "job",
+        "textName": "职业",
+        "multiple": false,
+        "size": "medium",
+        "multipleLimit": 1,
+        "placeholder": "请选择职业",
+        "optionList": [
+          {
+            "value": "0",
+            "name": "老师",
+            "disabled": false
+          },
+          {
+            "value": "1",
+            "name": "医生",
+            "disabled": false
+          },
+          {
+            "value": "2",
+            "name": "公务员",
+            "disabled": false
+          },
+          {
+            "value": "3",
+            "name": "铁饭碗",
+            "disabled": false
+          }
+        ]
+      },
+      {
+        "type": "cascader",
+        "name": "address",
+        "textName": "地址",
+        "optionList": [
+          {
+            "value": "37",
+            "name": "泰安",
+            "disabled": false,
+            "children": [
+              {
+                "value": "3709",
+                "name": "泰安",
+                "disabled": false,
+                "children": [
+                  {
+                    "value": "370911",
+                    "name": "岱岳区",
+                    "disabled": false
+                  },
+                  {
+                    "value": "370901",
+                    "name": "泰山区",
+                    "disabled": false
+                  }
+                ]
+              },
+              {
+                "value": "3701",
+                "name": "济南",
+                "disabled": false
+              }
+            ]
+          },
+          {
+            "value": "10",
+            "name": "北京",
+            "disabled": false
+          }
+        ],
+        "size": "medium",
+        "placeholder": "请选择地址"
+      },
+      {
+        "type": "switch",
+        "name": "switch",
+        "textName": "开关"
+      },
+      {
+        "type": "slider",
+        "name": "slider",
+        "textName": "滑块",
+        "min": 1,
+        "max": 10
+      },
+      {
+        "type": "time",
+        "name": "time",
+        "textName": "时分秒",
+        "size": "medium",
+        "placeholder": "选择时间范围"
+      },
+      {
+        "type": "daterange",
+        "name": "data",
+        "textName": "年月日",
+        "size": "medium",
+        "placeholder": "选择日期范围"
+      },
+      {
+        "type": "datetimerange",
+        "name": "dataTime",
+        "textName": "年月日时分秒",
+        "size": "medium",
+        "placeholder": "选择日期时间范围"
+      }
+    ]
+  }
+}

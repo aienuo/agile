@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <base th:href="${#httpServletRequest.getContextPath()} + '/'">
+    <link rel="stylesheet" href="/static/common/element/index.css"/>
+</head>
+<body>
+<div id="online">
+    <template>
+        <!-- 搜索框 -->
+        <div id="search" style="margin-bottom:10px;">
+            <template v-for="search in searchList">
+                <!-- Cascader 级联选择器 -->
+                <el-cascader v-if="search.optionList && search.optionList.length > 0" style="width: 13%"
+                             v-model="queryForm[search.name]" :options="search.optionList" :props="{expandTrigger:'hover', checkStrictly:true, emitPath:false, value:'id', label:'name'}" :size="search.size"
+                             :placeholder="search.placeholder" :clearable="true"
+                >
+                    <template slot-scope="{ node, data }">
+                        <i :class="data.icon"></i>
+                        <span>{{ data.name }}</span>
+                        <span v-if="!node.isLeaf && data.children.length > 0"> ({{ data.children.length }}) </span>
+                    </template>
+                </el-cascader>
+                <!-- Input 输入框 -->
+                <el-input v-else-if="search.type=='input'" style="width: 13%"
+                          :type="search.type" v-model="queryForm[search.name]" :maxlength="search.max" :minlength="search.min"
+                          :placeholder="search.placeholder" :clearable="true" :size="search.size" :prefix-icon="search.prefixIcon"
+                          :suffix-icon="search.suffixIcon"
+                >
+                </el-input>
+                <!-- InputNumber 计数器 -->
+                <el-input-number v-else-if="search.type=='number'" style="width: 13%"
+                                 v-model="queryForm[search.name]" :min="search.min" :max="search.max" :step="search.step"
+                                 :precision="search.precision" :size="search.size" :placeholder="search.placeholder"
+                >
+                </el-input-number>
+                <!-- TimePicker 时间选择器 -->
+                <el-time-picker v-else-if="search.type=='time'" style="width: 13%"
+                                v-model="queryForm[search.name]" :size="search.size"
+                                :placeholder="search.placeholder" start-placeholder="开始时间" end-placeholder="结束时间" is-range
+                                range-separator="至" :default-value="['2021-01-01 00:00:00', '2021-12-31 23:59:59']"
+                >
+                </el-time-picker>
+                <!-- DatePicker 日期选择器 -->
+                <el-date-picker v-else-if="search.type=='daterange'" style="width: 15%"
+                                v-model="queryForm[search.name]" :size="search.size"
+                                :placeholder="search.placeholder" start-placeholder="开始日期" end-placeholder="结束日期" type="daterange"
+                                range-separator="至" :default-time="['00:00:00', '23:59:59']"
+                >
+                </el-date-picker>
+                <!-- DateTimePicker 日期时间选择器 -->
+                <el-date-picker v-else-if="search.type=='datetimerange'" style="width: 23%"
+                                v-model="queryForm[search.name]" :size="search.size"
+                                :placeholder="search.placeholder" start-placeholder="开始日期时间" end-placeholder="结束日期时间" type="datetimerange"
+                                range-separator="至" :default-time="['00:00:00', '23:59:59']"
+                >
+                </el-date-picker>
+            </template>
+            <el-button type="primary" icon="el-icon-search" @click="submitQueryForm">查询</el-button>
+            <el-button icon="el-icon-refresh-right" @click="clearQueryForm">重置</el-button>
+        </div>
+        <!-- 表头按钮 -->
+        <div style="margin-bottom:20px;">
+            <el-button v-for="headerButton in headerButtonList" :type="headerButton.type" :size="headerButton.size" :icon="headerButton.icon" @click="buttonOnCheck(headerButton.url)">{{headerButton.name}}</el-button>
+        </div>
+        <!-- 数据表格 -->
+        <el-table :data="tableData" :row-style="{height:'40px'}" :cell-style="{padding:'0px'}" :header-cell-style="{'text-align':'center'}" style="margin-bottom:10px;font-size: 14px"
+                  :default-sort="{prop: 'date', order: 'descending'}" row-key="id" @selection-change="handleSelectionChange" stripe border>
+            <el-table-column type="selection" width="55" align="center"></el-table-column>
+            <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+            <!-- 数据表格 - 字段（列） -->
+            <el-table-column v-for="tableColumn in tableColumnList" :label="tableColumn.name" :prop="tableColumn.prop" :width="tableColumn.width" :min-width="tableColumn.width" :align="tableColumn.center"></el-table-column>
+            <!-- 数据表格 - 行操作按钮 -->
+            <el-table-column label="操作" width="250" align="center" fixed="right">
+                <template slot-scope="scope" v-for="tableButton in tableButtonList">
+                    <el-button :type="tableButton.type" :size="tableButton.size" :icon="tableButton.icon" @click="buttonOnCheck(tableButton.url, scope.row)">{{tableButton.name}}</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <!-- 分页插件 -->
+        <el-pagination v-if="paging"
+                       background :page-size="10" :total="total" :current-page="currentPage" layout="total, sizes, prev, pager, next, jumper"
+                       :page-sizes="[10, 50, 100]" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+        </el-pagination>
+        <!-- 新增表单 -->
+        <el-dialog v-if="insertStyle == 'dialog'" :title="name + '新增'" width="50%" :visible.sync="insertOpen" :modal="false" :close-on-click-modal="false">
+            <el-form :model="insertForm" ref="insertForm" :rules="rules" label-width="100px">
+                <el-form-item v-for="(column, index) in insertColumnList" :label="column.textName" :key="index" :prop="column.name">
+                    <!-- Radio 单选框 -->
+                    <el-radio-group v-if="column.type=='radio'"
+                                    v-model="insertForm[column.name]" :size="column.size" :disabled="column.disabled"
+                    >
+                        <el-radio v-for="option in column.optionList" :label="option.value" :name="option.name" :disabled="option.disabled">{{option.name}}</el-radio>
+                    </el-radio-group>
+                    <!-- Checkbox 多选框 -->
+                    <el-checkbox-group v-else-if="column.type=='checkbox'"
+                                       v-model="insertForm[column.name]" :size="column.size" :disabled="column.disabled" :min="column.min" :max="column.max"
+                    >
+                        <el-checkbox v-for="option in column.optionList" :label="option.value" :key="option.name" :disabled="option.disabled">{{option.name}}</el-checkbox>
+                    </el-checkbox-group>
+                    <!-- Input 输入框 -->
+                    <el-input v-else-if="column.type=='input'"
+                              :type="column.type" v-model="insertForm[column.name]" :maxlength="column.max" :minlength="column.min"
+                              :placeholder="column.placeholder" :clearable="true" :size="column.size" :disabled="column.disabled"
+                              :prefix-icon="column.prefixIcon" :suffix-icon="column.suffixIcon"
+                    >
+                    </el-input>
+                    <!-- InputNumber 计数器 -->
+                    <el-input-number v-else-if="column.type=='number'"
+                                     v-model="insertForm[column.name]" :min="column.min" :max="column.max" :step="column.step"
+                                     :precision="column.precision" :size="column.size" :disabled="column.disabled" :placeholder="column.placeholder"
+                    >
+                    </el-input-number>
+                    <!-- Select 选择器 -->
+                    <el-select v-else-if="column.type=='select'"
+                               v-model="insertForm[column.name]" :multiple="column.multiple" :size="column.size" :disabled="column.disabled"
+                               :clearable="true" :multiple-limit="column.multipleLimit" :placeholder="column.placeholder"
+                    >
+                        <el-option v-for="option in column.optionList" :key="option.value" :label="option.name" :value="option.value" :disabled="option.disabled">{{option.name}}</el-option>
+                    </el-select>
+                    <!-- Cascader 级联选择器 -->
+                    <el-cascader v-else-if="column.type=='cascader'"
+                                 v-model="insertForm[column.name]" :options="column.optionList" :props="{expandTrigger:'hover', multiple:true, checkStrictly:true, emitPath:false, value:'id', label:'name'}" :size="column.size"
+                                 :disabled="column.disabled" :placeholder="column.placeholder" :clearable="true"
+                    >
+                        <template slot-scope="{ node, data }">
+                            <i :class="data.icon"></i>
+                            <span>{{ data.name }}</span>
+                            <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+                        </template>
+                    </el-cascader>
+                    <!-- Switch 开关 -->
+                    <el-switch v-else-if="column.type=='switch'"
+                               v-model="insertForm[column.name]" :disabled="column.disabled" :step="1" show-stops>
+                    </el-switch>
+                    <!-- Slider 滑块 -->
+                    <el-slider v-else-if="column.type=='slider'"
+                               v-model="insertForm[column.name]" :min="column.min" :max="column.max" :disabled="column.disabled">
+                    </el-slider>
+                    <!-- TimePicker 时间选择器 -->
+                    <el-time-picker v-else-if="column.type=='time'"
+                                    v-model="insertForm[column.name]" :size="column.size" :disabled="column.disabled"
+                                    :placeholder="column.placeholder" start-placeholder="开始时间" end-placeholder="结束时间" is-range
+                                    range-separator="至" :default-value="['2021-01-01 00:00:00', '2021-12-31 23:59:59']"
+                    >
+                    </el-time-picker>
+                    <!-- DatePicker 日期选择器 -->
+                    <el-date-picker v-else-if="column.type=='daterange'"
+                                    v-model="insertForm[column.name]" :size="column.size" :disabled="column.disabled"
+                                    :placeholder="column.placeholder" start-placeholder="开始日期" end-placeholder="结束日期" type="daterange"
+                                    range-separator="至" :default-time="['00:00:00', '23:59:59']"
+                    >
+                    </el-date-picker>
+                    <!-- DateTimePicker 日期时间选择器 -->
+                    <el-date-picker v-else-if="column.type=='datetimerange'"
+                                    v-model="insertForm[column.name]" :size="column.size" :disabled="column.disabled"
+                                    :placeholder="column.placeholder" start-placeholder="开始日期时间" end-placeholder="结束日期时间" type="datetimerange"
+                                    range-separator="至" :default-time="['00:00:00', '23:59:59']"
+                    >
+                    </el-date-picker>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button icon="el-icon-circle-close" @click="insertOpen = false">取 消</el-button>
+                <el-button icon="el-icon-circle-check" type="primary" @click="insert">确 定</el-button>
+            </div>
+        </el-dialog>
+        <el-drawer v-else="insertStyle == 'drawer'" :title="name + '新增'" size="40%" :visible.sync="insertOpen">
+            <div style="padding-left: 20px">
+                <el-form :model="insertForm" ref="insertForm" :rules="rules" label-width="100px">
+                    <el-form-item v-for="(column, index) in insertColumnList" :label="column.textName" :key="index" :prop="column.name">
+                        <!-- Radio 单选框 -->
+                        <el-radio-group v-if="column.type=='radio'"
+                                        v-model="insertForm[column.name]" :size="column.size" :disabled="column.disabled"
+                        >
+                            <el-radio v-for="option in column.optionList" :label="option.value" :name="option.name" :disabled="option.disabled">{{option.name}}</el-radio>
+                        </el-radio-group>
+                        <!-- Checkbox 多选框 -->
+                        <el-checkbox-group v-else-if="column.type=='checkbox'"
+                                           v-model="insertForm[column.name]" :size="column.size" :disabled="column.disabled" :min="column.min" :max="column.max"
+                        >
+                            <el-checkbox v-for="option in column.optionList" :label="option.value" :key="option.name" :disabled="option.disabled">{{option.name}}</el-checkbox>
+                        </el-checkbox-group>
+                        <!-- Input 输入框 -->
+                        <el-input v-else-if="column.type=='input'"
+                                  :type="column.type" v-model="insertForm[column.name]" :maxlength="column.max" :minlength="column.min"
+                                  :placeholder="column.placeholder" :clearable="true" :size="column.size" :disabled="column.disabled"
+                                  :prefix-icon="column.prefixIcon" :suffix-icon="column.suffixIcon"
+                        >
+                        </el-input>
+                        <!-- InputNumber 计数器 -->
+                        <el-input-number v-else-if="column.type=='number'"
+                                         v-model="insertForm[column.name]" :min="column.min" :max="column.max" :step="column.step"
+                                         :precision="column.precision" :size="column.size" :disabled="column.disabled" :placeholder="column.placeholder"
+                        >
+                        </el-input-number>
+                        <!-- Select 选择器 -->
+                        <el-select v-else-if="column.type=='select'"
+                                   v-model="insertForm[column.name]" :multiple="column.multiple" :size="column.size" :disabled="column.disabled"
+                                   :clearable="true" :multiple-limit="column.multipleLimit" :placeholder="column.placeholder"
+                        >
+                            <el-option v-for="option in column.optionList" :key="option.value" :label="option.name" :value="option.value" :disabled="option.disabled">{{option.name}}</el-option>
+                        </el-select>
+                        <!-- Cascader 级联选择器 -->
+                        <el-cascader v-else-if="column.type=='cascader'"
+                                     v-model="insertForm[column.name]" :options="column.optionList" :props="{expandTrigger:'hover', multiple:true, checkStrictly:true, emitPath:false, value:'id', label:'name'}" :size="column.size"
+                                     :disabled="column.disabled" :placeholder="column.placeholder" :clearable="true"
+                        >
+                            <template slot-scope="{ node, data }">
+                                <i :class="data.icon"></i>
+                                <span>{{ data.name }}</span>
+                                <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+                            </template>
+                        </el-cascader>
+                        <!-- Switch 开关 -->
+                        <el-switch v-else-if="column.type=='switch'"
+                                   v-model="insertForm[column.name]" :disabled="column.disabled" :step="1" show-stops>
+                        </el-switch>
+                        <!-- Slider 滑块 -->
+                        <el-slider v-else-if="column.type=='slider'"
+                                   v-model="insertForm[column.name]" :min="column.min" :max="column.max" :disabled="column.disabled">
+                        </el-slider>
+                        <!-- TimePicker 时间选择器 -->
+                        <el-time-picker v-else-if="column.type=='time'"
+                                        v-model="insertForm[column.name]" :size="column.size" :disabled="column.disabled"
+                                        :placeholder="column.placeholder" start-placeholder="开始时间" end-placeholder="结束时间" is-range
+                                        range-separator="至" :default-value="['2021-01-01 00:00:00', '2021-12-31 23:59:59']"
+                        >
+                        </el-time-picker>
+                        <!-- DatePicker 日期选择器 -->
+                        <el-date-picker v-else-if="column.type=='daterange'"
+                                        v-model="insertForm[column.name]" :size="column.size" :disabled="column.disabled"
+                                        :placeholder="column.placeholder" start-placeholder="开始日期" end-placeholder="结束日期" type="daterange"
+                                        range-separator="至" :default-time="['00:00:00', '23:59:59']"
+                        >
+                        </el-date-picker>
+                        <!-- DateTimePicker 日期时间选择器 -->
+                        <el-date-picker v-else-if="column.type=='datetimerange'"
+                                        v-model="insertForm[column.name]" :size="column.size" :disabled="column.disabled"
+                                        :placeholder="column.placeholder" start-placeholder="开始日期时间" end-placeholder="结束日期时间" type="datetimerange"
+                                        range-separator="至" :default-time="['00:00:00', '23:59:59']"
+                        >
+                        </el-date-picker>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button icon="el-icon-circle-close" @click="insertOpen = false">取 消</el-button>
+                    <el-button icon="el-icon-circle-check" type="primary" @click="insert">确 定</el-button>
+                </div>
+            </div>
+        </el-drawer>
+        <!-- 更新表单 -->
+        <el-dialog v-if="updateStyle == 'dialog'" :title="name + '更新'" width="50%" :visible.sync="updateOpen" :modal="false" :close-on-click-modal="false">
+            <el-form :model="updateForm" ref="updateForm" :rules="rules" label-width="100px">
+                <el-form-item v-for="(column, index) in updateColumnList" :label="column.textName" :key="index" :prop="column.name">
+                    <!-- Radio 单选框 -->
+                    <el-radio-group v-if="column.type=='radio'"
+                                    v-model="updateForm[column.name]" :size="column.size" :disabled="column.disabled"
+                    >
+                        <el-radio v-for="option in column.optionList" :label="option.value" :name="option.name" :disabled="option.disabled">{{option.name}}</el-radio>
+                    </el-radio-group>
+                    <!-- Checkbox 多选框 -->
+                    <el-checkbox-group v-else-if="column.type=='checkbox'"
+                                       v-model="updateForm[column.name]" :size="column.size" :disabled="column.disabled" :min="column.min" :max="column.max"
+                    >
+                        <el-checkbox v-for="option in column.optionList" :label="option.value" :key="option.name" :disabled="option.disabled">{{option.name}}</el-checkbox>
+                    </el-checkbox-group>
+                    <!-- Input 输入框 -->
+                    <el-input v-else-if="column.type=='input'"
+                              :type="column.type" v-model="updateForm[column.name]" :maxlength="column.max" :minlength="column.min"
+                              :placeholder="column.placeholder" :clearable="true" :size="column.size" :disabled="column.disabled"
+                              :prefix-icon="column.prefixIcon" :suffix-icon="column.suffixIcon"
+                    >
+                    </el-input>
+                    <!-- InputNumber 计数器 -->
+                    <el-input-number v-else-if="column.type=='number'"
+                                     v-model="updateForm[column.name]" :min="column.min" :max="column.max" :step="column.step"
+                                     :precision="column.precision" :size="column.size" :disabled="column.disabled" :placeholder="column.placeholder"
+                    >
+                    </el-input-number>
+                    <!-- Select 选择器 -->
+                    <el-select v-else-if="column.type=='select'"
+                               v-model="updateForm[column.name]" :multiple="column.multiple" :size="column.size" :disabled="column.disabled"
+                               :clearable="true" :multiple-limit="column.multipleLimit" :placeholder="column.placeholder"
+                    >
+                        <el-option v-for="option in column.optionList" :key="option.value" :label="option.name" :value="option.value" :disabled="option.disabled">{{option.name}}</el-option>
+                    </el-select>
+                    <!-- Cascader 级联选择器 -->
+                    <el-cascader v-else-if="column.type=='cascader'"
+                                 v-model="updateForm[column.name]" :options="column.optionList" :props="{expandTrigger:'hover', multiple:true, checkStrictly:true, emitPath:false, value:'id', label:'name'}" :size="column.size"
+                                 :disabled="column.disabled" :placeholder="column.placeholder" :clearable="true"
+                    >
+                        <template slot-scope="{ node, data }">
+                            <i :class="data.icon"></i>
+                            <span>{{ data.name }}</span>
+                            <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+                        </template>
+                    </el-cascader>
+                    <!-- Switch 开关 -->
+                    <el-switch v-else-if="column.type=='switch'"
+                               v-model="updateForm[column.name]" :disabled="column.disabled" :step="1" show-stops>
+                    </el-switch>
+                    <!-- Slider 滑块 -->
+                    <el-slider v-else-if="column.type=='slider'"
+                               v-model="updateForm[column.name]" :min="column.min" :max="column.max" :disabled="column.disabled">
+                    </el-slider>
+                    <!-- TimePicker 时间选择器 -->
+                    <el-time-picker v-else-if="column.type=='time'"
+                                    v-model="updateForm[column.name]" :size="column.size" :disabled="column.disabled"
+                                    :placeholder="column.placeholder" start-placeholder="开始时间" end-placeholder="结束时间" is-range
+                                    range-separator="至" :default-value="['2021-01-01 00:00:00', '2021-12-31 23:59:59']"
+                    >
+                    </el-time-picker>
+                    <!-- DatePicker 日期选择器 -->
+                    <el-date-picker v-else-if="column.type=='daterange'"
+                                    v-model="updateForm[column.name]" :size="column.size" :disabled="column.disabled"
+                                    :placeholder="column.placeholder" start-placeholder="开始日期" end-placeholder="结束日期" type="daterange"
+                                    range-separator="至" :default-time="['00:00:00', '23:59:59']"
+                    >
+                    </el-date-picker>
+                    <!-- DateTimePicker 日期时间选择器 -->
+                    <el-date-picker v-else-if="column.type=='datetimerange'"
+                                    v-model="updateForm[column.name]" :size="column.size" :disabled="column.disabled"
+                                    :placeholder="column.placeholder" start-placeholder="开始日期时间" end-placeholder="结束日期时间" type="datetimerange"
+                                    range-separator="至" :default-time="['00:00:00', '23:59:59']"
+                    >
+                    </el-date-picker>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button icon="el-icon-circle-close" @click="updateOpen = false">取 消</el-button>
+                <el-button icon="el-icon-circle-check" type="primary" @click="update">确 定</el-button>
+            </div>
+        </el-dialog>
+        <el-drawer v-else="updateStyle == 'drawer'" :title="name + '更新'" size="40%" :visible.sync="updateOpen">
+            <div style="padding-left: 20px">
+                <el-form :model="updateForm" ref="updateForm" :rules="rules" label-width="100px">
+                    <el-form-item v-for="(column, index) in updateColumnList" :label="column.textName" :key="index" :prop="column.name">
+                        <!-- Radio 单选框 -->
+                        <el-radio-group v-if="column.type=='radio'"
+                                        v-model="updateForm[column.name]" :size="column.size" :disabled="column.disabled"
+                        >
+                            <el-radio v-for="option in column.optionList" :label="option.value" :name="option.name" :disabled="option.disabled">{{option.name}}</el-radio>
+                        </el-radio-group>
+                        <!-- Checkbox 多选框 -->
+                        <el-checkbox-group v-else-if="column.type=='checkbox'"
+                                           v-model="updateForm[column.name]" :size="column.size" :disabled="column.disabled" :min="column.min" :max="column.max"
+                        >
+                            <el-checkbox v-for="option in column.optionList" :label="option.value" :key="option.name" :disabled="option.disabled">{{option.name}}</el-checkbox>
+                        </el-checkbox-group>
+                        <!-- Input 输入框 -->
+                        <el-input v-else-if="column.type=='input'"
+                                  :type="column.type" v-model="updateForm[column.name]" :maxlength="column.max" :minlength="column.min"
+                                  :placeholder="column.placeholder" :clearable="true" :size="column.size" :disabled="column.disabled"
+                                  :prefix-icon="column.prefixIcon" :suffix-icon="column.suffixIcon"
+                        >
+                        </el-input>
+                        <!-- InputNumber 计数器 -->
+                        <el-input-number v-else-if="column.type=='number'"
+                                         v-model="updateForm[column.name]" :min="column.min" :max="column.max" :step="column.step"
+                                         :precision="column.precision" :size="column.size" :disabled="column.disabled" :placeholder="column.placeholder"
+                        >
+                        </el-input-number>
+                        <!-- Select 选择器 -->
+                        <el-select v-else-if="column.type=='select'"
+                                   v-model="updateForm[column.name]" :multiple="column.multiple" :size="column.size" :disabled="column.disabled"
+                                   :clearable="true" :multiple-limit="column.multipleLimit" :placeholder="column.placeholder"
+                        >
+                            <el-option v-for="option in column.optionList" :key="option.value" :label="option.name" :value="option.value" :disabled="option.disabled">{{option.name}}</el-option>
+                        </el-select>
+                        <!-- Cascader 级联选择器 -->
+                        <el-cascader v-else-if="column.type=='cascader'"
+                                     v-model="updateForm[column.name]" :options="column.optionList" :props="{expandTrigger:'hover', multiple:true, checkStrictly:true, emitPath:false, value:'id', label:'name'}" :size="column.size"
+                                     :disabled="column.disabled" :placeholder="column.placeholder" :clearable="true"
+                        >
+                            <template slot-scope="{ node, data }">
+                                <i :class="data.icon"></i>
+                                <span>{{ data.name }}</span>
+                                <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+                            </template>
+                        </el-cascader>
+                        <!-- Switch 开关 -->
+                        <el-switch v-else-if="column.type=='switch'"
+                                   v-model="updateForm[column.name]" :disabled="column.disabled" :step="1" show-stops>
+                        </el-switch>
+                        <!-- Slider 滑块 -->
+                        <el-slider v-else-if="column.type=='slider'"
+                                   v-model="updateForm[column.name]" :min="column.min" :max="column.max" :disabled="column.disabled">
+                        </el-slider>
+                        <!-- TimePicker 时间选择器 -->
+                        <el-time-picker v-else-if="column.type=='time'"
+                                        v-model="updateForm[column.name]" :size="column.size" :disabled="column.disabled"
+                                        :placeholder="column.placeholder" start-placeholder="开始时间" end-placeholder="结束时间" is-range
+                                        range-separator="至" :default-value="['2021-01-01 00:00:00', '2021-12-31 23:59:59']"
+                        >
+                        </el-time-picker>
+                        <!-- DatePicker 日期选择器 -->
+                        <el-date-picker v-else-if="column.type=='daterange'"
+                                        v-model="updateForm[column.name]" :size="column.size" :disabled="column.disabled"
+                                        :placeholder="column.placeholder" start-placeholder="开始日期" end-placeholder="结束日期" type="daterange"
+                                        range-separator="至" :default-time="['00:00:00', '23:59:59']"
+                        >
+                        </el-date-picker>
+                        <!-- DateTimePicker 日期时间选择器 -->
+                        <el-date-picker v-else-if="column.type=='datetimerange'"
+                                        v-model="updateForm[column.name]" :size="column.size" :disabled="column.disabled"
+                                        :placeholder="column.placeholder" start-placeholder="开始日期时间" end-placeholder="结束日期时间" type="datetimerange"
+                                        range-separator="至" :default-time="['00:00:00', '23:59:59']"
+                        >
+                        </el-date-picker>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button icon="el-icon-circle-close" @click="updateOpen = false">取 消</el-button>
+                    <el-button icon="el-icon-circle-check" type="primary" @click="update">确 定</el-button>
+                </div>
+            </div>
+        </el-drawer>
+
+    </template>
+</div>
+</body>
+<script type="text/javascript" src="/static/common/util/axios.min.js"></script>
+<script type="text/javascript" src="/static/common/vue/vue.min.js"></script>
+<script type="text/javascript" src="/static/common/element/index.js"></script>
+<script type="text/javascript" src="/static/common/api.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#online',
+        data() {
+            return {
+                // 页面元素生成参数
+                id: 0,
+                name: '',
+                searchList: [],
+                headerButtonList: [],
+                tableButtonList: [],
+                tableColumnList: [],
+                paging: true,
+                // 分页查询参数
+                currentPage: 1,
+                pageSize: 10,
+                total: 0,
+                // 排序字段
+                sortFieldList: [],
+                // 新增表单参数
+                insertStyle: "",
+                insertColumnList: [],
+                // 更新表单参数
+                updateStyle: "",
+                updateColumnList: [],
+                // 多选ID值
+                multipleSelection: [],
+                // 页面数据
+                tableData: [],
+                // 查询参数
+                queryForm: {},
+                // 新增表单
+                insertOpen: false,
+                insertForm: {},
+                // 更新表单
+                updateOpen: false,
+                updateForm: {},
+                // 校验规则
+                rules: {},
+            }
+        },
+        mounted() {
+            this.buildPage();
+        },
+        methods: {
+            // 构建页面
+            buildPage() {
+                axios.get('/online/' + this.id)
+                    .then((res) => {
+                        if (res.code === 6666) {
+                            this.id = res.data.id;
+                            this.name = res.data.name;
+                            this.searchList = res.data.searchList;
+                            // 1、构建查询参数
+                            for (let i = 0; i < this.searchList.length; i++) {
+                                this.$set(this.queryForm, this.searchList[i].name, '');
+                            }
+                            this.headerButtonList = res.data.headerButtonList;
+                            this.tableColumnList = res.data.tableColumnList;
+                            this.tableButtonList = res.data.tableButtonList;
+                            this.paging = res.data.paging;
+                            this.sortFieldList = res.data.sortFieldList;
+                            this.insertStyle = res.data.insertStyle;
+                            this.insertColumnList = res.data.insertColumnList;
+                            // 2、构建新增表单参数
+                            for (let i = 0; i < this.insertColumnList.length; i++) {
+                                this.$set(this.insertForm, this.insertColumnList[i].name, '');
+                            }
+                            this.updateStyle = res.data.updateStyle;
+                            this.updateColumnList = res.data.updateColumnList;
+                            // 3、构建更新表单参数
+                            for (let i = 0; i < this.updateColumnList.length; i++) {
+                                this.$set(this.updateForm, this.updateColumnList[i].name, '');
+                            }
+                            // 强制挂载数据
+                            this.$forceUpdate();
+                            // 查询页面数据
+                            this.submitQueryForm();
+                        }
+                    });
+            },
+            // 当前页码发生变更
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.submitQueryForm();
+            },
+            // 当前页长发生变化
+            handleSizeChange(val) {
+                this.pageSize = val;
+                this.submitQueryForm();
+            },
+            // 获取多选的数据
+            handleSelectionChange(val) {
+                this.multipleSelection = val.map(row => row.id);
+            },
+            // 查询表单提交
+            submitQueryForm() {
+                const params = {
+                    pageNumber: this.currentPage,
+                    pageSize: this.pageSize,
+                    paging: this.paging,
+                    sortFieldList: this.sortFieldList,
+                    queryConditions: this.queryForm,
+                };
+                axios.get('/online/' + this.id + '/page', {params})
+                    .then((res) => {
+                        if (res.code === 6666) {
+                            if (this.paging) {
+                                this.tableData = res.data.records;
+                                this.total = res.data.total;
+                            } else {
+                                this.tableData = res.data;
+                            }
+                        }
+                    });
+            },
+            // 查询表单清空
+            clearQueryForm() {
+                for (let i = 0; i < this.searchList.length; i++) {
+                    this.$set(this.queryForm, this.searchList[i].name, '');
+                }
+            },
+            // 按钮点击事件
+            buttonOnCheck(name, row) {
+                switch (name) {
+                    case 'add':
+                        this.openInsertForm();
+                        break;
+                    case 'delete':
+                        this.openDeleteDialog(row);
+                        break;
+                    case 'update':
+                        this.openUpdateForm(row);
+                        break;
+                    default:
+                        row = {
+                            id: 1,
+                            name: 1,
+                        };
+                        const funStr = "const dataId = row.id;this.updateOpen = true;axios.get('/online/' + this.id + '/query/' + dataId).then((res) => {if (res.code === 6666) {this.updateForm = res.data;}})";
+                        const fun = new Function(row, funStr);
+                        fun();
+                        // fun()(row);
+                        this.$confirm('这是一个不识别的操作，请联系管理员', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning',
+                            center: true
+                        });
+                }
+            },
+            // 开启新增表单
+            openInsertForm() {
+                // 展示新增表单
+                this.insertOpen = true;
+                if (this.$refs.insertForm !== undefined) {
+                    this.$refs.insertForm.resetFields();
+                }
+            },
+            // 新增表单提交
+            insert() {
+                this.$refs.insertForm.validate((valid) => {
+                    if (valid) {
+                        this.insertDialog = false;
+                        let insertParam = this.insertForm;
+                        axios.post('/online/' + this.id + '/add', JSON.parse(JSON.stringify(insertParam)))
+                            .then((res) => {
+                                if (res.code === 6666) {
+                                    this.submitQueryForm();
+                                    this.$message({
+                                        type: 'success',
+                                        message: '新增成功'
+                                    });
+                                } else {
+                                    this.$message.error(res.message);
+                                }
+                            });
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            // 开启删除表单
+            openDeleteDialog(row) {
+                this.$confirm('此操作将删除所选' + this.name + '，您确定要删除吗', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    modal: 'false',
+                    type: 'warning'
+                }).then(() => {
+                    let params = {idList: this.multipleSelection.toString()};
+                    axios.delete('/online/' + this.id + '/delete', {params})
+                        .then((res) => {
+                            if (res.code === 6666) {
+                                this.submitQueryForm();
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功'
+                                });
+                            } else {
+                                this.$message.error(res.message);
+                            }
+                        });
+                }).catch(() => {
+                });
+            },
+            // 开启更新表单
+            openUpdateForm(row) {
+                const dataId = row.id;
+                this.updateOpen = true;
+                axios.get('/online/' + this.id + '/query/' + dataId)
+                    .then((res) => {
+                        if (res.code === 6666) {
+                            this.updateForm = res.data;
+                        }
+                    });
+            },
+            // 更新表单提交
+            update() {
+                this.$refs.updateForm.validate((valid) => {
+                    if (valid) {
+                        this.updateDialog = false;
+                        let updateParam = this.updateForm;
+                        axios.put('/online/' + this.id + '/update', JSON.parse(JSON.stringify(updateParam)))
+                            .then((res) => {
+                                if (res.code === 6666) {
+                                    this.submitQueryForm();
+                                    this.$message({
+                                        type: 'success',
+                                        message: '修改成功'
+                                    });
+                                } else {
+                                    this.$message.error(res.message);
+                                }
+                            });
+                    } else {
+                        return false;
+                    }
+                });
+            }
+        },
+    });
+</script>
+</html>

@@ -19,6 +19,13 @@ public class BusinessException extends BaseException {
 
     /**
      * @param responseEnum - 异常返回码枚举接口
+     */
+    public BusinessException(IResponseEnum responseEnum) {
+        super(responseEnum);
+    }
+
+    /**
+     * @param responseEnum - 异常返回码枚举接口
      * @param args         - 参数
      * @param message      - MESSAGE
      */
