@@ -4,7 +4,6 @@ import com.imis.agile.constant.enums.ArgumentResponseEnum;
 import com.imis.agile.constant.enums.CommonResponseEnum;
 import com.imis.agile.constant.enums.ServletResponseEnum;
 import com.imis.agile.exception.BaseException;
-import com.imis.agile.exception.BusinessException;
 import com.imis.agile.i18n.UnifiedMessageSource;
 import com.imis.agile.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -170,18 +169,6 @@ public class GlobalExceptionReturnConfig {
      */
     @ExceptionHandler(BaseException.class)
     public ErrorResponse handleCustomizeException(BaseException e) {
-        log.error(e.getMessage(), e);
-        return new ErrorResponse(e.getResponseEnum().getCode(), getMessage(e));
-    }
-
-    /**
-     * 处理业务异常
-     *
-     * @param e - CustomizeException
-     * @return ErrorResponse - 错误返回结果
-     */
-    @ExceptionHandler(value = BusinessException.class)
-    public ErrorResponse handleBusinessException(BusinessException e) {
         log.error(e.getMessage(), e);
         return new ErrorResponse(e.getResponseEnum().getCode(), getMessage(e));
     }

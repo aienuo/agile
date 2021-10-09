@@ -157,58 +157,6 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
     ORGANIZATION_VALID_ERROR_DELETE_02(200060302, "组织机构删除失败，部分组织机构下存在子节点"),
     ORGANIZATION_VALID_ERROR_DELETE_03(200060303, "组织机构删除失败，部分组织机构已分配给用户使用"),
 
-    /**
-     * 200 10 01 00 - 在线开发 - 数据库表表信息 - 添加
-     */
-    TABLE_HEAD_VALID_ERROR_ADD_01(200100101, "数据库表表信息添加失败，请确认信息后重新添加"),
-    TABLE_HEAD_VALID_ERROR_ADD_02(200100102, "数据库表表信息添加失败，数据库表表名称存在重复"),
-    /**
-     * 200 10 02 00 - 在线开发 - 数据库表表信息 - 更新
-     */
-    TABLE_HEAD_VALID_ERROR_UPDATE_01(200100201, "数据库表表信息更新失败，请确认信息后重新更新"),
-    TABLE_HEAD_VALID_ERROR_UPDATE_02(200100202, "数据库表表信息更新失败，数据库表表信息不存在"),
-    TABLE_HEAD_VALID_ERROR_UPDATE_03(200100203, "数据库表表信息更新失败，数据库表表名称存在重复"),
-    /**
-     * 200 10 03 00 - 在线开发 - 数据库表表信息 - 删除
-     */
-    TABLE_HEAD_VALID_ERROR_DELETE_01(200100301, "数据库表表信息删除失败，请确认信息后重新删除"),
-
-    /**
-     * 200 11 01 00 - 在线开发 - 数据库表字段信息 - 添加
-     */
-    TABLE_FIELD_VALID_ERROR_ADD_01(200110101, "数据库表字段信息添加失败，数据库表字段信息不存在"),
-    TABLE_FIELD_VALID_ERROR_ADD_02(200110102, "数据库表字段信息添加失败，请确认信息后重新添加"),
-    TABLE_FIELD_VALID_ERROR_ADD_03(200110103, "数据库表字段信息添加失败，数据库表字段名称存在重复"),
-    TABLE_FIELD_VALID_ERROR_ADD_04(200110104, "数据库表表字段 不存在"),
-    TABLE_FIELD_VALID_ERROR_ADD_05(200110105, "数据库表表名、字段 不存在"),
-    /**
-     * 200 11 02 00 - 在线开发 - 数据库表字段信息 - 更新
-     */
-    TABLE_FIELD_VALID_ERROR_UPDATE_01(200110201, "数据库表字段信息更新失败，请确认信息后重新更新"),
-    TABLE_FIELD_VALID_ERROR_UPDATE_02(200110202, "数据库表字段信息更新失败，数据库表字段信息不存在"),
-    TABLE_FIELD_VALID_ERROR_UPDATE_03(200110203, "数据库表字段信息更新失败，数据库表字段名称存在重复"),
-    /**
-     * 200 11 03 00 - 在线开发 - 数据库表字段信息 - 删除
-     */
-    TABLE_FIELD_VALID_ERROR_DELETE_01(200110301, "数据库表字段信息删除失败，请确认信息后重新删除"),
-
-    /**
-     * 200 12 01 00 - 在线开发 - 数据库表表索引信息 - 添加
-     */
-    TABLE_INDEX_VALID_ERROR_ADD_01(200120101, "数据库表表索引信息添加失败，请确认信息后重新添加"),
-    TABLE_INDEX_VALID_ERROR_ADD_02(200120102, "数据库表表索引信息添加失败，数据库表表名称存在重复"),
-    /**
-     * 200 12 02 00 - 在线开发 - 数据库表表索引信息 - 更新
-     */
-    TABLE_INDEX_VALID_ERROR_UPDATE_01(200120201, "数据库表表索引信息更新失败，请确认信息后重新更新"),
-    TABLE_INDEX_VALID_ERROR_UPDATE_02(200120202, "数据库表表索引信息更新失败，数据库表表索引信息不存在"),
-    TABLE_INDEX_VALID_ERROR_UPDATE_03(200120203, "数据库表表索引信息更新失败，数据库表表索引名称存在重复"),
-    /**
-     * 200 12 03 00 - 在线开发 - 数据库表表索引信息 - 删除
-     */
-    TABLE_INDEX_VALID_ERROR_DELETE_01(200120301, "数据库表表索引信息删除失败，请确认信息后重新删除"),
-
-
 
     FILE_ADD_ERR(200990101, "%s 上传失败"),
     FILE_DOWNLOAD_ERR_1(200990201, "文件下载失败，文件不存在"),

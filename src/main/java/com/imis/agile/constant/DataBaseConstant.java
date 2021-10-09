@@ -49,37 +49,4 @@ public interface DataBaseConstant extends StringPool {
     String UPDATE_TIME_FIELD = "UPDATE_TIME";
     String UPDATE_TIME = "updateTime";
 
-    //********* 数据库SQL标准字段 ****************************************
-
-    String SQL_CREATE = "CREATE" + SPACE;
-
-    String SQL_VALUES = "VALUES" + SPACE;
-    String SQL_SET = "SET" + SPACE;
-    String SQL_ADD = "ADD" + SPACE;
-    String SQL_RENAME = "RENAME" + SPACE;
-    String SQL_CHANGE = "CHANGE" + SPACE;
-    String SQL_MODIFY = "MODIFY" + SPACE;
-    String SQL_ALTER = "ALTER" + SPACE;
-    String SQL_DROP = "DROP" + SPACE;
-    String SQL_WHERE = "WHERE" + SPACE;
-    String SQL_AND = "AND" + SPACE;
-    String SQL_IN = "IN" + SPACE;
-    String SQL_NULL = "NULL" + SPACE;
-    String SQL_NOT_NULL = "NOT NULL" + SPACE;
-    String SQL_LIKE = "LIKE" + SPACE;
-    String SQL_ON = "ON" + SPACE;
-    String SQL_ORDER = "ORDER BY" + SPACE;
-    String SQL_ASC = "ASC" + SPACE;
-    String SQL_DESC = "DESC" + SPACE;
-    String SQL_INDEX = "INDEX" + SPACE;
-    String SQL_COLUMN = "COLUMN" + SPACE;
-    String SQL_TABLE = "TABLE" + SPACE;
-    String SQL_IF = "IF" + SPACE;
-    String SQL_EXISTS = "EXISTS" + SPACE;
-    String SQL_COMMENT = "COMMENT" + SPACE;
-    String SQL_DEFAULT = "DEFAULT" + SPACE;
-    String SQL_IS = "IS" + SPACE;
-    String SQL_TO = "TO" + SPACE;
-    String SQL_TYPE = "TYPE" + SPACE;
-
 }
