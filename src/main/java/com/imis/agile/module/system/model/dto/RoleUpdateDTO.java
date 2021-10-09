@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -45,5 +46,11 @@ public class RoleUpdateDTO implements Serializable {
      */
     @ApiModelProperty(value = "角色描述")
     private String description;
+
+    /**
+     * 角色菜单权限关联
+     */
+    @ApiModelProperty(value = "角色菜单权限关联")
+    private List<Long> menuList;
     
 }

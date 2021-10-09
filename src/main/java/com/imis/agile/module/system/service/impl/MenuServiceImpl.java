@@ -68,6 +68,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
      * @since 2020/3/6 14:26
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public List<MenuTreeVO> queryMenuTreeListByUserId(final Long userId) {
         List<MenuTreeVO> menuTreeList = new ArrayList<>();
         // 用户角色关联
@@ -96,6 +97,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
      * @since 2020/3/6 14:26
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public List<ButtonVO> queryButtonListByUserId(final Long userId) {
         List<ButtonVO> buttonList = new ArrayList<>();
         // 用户角色关联
@@ -122,6 +124,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
      * @since 2020/3/5 17:25
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public List<MenuTreeInfoVO> queryMenuTreeList() {
         // 查询数据
         List<MenuTreeInfoVO> menuTreeList = this.baseMapper.queryMenuTreeList();
@@ -143,6 +146,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
      * @since 2020/3/5 17:25
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public MenuInfoVO queryById(final Long id) {
         return this.baseMapper.queryById(id);
     }

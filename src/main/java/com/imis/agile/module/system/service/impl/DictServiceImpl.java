@@ -39,6 +39,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements ID
      * @since 2020/3/12 15:47
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public Page<DictPageVO> pagingQueryListByParameter(final PagingQueryDictDTO pagingQuery) {
         // 1、页码、页长
         Page<DictPageVO> pagingQueryList = new Page<>(pagingQuery.getPageNumber(), pagingQuery.getPageSize());
@@ -60,6 +61,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements ID
      * @since 2020/3/12 15:47
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public List<DictVO> queryList() {
         return this.baseMapper.queryList();
     }

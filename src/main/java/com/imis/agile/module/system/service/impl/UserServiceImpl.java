@@ -37,6 +37,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      * @since 2020/3/17 14:54
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public Page<UserPageVO> pagingQueryListByParameter(final PagingQueryUserDTO pagingQuery) {
         // 1、页码、页长
         Page<UserPageVO> pagingQueryList = new Page<>(pagingQuery.getPageNumber(), pagingQuery.getPageSize());
@@ -59,6 +60,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      * @since 2020/3/5 17:25
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public UserInfoVO queryById(final Long id) {
         return baseMapper.queryById(id);
     }

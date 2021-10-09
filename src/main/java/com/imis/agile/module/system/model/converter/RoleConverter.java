@@ -4,11 +4,15 @@ import com.imis.agile.constant.DataBaseConstant;
 import com.imis.agile.module.system.model.dto.RoleAddDTO;
 import com.imis.agile.module.system.model.dto.RoleUpdateDTO;
 import com.imis.agile.module.system.model.entity.Role;
+import com.imis.agile.module.system.model.entity.RoleMenu;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -60,5 +64,20 @@ public interface RoleConverter {
             @Mapping(target = "roleCode", ignore = true),
     })
     void getUpdateEntity(@MappingTarget final Role role, final RoleUpdateDTO update);
+
+    /**
+     * 角色菜单权限关联
+     *
+     * @param roleId   - 角色编号
+     * @param menuList - 菜单编号
+     * @return List<RoleMenu> - 角色菜单权限关联
+     */
+    default List<RoleMenu> getRoleMenuEntity(final Long roleId, final List<Long> menuList) {
+        List<RoleMenu> roleMenuList = new ArrayList<>();
+        menuList.forEach(
+                menu -> roleMenuList.add(new RoleMenu().setRoleId(roleId).setMenuId(menu))
+        );
+        return roleMenuList;
+    }
 
 }

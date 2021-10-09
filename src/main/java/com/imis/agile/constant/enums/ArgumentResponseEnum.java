@@ -112,6 +112,7 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
     ROLE_VALID_ERROR_UPDATE_01(200040201, "角色更新失败，请确认信息后重新更新"),
     ROLE_VALID_ERROR_UPDATE_02(200040202, "角色更新失败，角色信息不存在"),
     ROLE_VALID_ERROR_UPDATE_03(200040203, "角色更新失败，角色名称存在重复"),
+    ROLE_VALID_ERROR_UPDATE_04(200040204, "角色更新失败，角色与菜单权限关联失败"),
     /**
      * 200 04 03 00 - 角色管理 - 删除
      */

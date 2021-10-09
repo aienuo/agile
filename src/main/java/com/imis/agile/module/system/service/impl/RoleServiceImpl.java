@@ -55,6 +55,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
      * @since 2020/3/6 14:26
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public List<com.imis.agile.module.api.model.vo.RoleVO> queryRoleListByUserId(final Long userId) {
         List<com.imis.agile.module.api.model.vo.RoleVO> roleList = new ArrayList<>();
         // 用户角色关联
@@ -77,6 +78,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
      * @since 2020/3/12 15:47
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public Page<RolePageVO> pagingQueryListByParameter(final PagingQueryRoleDTO pagingQuery) {
         // 1、页码、页长
         Page<RolePageVO> pagingQueryList = new Page<>(pagingQuery.getPageNumber(), pagingQuery.getPageSize());
@@ -99,6 +101,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
      * @since 2020/3/5 17:25
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public RoleInfoVO queryById(final Long id) {
         return this.baseMapper.queryById(id);
     }
@@ -112,6 +115,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
      * @since 2020/3/5 17:25
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public List<com.imis.agile.module.system.model.vo.RoleVO> queryList() {
         return this.baseMapper.queryList();
     }

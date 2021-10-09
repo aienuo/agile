@@ -124,8 +124,7 @@ public class UserBus extends BaseBus {
         }
         UserConverter.INSTANCE.getUpdateEntity(user, update);
         // 清除原来的 用户角色关联
-        boolean clean = this.userRoleService.remove(Wrappers.<UserRole>lambdaQuery().eq(UserRole::getUserId, user.getId()));
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_01.assertIsTrue(clean);
+        this.userRoleService.remove(Wrappers.<UserRole>lambdaQuery().eq(UserRole::getUserId, user.getId()));
         return user;
     }
 

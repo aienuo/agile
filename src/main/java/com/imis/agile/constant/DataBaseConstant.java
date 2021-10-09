@@ -19,7 +19,7 @@ public interface DataBaseConstant extends StringPool {
     /**
      * 数据源名称 - slave
      */
-    String DATA_SOURCE_RECORD = "slave";
+    String DATA_SOURCE_SLAVE = "slave";
 
     //********* 系统建表标准字段 ****************************************
 

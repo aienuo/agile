@@ -82,6 +82,7 @@ public class RoleBus extends BaseBus {
         // 验证 角色名称 是否存在重复
         Role role = this.roleService.getOne(Wrappers.<Role>lambdaQuery().eq(Role::getRoleName, add.getRoleName()), Boolean.FALSE);
         ArgumentResponseEnum.ROLE_VALID_ERROR_ADD_02.assertIsNull(role);
+        add.setRoleCode("A008");
         return RoleConverter.INSTANCE.getAddEntity(add);
     }
 
@@ -103,6 +104,8 @@ public class RoleBus extends BaseBus {
             ArgumentResponseEnum.ROLE_VALID_ERROR_UPDATE_03.assertIsNull(roleByRoleName);
         }
         RoleConverter.INSTANCE.getUpdateEntity(role, update);
+        // 清除 角色菜单权限关联
+        this.roleMenuService.remove(Wrappers.<RoleMenu>lambdaQuery().eq(RoleMenu::getRoleId, update.getId()));
         return role;
     }
 
@@ -135,6 +138,13 @@ public class RoleBus extends BaseBus {
         // 2、创建新角色
         boolean save = this.roleService.save(role);
         ArgumentResponseEnum.ROLE_VALID_ERROR_ADD_01.assertIsTrue(save);
+        // 3、创建角色菜单权限关联
+        List<Long> menuList = add.getMenuList();
+        if (AgileUtil.isNotEmpty(menuList)) {
+            List<RoleMenu> roleMenuList = RoleConverter.INSTANCE.getRoleMenuEntity(role.getId(), menuList);
+            boolean saveRoleMenu = this.roleMenuService.saveBatch(roleMenuList);
+            ArgumentResponseEnum.ROLE_VALID_ERROR_UPDATE_04.assertIsTrue(saveRoleMenu);
+        }
         return new CommonResponse<>();
     }
 
@@ -168,6 +178,13 @@ public class RoleBus extends BaseBus {
         // 2、更新角色
         boolean save = this.roleService.updateById(role);
         ArgumentResponseEnum.ROLE_VALID_ERROR_UPDATE_01.assertIsTrue(save);
+        // 3、更新角色菜单权限关联
+        List<Long> menuList = update.getMenuList();
+        if (AgileUtil.isNotEmpty(menuList)) {
+            List<RoleMenu> roleMenuList = RoleConverter.INSTANCE.getRoleMenuEntity(role.getId(), menuList);
+            boolean saveRoleMenu = this.roleMenuService.saveBatch(roleMenuList);
+            ArgumentResponseEnum.ROLE_VALID_ERROR_UPDATE_04.assertIsTrue(saveRoleMenu);
+        }
         return new CommonResponse<>();
     }
 
@@ -194,7 +211,7 @@ public class RoleBus extends BaseBus {
     /**
      * 列表查看
      *
-     * @return CommonResponse<List<RoleVO>>
+     * @return CommonResponse<List < RoleVO>>
      * @author XinLau
      * @creed The only constant is change ! ! !
      * @since 2020/3/5 17:25

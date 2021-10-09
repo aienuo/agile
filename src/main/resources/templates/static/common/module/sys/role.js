@@ -23,13 +23,14 @@ new Vue({
             insertForm: {
                 roleName: '',
                 description: '',
+                menuList: []
             },
             updateForm: {
                 id: '',
                 roleCode: '',
                 roleName: '',
                 description: '',
-                menuId: []
+                menuList: []
             },
             queryForm: {
                 roleName: ''
@@ -101,7 +102,7 @@ new Vue({
             this.$refs.insertForm.validate((valid) => {
                 if (valid) {
                     let insertParam = this.insertForm;
-                    insertParam.menuId = this.$refs.insertTree.getCheckedKeys().concat(this.$refs.insertTree.getHalfCheckedKeys());
+                    insertParam.menuList = this.$refs.insertTree.getCheckedKeys().concat(this.$refs.insertTree.getHalfCheckedKeys());
                     axios.post('/sys/role/add', JSON.parse(JSON.stringify(insertParam)))
                         .then((res) => {
                             if (res.code === 6666) {
@@ -161,8 +162,8 @@ new Vue({
                 .then((res) => {
                     if (res.code === 6666) {
                         this.updateForm = res.data;
-                        if (res.data.menuId != null) {
-                            this.$refs.updateTree.setCheckedKeys(res.data.menuId);
+                        if (res.data.menuList != null) {
+                            this.$refs.updateTree.setCheckedKeys(res.data.menuList);
                         }
                     }
                 });
@@ -172,7 +173,7 @@ new Vue({
             this.$refs.updateForm.validate((valid) => {
                 if (valid) {
                     let updateParam = this.updateForm;
-                    updateParam.menuId = this.$refs.updateTree.getCheckedKeys().concat(this.$refs.updateTree.getHalfCheckedKeys());
+                    updateParam.menuList = this.$refs.updateTree.getCheckedKeys().concat(this.$refs.updateTree.getHalfCheckedKeys());
                     axios.put('/sys/role/update', JSON.parse(JSON.stringify(updateParam)))
                         .then((res) => {
                             if (res.code === 6666) {

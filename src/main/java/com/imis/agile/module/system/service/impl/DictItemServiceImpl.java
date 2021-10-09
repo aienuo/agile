@@ -40,6 +40,7 @@ public class DictItemServiceImpl extends ServiceImpl<DictItemMapper, DictItem> i
      * @since 2020/3/5 17:25
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public List<DictItemVO> queryDictItemList(final QueryDictItemDTO query) {
         // 查询数据
         List<DictItemVO> dictItemList = this.baseMapper.queryDictItemList(query);
@@ -61,6 +62,7 @@ public class DictItemServiceImpl extends ServiceImpl<DictItemMapper, DictItem> i
      * @since 2020/3/5 17:25
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public List<ItemVO> queryDictItemListByDictIdList(final List<String> dictIdList) {
         List<ItemVO> dictItemList = this.baseMapper.queryDictItemListByDictIdList(dictIdList);
         if (AgileUtil.isNotEmpty(dictItemList)) {
@@ -81,6 +83,7 @@ public class DictItemServiceImpl extends ServiceImpl<DictItemMapper, DictItem> i
      * @since 2020/3/5 17:25
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public List<ItemVO> queryDictItemListByDictCode(final String dictCode) {
         List<ItemVO> dictItemList = new ArrayList<>();
         if (AgileUtil.isNotEmpty(dictCode)) {
@@ -101,6 +104,7 @@ public class DictItemServiceImpl extends ServiceImpl<DictItemMapper, DictItem> i
      * @since 2020/3/5 17:25
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public List<ItemVO> queryTableItemList(){
         return this.baseMapper.queryTableItemList();
     }
@@ -115,6 +119,7 @@ public class DictItemServiceImpl extends ServiceImpl<DictItemMapper, DictItem> i
      * @since 2020/3/5 17:25
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public List<ItemVO> queryTableColumnItemListByTableName(final String tableName){
         return this.baseMapper.queryTableColumnItemListByTableName(tableName);
     }

@@ -130,9 +130,7 @@ public interface UserConverter {
     default List<UserRole> getUserRoleEntity(final Long userId, final List<Long> roleIdList) {
         List<UserRole> userRoleList = new ArrayList<>();
         roleIdList.forEach(
-                roleId -> {
-                    userRoleList.add(new UserRole().setUserId(userId).setRoleId(roleId));
-                }
+                roleId -> userRoleList.add(new UserRole().setUserId(userId).setRoleId(roleId))
         );
         return userRoleList;
     }

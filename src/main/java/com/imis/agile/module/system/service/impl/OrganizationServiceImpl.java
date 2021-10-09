@@ -37,6 +37,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
      * @since 2020/3/5 17:25
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public List<OrganizationTreeInfoVO> queryOrganizationTreeList() {
         // 查询数据
         List<OrganizationTreeInfoVO> organizationTreeList = this.baseMapper.queryOrganizationTreeList();
@@ -58,6 +59,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
      * @since 2020/3/5 17:25
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public OrganizationInfoVO queryById(final Long id) {
         return this.baseMapper.queryById(id);
     }
@@ -72,6 +74,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
      * @since 2020/3/5 17:25
      */
     @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public OrganizationInfoVO queryTopOrganization(final Long parentId) {
         return this.baseMapper.queryTopOrganization(parentId);
     }
