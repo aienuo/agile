@@ -9,7 +9,7 @@
 <div id="organization">
     <template>
         <div style="margin-bottom:18px;">
-            <el-button type="warning" icon="el-icon-edit" v-if="button.edit" @click="editNode">编辑</el-button>
+            <el-button type="warning" icon="el-icon-edit" v-if="button.edit && !updateBachButton" @click="editNode">编辑</el-button>
             <el-button type="primary" icon="el-icon-search" @click="submitQueryForm">查询</el-button>
             <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="button.insert" @click="openInsertDialog">新增</el-button>
             <el-button type="danger" icon="el-icon-success" v-if="button.updateBach && updateBachButton" @click="updateBach">保存</el-button>
@@ -82,8 +82,8 @@
                     </el-row>
                 </el-form>
                 <div slot="footer" class="dialog-footer" style="text-align: right">
-                    <el-button icon="el-icon-circle-close" @click="updateDialog = false">取 消</el-button>
-                    <el-button icon="el-icon-circle-check" type="primary" @click="update">确 定</el-button>
+                    <el-button icon="el-icon-circle-close" @click="clean">取 消</el-button>
+                    <el-button icon="el-icon-circle-check" v-if="updateForm.organizationCode" type="primary" @click="update">确 定</el-button>
                 </div>
             </div>
         </div>

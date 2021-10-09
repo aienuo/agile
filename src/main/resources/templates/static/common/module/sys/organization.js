@@ -27,7 +27,7 @@ new Vue({
                 parentId: '',
                 organizationName: '',
                 sortNo: 1.00,
-                status: '',
+                status: 0,
                 description: ''
             },
             updateForm: {
@@ -35,8 +35,8 @@ new Vue({
                 parentId: '',
                 organizationName: '',
                 organizationCode: '',
-                sortNo: '',
-                status: '',
+                sortNo: 0.0,
+                status: 1,
                 description: ''
             },
             // 校验规则
@@ -328,6 +328,13 @@ new Vue({
                     return false;
                 }
             });
+        },
+        // 清空表单
+        clean(){
+            this.updateForm = {
+                sortNo: 0.0,
+                status: 1,
+            };
         }
     },
     created() {
