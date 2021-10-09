@@ -38,15 +38,4 @@ public interface IOrganizationService extends IService<Organization> {
      */
     OrganizationInfoVO queryById(final Long id);
 
-    /**
-     * 查询出最大的(靠后) 组织机构  最顶层的 \ 同一层的
-     *
-     * @param parentId - 父级标识
-     * @return OrganizationInfoVO - 最大的(靠后) 组织机构
-     * @author XinLau
-     * @creed The only constant is change ! ! !
-     * @since 2020/3/5 17:25
-     */
-    OrganizationInfoVO queryTopOrganization(final Long parentId);
-
 }

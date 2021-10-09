@@ -39,12 +39,6 @@ public class Organization extends BaseEntity implements Serializable {
     private String organizationName;
 
     /**
-     * 组织机构编号
-     */
-    @TableField(value = "organization_code")
-    private String organizationCode;
-
-    /**
      * 排序号
      */
     @TableField(value = "sort_no")

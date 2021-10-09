@@ -41,7 +41,7 @@ public class OrganizationEditDTO implements Serializable {
     /**
      * 排序号
      */
-    @ApiModelProperty(value = "排序号", required = true)
+    @ApiModelProperty(value = "排序号排序号", required = true)
     @NotNull(message = "排序号不能为空")
     private Double sortNo;
 

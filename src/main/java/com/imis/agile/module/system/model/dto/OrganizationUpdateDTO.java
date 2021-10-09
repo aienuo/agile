@@ -47,12 +47,6 @@ public class OrganizationUpdateDTO implements Serializable {
     private String organizationName;
 
     /**
-     * 组织机构编号
-     */
-    @ApiModelProperty(value = "组织机构编号", hidden = true)
-    private String organizationCode;
-
-    /**
      * 排序号
      */
     @ApiModelProperty(value = "排序号", required = true)

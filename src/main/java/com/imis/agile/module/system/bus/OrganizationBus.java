@@ -1,6 +1,5 @@
 package com.imis.agile.module.system.bus;
 
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.imis.agile.constant.base.BaseBus;
 import com.imis.agile.constant.enums.ArgumentResponseEnum;
@@ -17,7 +16,6 @@ import com.imis.agile.module.system.service.IUserOrganizationService;
 import com.imis.agile.response.BaseResponse;
 import com.imis.agile.response.CommonResponse;
 import com.imis.agile.util.AgileUtil;
-import com.imis.agile.util.SerialCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,29 +59,6 @@ public class OrganizationBus extends BaseBus {
     }
 
     /**
-     * 生成新的编号
-     *
-     * @param parentId   - 父级标识
-     * @param parentCode - 父级编号
-     * @return String[] - 编号
-     * @author XinLau
-     * @creed The only constant is change ! ! !
-     * @since 2020/6/6 17:26
-     */
-    private String[] generateCode(final Long parentId, final String parentCode) {
-        String maxCode = StringPool.EMPTY;
-        // 1、查询出最大的(靠后) CODE  最顶层的 \ 同一层的
-        OrganizationInfoVO maxOrganization = this.organizationService.queryTopOrganization(parentId);
-        if (AgileUtil.isNotEmpty(maxOrganization)) {
-            maxCode = maxOrganization.getOrganizationCode();
-        }
-        // 生成 CODE
-        String organizationCode = SerialCodeUtil.getNextSerialCode(parentCode, maxCode);
-        // 解析 CODE
-        return SerialCodeUtil.cuttingSerialCode(organizationCode);
-    }
-
-    /**
      * 添加校验
      *
      * @param add - 添加参数
@@ -93,63 +68,18 @@ public class OrganizationBus extends BaseBus {
      * @since 2020/3/9 9:47
      */
     private Organization organizationAddVerification(final OrganizationAddDTO add) {
-        String parentCode = StringPool.EMPTY;
         if (AgileUtil.isNotEmpty(add.getParentId())) {
             // 验证父级组织机构是否存在
             Organization parent = this.organizationService.getById(add.getParentId());
             ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_ADD_03.assertNotNull(parent);
-            parentCode = parent.getOrganizationCode();
         }
         // 验证 组织机构名称 是否存在重复
         Organization organization = this.organizationService.getOne(Wrappers.<Organization>lambdaQuery()
                 .eq(Organization::getOrganizationName, add.getOrganizationName())
                 .eq(AgileUtil.isNotEmpty(add.getParentId()), Organization::getParentId, add.getParentId()), Boolean.FALSE
         );
-        // 生成组织机构编码
-        String[] codeSpecimenArray = this.generateCode(add.getParentId(), parentCode);
-        String code = codeSpecimenArray[codeSpecimenArray.length - 1];
-        ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_ADD_01.assertIsTrue(AgileUtil.isNotEmpty(code));
         ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_ADD_02.assertIsNull(organization);
-        add.setOrganizationCode(code);
         return OrganizationConverter.INSTANCE.getAddEntity(add);
-    }
-
-    /**
-     * 重新构建组织机构编号数据
-     *
-     * @param code        - 原 - 组织机构编号
-     * @param oldParentId - 原 - 父级节点
-     * @param newParentId - 新 - 父级节点
-     * @author XinLau
-     * @creed The only constant is change ! ! !
-     * @since 2020/3/9 9:47
-     */
-    private String buildTheData(String code, final Long oldParentId, final Long newParentId) {
-        boolean newNull = AgileUtil.isNotEmpty(newParentId);
-        boolean oldNull = AgileUtil.isNotEmpty(oldParentId);
-        boolean notNull = newNull || oldNull;
-        // 默认不一致
-        boolean equals = Boolean.FALSE;
-        if (newNull) {
-            equals = newParentId.equals(oldParentId);
-        }
-        if (oldNull) {
-            equals = oldParentId.equals(newParentId);
-        }
-        String parentCode = StringPool.EMPTY;
-        if (notNull && !equals) {
-            if (newNull) {
-                // 验证父级组织机构是否存在
-                Organization parent = this.organizationService.getById(newParentId);
-                ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_03.assertNotNull(parent);
-                parentCode = parent.getOrganizationCode();
-            }
-            // 生成组织机构编码
-            String[] codeSpecimenArray = this.generateCode(newParentId, parentCode);
-            code = codeSpecimenArray[codeSpecimenArray.length - 1];
-            ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_01.assertIsTrue(AgileUtil.isNotEmpty(code));
-        }
-        return code;
     }
 
     /**
@@ -177,11 +107,6 @@ public class OrganizationBus extends BaseBus {
             );
             ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_04.assertIsNull(organizationById);
         }
-        // 原 - 组织机构编号
-        String code = organization.getOrganizationCode();
-        // 构建新 组织机构编码
-        String newCode = buildTheData(code, organization.getParentId(), update.getParentId());
-        update.setOrganizationCode(newCode);
         OrganizationConverter.INSTANCE.getUpdateEntity(organization, update);
         return organization;
     }
@@ -221,15 +146,10 @@ public class OrganizationBus extends BaseBus {
                 organization -> {
                     if (organizationEditMap.containsKey(organization.getId())) {
                         OrganizationEditDTO organizationEdit = organizationEditMap.get(organization.getId());
+                        // 新 排序号
                         organization.setSortNo(organizationEdit.getSortNo());
-                        // 原 - 组织机构编号
-                        String code = organization.getOrganizationCode();
-                        // 新父级组织机构
-                        Long newParentId = organizationEdit.getParentId();
-                        // 构建新 组织机构编码
-                        String newCode = buildTheData(code, organization.getParentId(), newParentId);
-                        organization.setOrganizationCode(newCode);
-                        organization.setParentId(newParentId);
+                        // 新 父级组织机构
+                        organization.setParentId(organizationEdit.getParentId());
                     }
                 }
         );

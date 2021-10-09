@@ -36,12 +36,6 @@ public class OrganizationTreeInfoVO extends BaseTreeVO implements Serializable {
     private String label;
 
     /**
-     * 组织机构编号
-     */
-    @ApiModelProperty(value = "组织机构编号")
-    private String code;
-
-    /**
      * 排序号
      */
     @ApiModelProperty(value = "排序号")
