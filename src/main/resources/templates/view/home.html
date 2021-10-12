@@ -21,8 +21,8 @@
                     <el-dropdown trigger="click" @command="handleCommand" style="margin-right: 12px; cursor: pointer">
                         <el-avatar icon="el-icon-user-solid" size="medium" :src="avatar"></el-avatar>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item command="userCenter">个人中心</el-dropdown-item>
-                            <el-dropdown-item command="logout" divided>注销</el-dropdown-item>
+                            <el-dropdown-item icon="el-icon-user" command="userCenter">个人中心</el-dropdown-item>
+                            <el-dropdown-item icon="el-icon-switch-button" command="logout" divided>注销登录</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </div>
