@@ -125,6 +125,103 @@
             </div>
         </el-dialog>
 
+        <el-dialog title="详情" width="90%" :visible.sync="detailDialog" :modal="false" :close-on-click-modal="false">
+            <el-form id="detail" :model="detailForm" ref="detailDialog" :rules="rules" label-width="100px">
+                <el-row>
+                    <el-col :span="20">
+                        <el-descriptions class="margin-top" :column="4" border>
+                            <el-descriptions-item>
+                                <template slot="label">
+                                    <i class="el-icon-user"></i>
+                                    真实姓名
+                                </template>
+                                {{ detailForm.realname }}
+                            </el-descriptions-item>
+                            <el-descriptions-item>
+                                <template slot="label">
+                                    性别
+                                </template>
+                                <el-tag v-if="detailForm.sex == 0" size="small">女</el-tag>
+                                <el-tag v-if="detailForm.sex == 1" size="small">男</el-tag>
+                                <el-tag v-if="detailForm.sex == 2" size="small">未知</el-tag>
+                            </el-descriptions-item>
+                            <el-descriptions-item>
+                                <template slot="label">
+                                    民族
+                                </template>
+                                <el-tag size="small">汉</el-tag>
+                            </el-descriptions-item>
+                            <el-descriptions-item>
+                                <template slot="label">
+                                    <i class="el-icon-date"></i>
+                                    出生年月
+                                </template>
+                                {{ detailForm.birthday }}
+                            </el-descriptions-item>
+                            <el-descriptions-item>
+                                <template slot="label">
+                                    政治面貌
+                                </template>
+                                <el-tag size="small">群众</el-tag>
+                            </el-descriptions-item>
+                            <el-descriptions-item span ="2">
+                                <template slot="label">
+                                    <i class="el-icon-postcard"></i>
+                                    身份证号
+                                </template>
+                                {{ detailForm.identityNumber }}
+                            </el-descriptions-item>
+                            <el-descriptions-item>
+                                <template slot="label">
+                                    婚姻状况
+                                </template>
+                                <el-tag size="small">未婚</el-tag>
+                            </el-descriptions-item>
+                            <el-descriptions-item span ="3">
+                                <template slot="label">
+                                    <i class="el-icon-office-building"></i>
+                                    现家庭住址
+                                </template>
+                                山东省泰安市高新区北集坡街道办事处南官庄村187号
+                            </el-descriptions-item>
+                            <el-descriptions-item>
+                                <template slot="label">
+                                    <i class="el-icon-location-outline"></i>
+                                    户口所在地
+                                </template>
+                                山东泰安岱岳区
+                            </el-descriptions-item>
+                            <el-descriptions-item span ="1.5">
+                                <template slot="label">
+                                    专业技术职称证书
+                                </template>
+
+                            </el-descriptions-item>
+                            <el-descriptions-item span ="1.5">
+                                <template slot="label">
+                                    国家注册师证书
+                                </template>
+
+                            </el-descriptions-item>
+                            <el-descriptions-item>
+                                <template slot="label">
+                                    工人技术等级证书
+                                </template>
+
+                            </el-descriptions-item>
+                        </el-descriptions>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-avatar size="medium" shape="square" :src="detailForm.avatar"  class="avatar"></el-avatar>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button icon="el-icon-circle-close" @click="detailDialog = false">取 消</el-button>
+                <el-button icon="el-icon-circle-check" type="primary" @click="printJS('detail', 'html')">打 印</el-button>
+            </div>
+        </el-dialog>
+
         <el-dialog title="修改" width="90%" :visible.sync="updateDialog" :modal="false" :close-on-click-modal="false">
             <el-form :model="updateForm" ref="updateForm" :rules="rules" label-width="100px">
                 <el-row>
@@ -222,9 +319,11 @@
     </template>
 </div>
 </body>
-<script type="text/javascript" src="/static/common/util/axios.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/common/print/print.min.css">
 <script type="text/javascript" src="/static/common/vue/vue.min.js"></script>
 <script type="text/javascript" src="/static/common/element/index.js"></script>
+<script type="text/javascript" src="/static/common/print/print.min.js"></script>
+<script type="text/javascript" src="/static/common/util/axios.min.js"></script>
 <script type="text/javascript" src="/static/common/api.js"></script>
 <script type="text/javascript" src="/static/common/module/sys/user.js"></script>
 <style>

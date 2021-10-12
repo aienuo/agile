@@ -8,7 +8,7 @@
 
 (function () {
 
-    var defaultConfig = {
+    const defaultConfig = {
         expires: '1d',
         path: '; path=/',
         domain: '',
@@ -16,7 +16,7 @@
         sameSite: '; SameSite=Lax'
     };
 
-    var VueCookies = {
+    const VueCookies = {
         // install of Vue
         install: function (Vue) {
             Vue.prototype.$cookies = this;
@@ -30,7 +30,7 @@
             defaultConfig.sameSite = sameSite ? '; SameSite=' + sameSite : '; SameSite=Lax';
         },
         get: function (key) {
-            var value = decodeURIComponent(document.cookie.replace(new RegExp('(?:(?:^|.*;)\\s*' + encodeURIComponent(key).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=\\s*([^;]*).*$)|^.*$'), '$1')) || null;
+            let value = decodeURIComponent(document.cookie.replace(new RegExp('(?:(?:^|.*;)\\s*' + encodeURIComponent(key).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=\\s*([^;]*).*$)|^.*$'), '$1')) || null;
 
             if (value && value.substring(0, 1) === '{' && value.substring(value.length - 1, value.length) === '}') {
                 try {
@@ -51,7 +51,7 @@
             if (value && value.constructor === Object) {
                 value = JSON.stringify(value);
             }
-            var _expires = '';
+            let _expires = '';
             expireTimes = expireTimes == undefined ? defaultConfig.expires : expireTimes;
             if (expireTimes && expireTimes != 0) {
                 switch (expireTimes.constructor) {
@@ -62,7 +62,7 @@
                     case String:
                         if (/^(?:\d+(y|m|d|h|min|s))$/i.test(expireTimes)) {
                             // get capture number group
-                            var _expireTime = expireTimes.replace(/^(\d+)(?:y|m|d|h|min|s)$/i, '$1');
+                            const _expireTime = expireTimes.replace(/^(\d+)(?:y|m|d|h|min|s)$/i, '$1');
                             // get capture type group , to lower case
                             switch (expireTimes.replace(/^(?:\d+)(y|m|d|h|min|s)$/i, '$1').toLowerCase()) {
                                 // Frequency sorting
@@ -121,7 +121,7 @@
         },
         keys: function () {
             if (!document.cookie) return [];
-            var _keys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, '').split(/\s*(?:\=[^;]*)?;\s*/);
+            const _keys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, '').split(/\s*(?:\=[^;]*)?;\s*/);
             for (var _index = 0; _index < _keys.length; _index++) {
                 _keys[_index] = decodeURIComponent(_keys[_index]);
             }

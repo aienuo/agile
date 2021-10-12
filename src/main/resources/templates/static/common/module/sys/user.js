@@ -56,6 +56,7 @@ new Vue({
                 avatar: '',
                 roleId: [],
             },
+            detailForm: {},
             updateForm: {
                 id: '',
                 username: '',
@@ -139,7 +140,7 @@ new Vue({
             return this.sexItem.find(item => item.value == row.sex).name
         },
         // 判断按钮权限
-        buttonPermissions(){
+        buttonPermissions() {
             let buttons = JSON.parse(localStorage.getItem("X-Data-Buttons-List"));
             this.button.insert = buttons.indexOf("/sys/user/add") > -1;
             this.button.freeze = buttons.indexOf("/sys/user/freeze") > -1;
@@ -302,7 +303,15 @@ new Vue({
         },
         // 开启详情表单
         openDetailDialog(row) {
-            alert("还没做呢!");
+            this.detailDialog = true;
+            axios.get('/sys/user/query/' + row.id)
+                .then((res) => {
+                    if (res.code === 6666) {
+                        this.detailForm = res.data;
+                    } else {
+                        this.$message.error(res.message);
+                    }
+                });
         },
         // 开启更新表单
         openUpdateDialog(row) {

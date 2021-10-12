@@ -23,8 +23,15 @@
                 <el-form-item prop="password">
                     <el-input prefix-icon="el-icon-lock" v-model="loginForm.password" placeholder="登录密码" @keyup.enter.native="login" show-password></el-input>
                 </el-form-item>
-                <el-form-item>
-                    <el-checkbox v-model="checked" class="rememberMe">记住密码</el-checkbox>
+                <el-form-item prop="remember">
+                    <el-row>
+                        <el-col :span="20">
+                            <el-checkbox v-model="loginForm.remember" class="rememberMe">记住密码</el-checkbox>
+                        </el-col>
+                        <el-col :span="4">
+                            <el-link type="danger" :underline="false" href="#">忘记密码</el-link>
+                        </el-col>
+                    </el-row>
                 </el-form-item>
                 <el-form-item style="width:100%;">
                     <el-button type="primary" style="width:100%;" @click="login" :loading="loading">登录</el-button>
@@ -34,10 +41,11 @@
     </template>
 </div>
 </body>
-<script type="text/javascript" src="/static/common/util/axios.min.js"></script>
-<script type="text/javascript" src="/static/common/util/vue-cookies.js"></script>
 <script type="text/javascript" src="/static/common/vue/vue.min.js"></script>
 <script type="text/javascript" src="/static/common/element/index.js"></script>
+<script type="text/javascript" src="/static/common/util/axios.min.js"></script>
+<script type="text/javascript" src="/static/common/util/vue-cookies.js"></script>
+<script type="text/javascript" src="/static/common/util/base64.min.js"></script>
 <script type="text/javascript" src="/static/common/api.js"></script>
 <script type="text/javascript">
     new Vue({
@@ -45,10 +53,10 @@
         data() {
             return {
                 loading: false,
-                checked: false,
                 loginForm: {
                     username: '',
-                    password: ''
+                    password: '',
+                    remember: false,
                 },
                 rules: {
                     username: [{required: true, message: '请输入登录账号', trigger: 'blur'}],
@@ -60,6 +68,20 @@
         beforeCreate: function () {
             if (self !== top) {
                 top.location.href = self.location.href;
+            }
+        },
+        created() {
+            // 在页面加载时从cookie获取登录信息
+            let accountCookies = this.$cookies.get("AGILE.COOKIE.ACCOUNT")
+            // 如果存在赋值给表单，并且将记住密码勾选
+            if (accountCookies) {
+                const account = Base64.decode(accountCookies);
+                if (account.indexOf("_") !== -1) {
+                    const login = account.split("_");
+                    this.loginForm.username = login[0];
+                    this.loginForm.password = Base64.decode(login[1]);
+                    this.loginForm.remember = true
+                }
             }
         },
         methods: {
@@ -74,11 +96,9 @@
                             if (res.code === 6666) {
                                 localStorage.setItem('X-Access-Token', JSON.stringify(res.data.token));
                                 localStorage.setItem('X-Data-User', JSON.stringify(res.data.user));
-                                if (this.checked) {
-                                    // const account = this.loginForm.username + "," + this.loginForm.password;
-                                    // console.log(account);
-                                    // console.log(this);
-                                    // this.$cookies.set("account", account, "30d");
+                                if (this.loginForm.remember) {
+                                    const account = this.loginForm.username + "_" + Base64.encode(this.loginForm.password);
+                                    this.$cookies.set("AGILE.COOKIE.ACCOUNT", Base64.encode(account), 60 * 60 * 24 * 30);
                                 }
                                 parent.location.href = '/view/home.html';
                             } else {
