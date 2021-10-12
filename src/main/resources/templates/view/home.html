@@ -15,7 +15,7 @@
     <template>
         <el-container class="index-container">
             <el-header class="index-header">
-                <span class="index-title" @click="toggleCollapse">主页</span>
+                <span class="index-title" @click="toggleCollapse">{{homeName}}</span>
                 <div class="index-login-user">
                     <span style="margin-right: 10px;">{{user.realname}}</span>
                     <el-dropdown trigger="click" @command="handleCommand" style="margin-right: 12px; cursor: pointer">
@@ -54,6 +54,7 @@
                                 <iframe :src="item.content" style="height: 715px;width: 100%;border: none"></iframe>
                             </el-tab-pane>
                         </el-tabs>
+                        hahha
                     </el-main>
                     <el-footer class="index-footer">
                         <el-link type="primary" icon="el-icon-hot-water" href="https://www.java.com/" :underline="false">Java</el-link>

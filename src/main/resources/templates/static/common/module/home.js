@@ -34,6 +34,7 @@ new Vue({
             }
         };
         return {
+            homeName: "主页哟",
             isCollapse: false,
             activePath: '',
             userCenterDialog: false,
