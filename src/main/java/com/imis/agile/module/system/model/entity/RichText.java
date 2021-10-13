@@ -18,8 +18,8 @@ import java.io.Serializable;
  * @since 2020-07-24
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 @TableName("sys_rich_text")
 public class RichText extends BaseEntity implements Serializable {
 

@@ -4,9 +4,6 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
 import com.imis.agile.constant.CommonConstant;
 import com.imis.agile.interceptor.AuthenticationInterceptor;
-import com.imis.agile.response.BaseResponse;
-import com.imis.agile.response.CommonResponse;
-import com.imis.agile.response.ErrorResponse;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -128,7 +125,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 // 添加将应用于所有操作的默认参数
                 .globalOperationParameters(getGlobalOperationParameters())
                 // 添加忽略类（不再生成 swaggerModel）
-                .ignoredParameterTypes(BaseResponse.class, CommonResponse.class, ErrorResponse.class)
+                // .ignoredParameterTypes(BaseResponse.class, CommonResponse.class, ErrorResponse.class)
                 // 进行插件赋值
                 .extensions(openApiExtensionResolver.buildExtensions(groupName))
                 ;

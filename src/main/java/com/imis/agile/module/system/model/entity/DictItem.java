@@ -19,8 +19,8 @@ import java.io.Serializable;
  * @since 2020-03-24
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 @TableName("sys_dict_item")
 public class DictItem extends BaseEntity implements Serializable {
 

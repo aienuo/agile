@@ -19,8 +19,8 @@ import java.io.Serializable;
  * @since 2020-03-18
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 @TableName("sys_menu")
 public class Menu extends BaseEntity implements Serializable {
 

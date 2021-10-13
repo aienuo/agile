@@ -18,8 +18,8 @@ import java.io.Serializable;
  * @since 2020-03-12
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 @TableName("sys_role")
 public class Role extends BaseEntity implements Serializable {
 

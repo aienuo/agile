@@ -36,8 +36,7 @@ public abstract class BaseEntity extends Model<BaseEntity> implements Serializab
     /**
      * ID
      */
-    @TableId(type = IdType.ASSIGN_ID)
-    @TableField(value = DataBaseConstant.P_KEY_FIELD)
+    @TableId(value = DataBaseConstant.P_KEY_FIELD, type = IdType.ASSIGN_ID)
     @ApiModelProperty(value = "ID")
     private Long id;
     /**

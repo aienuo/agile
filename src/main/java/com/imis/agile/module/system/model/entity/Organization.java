@@ -19,8 +19,8 @@ import java.io.Serializable;
  * @since 2020-04-22
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 @TableName("sys_organization")
 public class Organization extends BaseEntity implements Serializable {
 

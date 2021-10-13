@@ -18,8 +18,8 @@ import java.io.Serializable;
  * @since 2020-03-27
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 @TableName("sys_file")
 public class File extends BaseEntity implements Serializable {
 

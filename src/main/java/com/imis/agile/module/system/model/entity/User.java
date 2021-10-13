@@ -27,8 +27,8 @@ import java.time.LocalDate;
  * @since 2020-03-27
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 @TableName("sys_user")
 public class User extends BaseEntity implements Serializable {
 
