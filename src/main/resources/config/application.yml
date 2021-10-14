@@ -76,6 +76,3 @@ mybatis-plus:
     jdbc-type-for-null: 'null'
 logging:
   config: classpath:config/logbackConfig/logback-${spring.profiles.active}.xml
-  level:
-    root: ERROR
-    com.imis: INFO
