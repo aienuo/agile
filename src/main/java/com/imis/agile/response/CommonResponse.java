@@ -1,7 +1,6 @@
 package com.imis.agile.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,7 +22,6 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ApiModel(value = "通用返回结果", description = "通用返回结果")
 public class CommonResponse<T> extends BaseResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;

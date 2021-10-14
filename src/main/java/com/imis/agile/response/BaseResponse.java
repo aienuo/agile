@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.imis.agile.constant.IResponseEnum;
 import com.imis.agile.constant.enums.CommonResponseEnum;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,7 +25,6 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ApiModel(value = "基础返回结果", description = "基础返回结果")
 public class BaseResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;

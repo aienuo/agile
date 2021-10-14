@@ -2,7 +2,6 @@ package com.imis.agile.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.imis.agile.constant.enums.CommonResponseEnum;
-import io.swagger.annotations.ApiModel;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
@@ -19,7 +18,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ApiModel(value = "错误返回结果", description = "错误返回结果")
 public class ErrorResponse extends BaseResponse {
 
     public ErrorResponse() {
