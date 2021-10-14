@@ -1,6 +1,5 @@
 package com.imis.agile.config;
 
-import com.imis.agile.constant.enums.ArgumentResponseEnum;
 import com.imis.agile.constant.enums.CommonResponseEnum;
 import com.imis.agile.constant.enums.ServletResponseEnum;
 import com.imis.agile.exception.BaseException;
@@ -99,7 +98,7 @@ public class GlobalExceptionReturnConfig {
                     message.append(error.getDefaultMessage() == null ? "" : error.getDefaultMessage());
                 }
         );
-        return new ErrorResponse(ArgumentResponseEnum.COMMON_EXCEPTION.getCode(), message.substring(2));
+        return new ErrorResponse(message.substring(2));
     }
 
     /**
@@ -138,7 +137,7 @@ public class GlobalExceptionReturnConfig {
             // 当为生产环境, 不适合把具体的异常信息展示给用户, 比如404
             BaseException baseException = new BaseException(CommonResponseEnum.ERROR_500);
             String message = getMessage(baseException);
-            return new ErrorResponse(CommonResponseEnum.ERROR_500.getCode(), message);
+            return new ErrorResponse(message);
         }
         return new ErrorResponse(code, e.getMessage());
     }
@@ -156,9 +155,9 @@ public class GlobalExceptionReturnConfig {
             // 当为生产环境, 不适合把具体的异常信息展示给用户, 比如数据库异常信息.
             BaseException baseException = new BaseException(CommonResponseEnum.ERROR_500);
             String message = getMessage(baseException);
-            return new ErrorResponse(CommonResponseEnum.ERROR_500.getCode(), message);
+            return new ErrorResponse(message);
         }
-        return new ErrorResponse(CommonResponseEnum.ERROR_500.getCode(), e.getMessage());
+        return new ErrorResponse(e.getMessage());
     }
 
     /**

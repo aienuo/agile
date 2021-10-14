@@ -1,5 +1,6 @@
 package com.imis.agile.response;
 
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.imis.agile.constant.IResponseEnum;
 import com.imis.agile.constant.enums.CommonResponseEnum;
@@ -51,6 +52,13 @@ public class BaseResponse implements Serializable {
      */
     public BaseResponse(IResponseEnum responseEnum) {
         this(responseEnum.getCode(), responseEnum.getMessage());
+    }
+
+    /**
+     * @param responseEnum - IResponseEnum
+     */
+    public BaseResponse(IResponseEnum responseEnum, String message) {
+        this(responseEnum.getCode(), responseEnum.getMessage() + StringPool.COLON + message);
     }
 
     /**

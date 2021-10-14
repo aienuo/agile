@@ -1,6 +1,7 @@
 package com.imis.agile.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.imis.agile.constant.enums.CommonResponseEnum;
 import io.swagger.annotations.ApiModel;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -22,6 +23,13 @@ import lombok.experimental.Accessors;
 public class ErrorResponse extends BaseResponse {
 
     public ErrorResponse() {
+        // 默认创建失败的回应
+        super(CommonResponseEnum.ERROR_500);
+    }
+
+    public ErrorResponse(String message) {
+        // 默认创建失败的回应
+        super(CommonResponseEnum.ERROR_500, message);
     }
 
     public ErrorResponse(int code, String message) {
