@@ -31,7 +31,7 @@ public class DruidConfig {
     public ServletRegistrationBean<StatViewServlet> startViewServlet() {
         ServletRegistrationBean<StatViewServlet> servletRegistrationBean = new ServletRegistrationBean<>(new StatViewServlet(), "/druid/*");
         // IP白名单（没有配置或者为空，则允许所有访问）
-        servletRegistrationBean.addInitParameter("allow" , "127.0.0.1,192.168.137.1,192.168.1.114,192.168.1.1");
+        servletRegistrationBean.addInitParameter("allow" , "127.0.0.1,192.168.137.1,192.168.1.114,192.168.1.1,192.168.211.1");
         // IP黑名单（共同存在时，deny优先于allow）
         // servletRegistrationBean.addInitParameter("deny","127.0.0.1");
         // 控制台管理用户
