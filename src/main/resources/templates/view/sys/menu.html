@@ -10,11 +10,11 @@
     <template>
         <div style="margin-bottom:18px;">
             <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="button.insert" @click="openInsertDialog">新增</el-button>
-            <el-button type="primary" icon="el-icon-search" @click="submitQueryForm">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="submitQueryForm">刷新</el-button>
         </div>
 
         <el-table :data="tableData" :row-style="{height:'40px'}" :cell-style="{padding:'0px'}" :header-cell-style="{'text-align':'center'}" style="margin-bottom:10px;font-size: 14px"
-                  :default-sort="{prop: 'sortNo', order: 'descending'}" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="id" stripe border>
+                  :default-sort="{prop: 'sortNo', order: 'ascending'}" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="id" stripe border>
             <el-table-column prop="name" label="名称">
                 <template slot-scope="scope">
                     <i :class="scope.row.icon"></i>

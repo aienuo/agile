@@ -112,7 +112,7 @@
             id, parent_id, leaf_type, menu_type, name, icon, url, component, sort_no, status, description
         FROM
             <include refid="sys_menu_table_name"/>
-        ORDER BY sort_no
+        ORDER BY menu_type, sort_no
     </select>
 
     <!-- 2021年7月20日 14:36:07 ID查询 -->
