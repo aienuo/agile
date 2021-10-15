@@ -24,3 +24,11 @@ mybatis-plus:
 knife4j:
   enable: true
   production: true
+  setting:
+    enableDebug: false
+    enableSwaggerModels: false
+    enableAfterScript: false
+    enableDocumentManage: false
+    enableSearch: false
+    enableOpenApi: false
+    enableGroup: false
