@@ -6,14 +6,13 @@ import com.imis.agile.constant.CommonConstant;
 import com.imis.agile.constant.base.BaseBus;
 import com.imis.agile.constant.enums.ArgumentResponseEnum;
 import com.imis.agile.module.system.model.converter.UserConverter;
-import com.imis.agile.module.system.model.dto.PagingQueryUserDTO;
-import com.imis.agile.module.system.model.dto.ResetPasswordDTO;
-import com.imis.agile.module.system.model.dto.UserAddDTO;
-import com.imis.agile.module.system.model.dto.UserUpdateDTO;
+import com.imis.agile.module.system.model.dto.*;
 import com.imis.agile.module.system.model.entity.User;
+import com.imis.agile.module.system.model.entity.UserOrganization;
 import com.imis.agile.module.system.model.entity.UserRole;
 import com.imis.agile.module.system.model.vo.UserInfoVO;
 import com.imis.agile.module.system.model.vo.UserPageVO;
+import com.imis.agile.module.system.service.IUserOrganizationService;
 import com.imis.agile.module.system.service.IUserRoleService;
 import com.imis.agile.module.system.service.IUserService;
 import com.imis.agile.response.BaseResponse;
@@ -23,6 +22,7 @@ import com.imis.agile.util.IdCardUtil;
 import com.imis.agile.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -57,6 +57,16 @@ public class UserBus extends BaseBus {
     @Autowired
     public void setUserRoleService(IUserRoleService userRoleService) {
         this.userRoleService = userRoleService;
+    }
+
+    /**
+     * 用户组织机构关联 服务类
+     */
+    private IUserOrganizationService userOrganizationService;
+
+    @Autowired
+    public void setUserOrganizationService(IUserOrganizationService userOrganizationService) {
+        this.userOrganizationService = userOrganizationService;
     }
 
     /**
@@ -125,6 +135,8 @@ public class UserBus extends BaseBus {
         UserConverter.INSTANCE.getUpdateEntity(user, update);
         // 清除原来的 用户角色关联
         this.userRoleService.remove(Wrappers.<UserRole>lambdaQuery().eq(UserRole::getUserId, user.getId()));
+        // 清除原来的 用户组织机构关联
+        this.userOrganizationService.remove(Wrappers.<UserOrganization>lambdaQuery().eq(UserOrganization::getUserId, user.getId()));
         return user;
     }
 
@@ -151,18 +163,26 @@ public class UserBus extends BaseBus {
      * @creed The only constant is change ! ! !
      * @since 2020/3/5 17:25
      */
+    @Transactional(rollbackFor = Exception.class)
     public BaseResponse add(final UserAddDTO add) {
         // 1、添加校验
         User user = this.userAddVerification(add);
         // 2、创建新用户
         boolean save = this.userService.save(user);
         ArgumentResponseEnum.USER_VALID_ERROR_ADD_01.assertIsTrue(save);
-        // 3、更新用户角色关联
+        // 3、创建用户角色关联
         List<Long> roleList = add.getRoleList();
         if (AgileUtil.isNotEmpty(roleList)) {
             List<UserRole> userRoleList = UserConverter.INSTANCE.getUserRoleEntity(user.getId(), roleList);
             boolean saveUserRole = this.userRoleService.saveBatch(userRoleList);
             ArgumentResponseEnum.USER_VALID_ERROR_ADD_05.assertIsTrue(saveUserRole);
+        }
+        // 4、创建用户组织机构关联
+        List<UserOrganizationDTO> organizationList = add.getOrganizationList();
+        if (AgileUtil.isNotEmpty(roleList)) {
+            List<UserOrganization> userOrganizationList = UserConverter.INSTANCE.getUserOrganizationEntity(user.getId(), organizationList);
+            boolean saveUserOrganization = this.userOrganizationService.saveBatch(userOrganizationList);
+            ArgumentResponseEnum.USER_VALID_ERROR_ADD_06.assertIsTrue(saveUserOrganization);
         }
         return new CommonResponse<>();
     }
@@ -235,6 +255,7 @@ public class UserBus extends BaseBus {
      * @creed The only constant is change ! ! !
      * @since 2020/3/5 17:25
      */
+    @Transactional(rollbackFor = Exception.class)
     public BaseResponse updateById(final UserUpdateDTO update) {
         // 1、更新校验
         User user = this.userUpdateVerification(update);
@@ -247,6 +268,13 @@ public class UserBus extends BaseBus {
             List<UserRole> userRoleList = UserConverter.INSTANCE.getUserRoleEntity(user.getId(), roleList);
             boolean saveUserRole = this.userRoleService.saveBatch(userRoleList);
             ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_12.assertIsTrue(saveUserRole);
+        }
+        // 4、创建用户组织机构关联
+        List<UserOrganizationDTO> organizationList = update.getOrganizationList();
+        if (AgileUtil.isNotEmpty(roleList)) {
+            List<UserOrganization> userOrganizationList = UserConverter.INSTANCE.getUserOrganizationEntity(user.getId(), organizationList);
+            boolean saveUserOrganization = this.userOrganizationService.saveBatch(userOrganizationList);
+            ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_13.assertIsTrue(saveUserOrganization);
         }
         return new CommonResponse<>();
     }

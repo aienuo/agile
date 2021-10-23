@@ -23,7 +23,6 @@ spring:
   profiles:
     active: dev
   messages:
-    encoding: UTF-8
     basename: i18n/response
   jackson:
     default-property-inclusion: non_null

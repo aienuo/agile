@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.*;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
@@ -28,7 +28,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * <p>
@@ -131,6 +130,11 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 ;
     }
 
+    /**
+     * 添加资源处理程序
+     *
+     * @param resourceHandlerRegistry - 资源处理程序注册表
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry resourceHandlerRegistry) {
         resourceHandlerRegistry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
@@ -141,30 +145,20 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
     }
 
     /**
-     * addInterceptors方法中增加了一个国际化拦截器，会拦截前端_lang参数,因为localeResolver方法中实例化了CookieLocaleResolver对象，所以_lang参数会存在cookie中，所有的页面都可以从cookie中取到_lang参数。
-     * 你也可以使用SessionLocaleResolver将参数存到session。
+     * 权限拦截器
+     *
+     * @return AuthenticationInterceptor - 权限拦截器
      */
-    @Bean
-    public LocaleResolver localeResolver() {
-        CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
-        // 默认语言
-        cookieLocaleResolver.setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
-        return cookieLocaleResolver;
-    }
-
-    @Bean
-    public LocaleChangeInterceptor localeChangeInterceptor() {
-        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-        // 参数名
-        localeChangeInterceptor.setParamName("_lang");
-        return localeChangeInterceptor;
-    }
-
     @Bean
     public AuthenticationInterceptor authenticationInterceptor() {
         return new AuthenticationInterceptor();
     }
 
+    /**
+     * 跨域访问
+     *
+     * @param registry - Cors 注册表
+     */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         // 允许跨域访问的路径
@@ -181,14 +175,11 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 .allowCredentials(true);
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        // registry.addInterceptor(localeChangeInterceptor());
-        // registry.addInterceptor(authenticationInterceptor())
-        //         .addPathPatterns("/**")
-        //         .excludePathPatterns("/", "/error", "/static/**", "/webjars/**", "swagger-ui.html*", "/swagger-resources/**", "/doc.html*", "/login");
-    }
-
+    /**
+     * 添加视图控制器
+     *
+     * @param registry - 视图控制器注册表
+     */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");

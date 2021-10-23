@@ -3,13 +3,12 @@ package com.imis.agile.config;
 import com.imis.agile.constant.enums.CommonResponseEnum;
 import com.imis.agile.constant.enums.ServletResponseEnum;
 import com.imis.agile.exception.BaseException;
-import com.imis.agile.i18n.UnifiedMessageSource;
 import com.imis.agile.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.validation.BindException;
@@ -25,10 +24,14 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 
 /**
@@ -57,13 +60,16 @@ public class GlobalExceptionReturnConfig {
     private String profile;
 
     /**
-     * 全局I18N消息服务
+     * 用于解析消息的策略接口，支持此类消息的参数化和国际化
      */
-    private UnifiedMessageSource unifiedMessageSource;
+    @Resource
+    private MessageSource messageSource;
 
-    @Autowired
-    public void setUnifiedMessageSource(UnifiedMessageSource unifiedMessageSource) {
-        this.unifiedMessageSource = unifiedMessageSource;
+    /**
+     * 获取 HttpServletRequest
+     */
+    public static HttpServletRequest getHttpServletRequest() {
+        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 
     /**
@@ -73,12 +79,8 @@ public class GlobalExceptionReturnConfig {
      * @return String - 国际化消息
      */
     private String getMessage(final BaseException e) {
-        String code = "response." + e.getResponseEnum().toString();
-        String message = unifiedMessageSource.getMessage(code, e.getArgs());
-        if (message == null || message.isEmpty()) {
-            return e.getMessage();
-        }
-        return message;
+        String code = "response." + e.getResponseEnum().getCode();
+        return messageSource.getMessage(code, e.getArgs(), e.getMessage(), getHttpServletRequest().getLocale());
     }
 
     /**
@@ -136,7 +138,7 @@ public class GlobalExceptionReturnConfig {
         if (ENV_PROD.equals(profile)) {
             // 当为生产环境, 不适合把具体的异常信息展示给用户, 比如404
             BaseException baseException = new BaseException(CommonResponseEnum.ERROR_500);
-            String message = getMessage(baseException);
+            String message = this.getMessage(baseException);
             return new ErrorResponse(message);
         }
         return new ErrorResponse(code, e.getMessage());
@@ -154,7 +156,7 @@ public class GlobalExceptionReturnConfig {
         if (ENV_PROD.equals(profile)) {
             // 当为生产环境, 不适合把具体的异常信息展示给用户, 比如数据库异常信息.
             BaseException baseException = new BaseException(CommonResponseEnum.ERROR_500);
-            String message = getMessage(baseException);
+            String message = this.getMessage(baseException);
             return new ErrorResponse(message);
         }
         return new ErrorResponse(e.getMessage());
@@ -169,7 +171,7 @@ public class GlobalExceptionReturnConfig {
     @ExceptionHandler(BaseException.class)
     public ErrorResponse handleCustomizeException(BaseException e) {
         log.error(e.getMessage(), e);
-        return new ErrorResponse(e.getResponseEnum().getCode(), getMessage(e));
+        return new ErrorResponse(e.getResponseEnum().getCode(), this.getMessage(e));
     }
 
     /**

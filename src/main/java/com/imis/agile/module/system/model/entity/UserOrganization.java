@@ -40,7 +40,7 @@ public class UserOrganization extends BaseEntity implements Serializable {
     /**
      * 是否负责部门（0-不负责，1-负责）
      */
-    @TableField(value = "is_responsible")
-    private Integer isResponsible;
+    @TableField(value = "responsible")
+    private Integer responsible;
 
 }

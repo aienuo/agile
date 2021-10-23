@@ -494,7 +494,7 @@ CREATE TABLE `sys_user_organization`
     `id`              bigint(20)                                            NOT NULL COMMENT '主键',
     `user_id`         bigint(20)                                            NOT NULL COMMENT '用户编号',
     `organization_id` bigint(20)                                            NOT NULL COMMENT '组织机构编号',
-    `is_responsible`  tinyint(1)                                            NOT NULL DEFAULT 0 COMMENT '是否负责部门（0-不负责，1-负责）',
+    `responsible`     tinyint(1)                                            NOT NULL DEFAULT 0 COMMENT '是否负责部门（0-不负责，1-负责）',
     `create_by`       varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '创建人',
     `create_time`     datetime                                              NOT NULL COMMENT '创建时间',
     `update_by`       varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL     DEFAULT NULL COMMENT '更新人',

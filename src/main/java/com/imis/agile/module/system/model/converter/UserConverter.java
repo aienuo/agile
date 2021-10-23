@@ -3,8 +3,10 @@ package com.imis.agile.module.system.model.converter;
 import com.imis.agile.constant.DataBaseConstant;
 import com.imis.agile.module.api.model.vo.UserVO;
 import com.imis.agile.module.system.model.dto.UserAddDTO;
+import com.imis.agile.module.system.model.dto.UserOrganizationDTO;
 import com.imis.agile.module.system.model.dto.UserUpdateDTO;
 import com.imis.agile.module.system.model.entity.User;
+import com.imis.agile.module.system.model.entity.UserOrganization;
 import com.imis.agile.module.system.model.entity.UserRole;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -133,6 +135,25 @@ public interface UserConverter {
                 roleId -> userRoleList.add(new UserRole().setUserId(userId).setRoleId(roleId))
         );
         return userRoleList;
+    }
+
+    /**
+     * 用户组织机构关联
+     *
+     * @param userId             - 用户编号
+     * @param organizationIdList - 组织机构列表
+     * @return List<UserOrganization> - 用户组织机构关联
+     */
+    default List<UserOrganization> getUserOrganizationEntity(final Long userId, final List<UserOrganizationDTO> organizationIdList) {
+        List<UserOrganization> userOrganizationList = new ArrayList<>();
+        organizationIdList.forEach(
+                organization -> userOrganizationList.add(
+                        new UserOrganization().setUserId(userId)
+                                .setOrganizationId(organization.getOrganizationId())
+                                .setResponsible(organization.getResponsible())
+                )
+        );
+        return userOrganizationList;
     }
 
 }

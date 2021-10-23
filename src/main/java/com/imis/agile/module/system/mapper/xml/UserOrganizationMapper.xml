@@ -4,7 +4,7 @@
     <!-- 用户组织机构关联 通用查询结果列 -->
     <sql id="sys_user_organization_base_column_list">
         <!--@sql SELECT -->
-        id,create_by, create_time, update_by, update_time, user_id, organization_id, is_responsible
+        id,create_by, create_time, update_by, update_time, user_id, organization_id, responsible
         <!--@sql FROM sys_user_organization -->
     </sql>
 
