@@ -56,7 +56,7 @@
                         <el-col :span="10">
                             <el-form-item label="上级机构" prop="parentId">
                                 <el-cascader v-model="updateForm.parentId" :options="parentOrganization"
-                                             :props="{value:'id', label:'label', checkStrictly:true, expandTrigger:'hover', emitPath:false}"
+                                             :props="{value:'id', label:'label', expandTrigger:'hover', checkStrictly:true, emitPath:false}"
                                              :show-all-levels="true" filterable clearable>
                                     <template slot-scope="{ node, data }">
                                         <span>{{ data.label }}</span>
@@ -111,7 +111,7 @@
                     <el-col v-else :span="10">
                         <el-form-item label="上级机构" prop="parentId">
                             <el-cascader v-model="insertForm.parentId" :options="parentOrganization"
-                                         :props="{value:'id', label:'label', checkStrictly:true, expandTrigger:'hover', emitPath:false}"
+                                         :props="{value:'id', label:'label', expandTrigger:'hover', checkStrictly:true, emitPath:false}"
                                          :show-all-levels="true" filterable clearable>
                                 <template slot-scope="{ node, data }">
                                     <span>{{ data.label }}</span>
