@@ -41,6 +41,11 @@ public interface CommonConstant {
     String UPLOAD_TYPE_LOCAL = "local";
 
     /**
+     * response.前缀
+     */
+    String RESPONSE_I18N_PREFIX = "response.";
+
+    /**
      * 标准日期格式：yyyy-MM-dd
      */
     String NORM_DATE_PATTERN = "yyyy-MM-dd";

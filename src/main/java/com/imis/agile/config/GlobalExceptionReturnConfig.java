@@ -1,5 +1,7 @@
 package com.imis.agile.config;
 
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import com.imis.agile.constant.CommonConstant;
 import com.imis.agile.constant.enums.CommonResponseEnum;
 import com.imis.agile.constant.enums.ServletResponseEnum;
 import com.imis.agile.exception.BaseException;
@@ -33,6 +35,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
+import java.util.Objects;
 
 /**
  * <p>
@@ -69,7 +72,7 @@ public class GlobalExceptionReturnConfig {
      * 获取 HttpServletRequest
      */
     public static HttpServletRequest getHttpServletRequest() {
-        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
     }
 
     /**
@@ -79,7 +82,7 @@ public class GlobalExceptionReturnConfig {
      * @return String - 国际化消息
      */
     private String getMessage(final BaseException e) {
-        String code = "response." + e.getResponseEnum().getCode();
+        String code = CommonConstant.RESPONSE_I18N_PREFIX + e.getResponseEnum().getCode();
         return messageSource.getMessage(code, e.getArgs(), e.getMessage(), getHttpServletRequest().getLocale());
     }
 
@@ -93,11 +96,11 @@ public class GlobalExceptionReturnConfig {
         StringBuilder message = new StringBuilder();
         bindingResult.getAllErrors().forEach(
                 error -> {
-                    message.append(", ");
+                    message.append(StringPool.COMMA).append(StringPool.SPACE);
                     if (error instanceof FieldError) {
-                        message.append(((FieldError) error).getField()).append(": ");
+                        message.append(((FieldError) error).getField()).append(StringPool.COLON).append(StringPool.SPACE);
                     }
-                    message.append(error.getDefaultMessage() == null ? "" : error.getDefaultMessage());
+                    message.append(error.getDefaultMessage() == null ? StringPool.EMPTY : error.getDefaultMessage());
                 }
         );
         return new ErrorResponse(message.substring(2));
