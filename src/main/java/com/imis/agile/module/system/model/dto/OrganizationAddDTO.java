@@ -36,21 +36,21 @@ public class OrganizationAddDTO implements Serializable {
      * 组织机构名称
      */
     @ApiModelProperty(value = "组织机构名称", required = true)
-    @NotBlank(message = "菜单名称不能为空")
+    @NotBlank
     private String organizationName;
 
     /**
      * 排序号
      */
     @ApiModelProperty(value = "排序号", required = true)
-    @NotNull(message = "排序号不能为空")
+    @NotNull
     private Double sortNo;
 
     /**
      * 冻结状态(0-正常，1-冻结）
      */
     @ApiModelProperty(value = "冻结状态(0-正常，1-冻结）", required = true)
-    @NotNull(message = "冻结状态不能为空")
+    @NotNull
     private Integer status;
 
     /**

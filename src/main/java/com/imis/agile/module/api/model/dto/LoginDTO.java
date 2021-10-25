@@ -21,11 +21,11 @@ import javax.validation.constraints.NotBlank;
 public class LoginDTO {
 
     @ApiModelProperty(value = "账号", required = true)
-    @NotBlank(message = "帐号输入不正确")
+    @NotBlank
     private String username;
 
     @ApiModelProperty(value = "密码", required = true)
-    @NotBlank(message = "密码错误")
+    @NotBlank
     private String password;
 
     @ApiModelProperty(value = "验证码")

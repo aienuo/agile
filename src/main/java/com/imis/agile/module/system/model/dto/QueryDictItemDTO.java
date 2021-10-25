@@ -34,7 +34,7 @@ public class QueryDictItemDTO implements Serializable {
      * 字典 - 项编号
      */
     @ApiModelProperty(value = "字典 - 项编号", required = true)
-    @NotNull(message = "字典 - 项编号不能为空")
+    @NotNull
     private Long dictId;
 
     /**

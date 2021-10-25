@@ -34,22 +34,22 @@ public class UserUpdateDTO implements Serializable {
      * 用户编号
      */
     @ApiModelProperty(value = "用户编号", required = true)
-    @NotNull(message = "用户编号不能为空")
+    @NotNull
     private Long id;
 
     /**
      * 用户名称
      */
     @ApiModelProperty(value = "用户名称", required = true)
-    @NotBlank(message = "用户名称不能为空")
+    @NotBlank
     private String realname;
 
     /**
      * 身份证号
      */
     @ApiModelProperty(value = "身份证号", required = true)
-    @NotBlank(message = "身份证号不能为空")
-    @Pattern(regexp = "(^\\d{8}(0\\d|10|11|12)([0-2]\\d|30|31)\\d{3}$)|(^\\d{6}(18|19|20)\\d{2}(0\\d|10|11|12)([0-2]\\d|30|31)\\d{3}(\\d|X|x)$)", message = "身份证号格式错误")
+    @NotBlank
+    @Pattern(regexp = "(^\\d{8}(0\\d|10|11|12)([0-2]\\d|30|31)\\d{3}$)|(^\\d{6}(18|19|20)\\d{2}(0\\d|10|11|12)([0-2]\\d|30|31)\\d{3}(\\d|X|x)$)")
     private String identityNumber;
 
     /**
@@ -67,14 +67,14 @@ public class UserUpdateDTO implements Serializable {
      * 电子邮箱
      */
     @ApiModelProperty(value = "电子邮箱")
-    @Email(message = "电子邮箱格式错误")
+    @Email
     private String email;
 
     /**
      * 手机号码
      */
     @ApiModelProperty(value = "手机号码")
-    @Pattern(regexp = "^(?:(?:\\+|00)86)?1(?:(?:3[\\d])|(?:4[5-7|9])|(?:5[0-3|5-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\\d])|(?:9[1|8|9]))\\d{8}$", message = "手机号码格式错误")
+    @Pattern(regexp = "^(?:(?:\\+|00)86)?1(?:(?:3[\\d])|(?:4[5-7|9])|(?:5[0-3|5-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\\d])|(?:9[1|8|9]))\\d{8}$")
     private String phone;
 
     /**

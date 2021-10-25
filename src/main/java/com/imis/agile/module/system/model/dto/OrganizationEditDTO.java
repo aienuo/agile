@@ -29,7 +29,7 @@ public class OrganizationEditDTO implements Serializable {
      * 组织机构编号
      */
     @ApiModelProperty(value = "组织机构编号", required = true)
-    @NotNull(message = "组织机构编号不能为空")
+    @NotNull
     private Long id;
 
     /**s
@@ -42,7 +42,7 @@ public class OrganizationEditDTO implements Serializable {
      * 排序号
      */
     @ApiModelProperty(value = "排序号排序号", required = true)
-    @NotNull(message = "排序号不能为空")
+    @NotNull
     private Double sortNo;
 
 }

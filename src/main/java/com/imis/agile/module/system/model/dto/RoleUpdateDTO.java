@@ -31,14 +31,14 @@ public class RoleUpdateDTO implements Serializable {
      * 角色编号
      */
     @ApiModelProperty(value = "角色编号", required = true)
-    @NotNull(message = "角色编号不能为空")
+    @NotNull
     private Long id;
 
     /**
      * 角色名称
      */
     @ApiModelProperty(value = "角色名称", required = true)
-    @NotBlank(message = "角色名称不能为空")
+    @NotBlank
     private String roleName;
 
     /**

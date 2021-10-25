@@ -33,29 +33,29 @@ public class UserAddDTO implements Serializable {
      * 登录账号
      */
     @ApiModelProperty(value = "登录账号", required = true)
-    @NotBlank(message = "登录账号不能为空")
+    @NotBlank
     private String username;
 
     /**
      * 登录密码
      */
     @ApiModelProperty(value = "登录密码", required = true)
-    @NotBlank(message = "登录密码不能为空")
+    @NotBlank
     private String password;
 
     /**
      * 用户名称
      */
     @ApiModelProperty(value = "用户名称", required = true)
-    @NotBlank(message = "用户名称不能为空")
+    @NotBlank
     private String realname;
 
     /**
      * 身份证号
      */
     @ApiModelProperty(value = "身份证号", required = true)
-    @NotBlank(message = "身份证号不能为空")
-    @Pattern(regexp = "(^\\d{8}(0\\d|10|11|12)([0-2]\\d|30|31)\\d{3}$)|(^\\d{6}(18|19|20)\\d{2}(0\\d|10|11|12)([0-2]\\d|30|31)\\d{3}(\\d|X|x)$)", message = "身份证号格式错误")
+    @NotBlank
+    @Pattern(regexp = "(^\\d{8}(0\\d|10|11|12)([0-2]\\d|30|31)\\d{3}$)|(^\\d{6}(18|19|20)\\d{2}(0\\d|10|11|12)([0-2]\\d|30|31)\\d{3}(\\d|X|x)$)")
     private String identityNumber;
 
     /**
@@ -78,7 +78,7 @@ public class UserAddDTO implements Serializable {
      * 电子邮箱
      */
     @ApiModelProperty(value = "电子邮箱")
-    @Email(message = "电子邮箱格式错误")
+    @Email
     private String email;
 
     /**

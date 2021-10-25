@@ -21,15 +21,15 @@ import javax.validation.constraints.NotBlank;
 public class PasswordUpdateDTO {
 
     @ApiModelProperty(value = "登录账号", required = true)
-    @NotBlank(message = "登录账号不存在")
+    @NotBlank
     private String username;
 
     @ApiModelProperty(value = "旧密码", required = true)
-    @NotBlank(message = "请填写旧密码")
+    @NotBlank
     private String oldPassword;
 
     @ApiModelProperty(value = "新密码", required = true)
-    @NotBlank(message = "请填写新密码")
+    @NotBlank
     private String newPassword;
 
     @ApiModelProperty(value = "验证码")

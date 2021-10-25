@@ -28,21 +28,21 @@ public class DictUpdateDTO implements Serializable {
      * 字典 - 项编号
      */
     @ApiModelProperty(value = "字典 - 项编号", required = true)
-    @NotNull(message = "字典 - 项编号不能为空")
+    @NotNull
     private Long id;
 
     /**
      * 字典名称
      */
     @ApiModelProperty(value = "字典名称", required = true)
-    @NotBlank(message = "字典名称不能为空")
+    @NotBlank
     private String dictName;
 
     /**
      * 字典编码
      */
     @ApiModelProperty(value = "字典编码", required = true)
-    @NotBlank(message = "字典编码不能为空")
+    @NotBlank
     private String dictCode;
 
     /**

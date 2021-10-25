@@ -30,7 +30,7 @@ public class RoleAddDTO implements Serializable {
      * 角色名称
      */
     @ApiModelProperty(value = "角色名称", required = true)
-    @NotBlank(message = "角色名称不能为空")
+    @NotBlank
     private String roleName;
     /**
      * 角色编号

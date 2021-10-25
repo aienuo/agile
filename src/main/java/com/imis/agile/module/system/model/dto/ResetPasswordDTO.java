@@ -26,11 +26,11 @@ public class ResetPasswordDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "用户编号", required = true)
-    @NotNull(message = "用户编号不能为空")
+    @NotNull
     private Long userId;
 
     @ApiModelProperty(value = "新密码", required = true)
-    @NotBlank(message = "密码不能为空")
+    @NotBlank
     private String newPassword;
 
     @ApiModelProperty(value = "验证码")

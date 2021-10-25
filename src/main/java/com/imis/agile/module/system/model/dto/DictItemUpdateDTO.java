@@ -28,14 +28,14 @@ public class DictItemUpdateDTO implements Serializable {
      * 字典 - 值编号
      */
     @ApiModelProperty(value = "字典 - 值编号", required = true)
-    @NotNull(message = "字典 - 值编号不能为空")
+    @NotNull
     private Long id;
 
     /**
      * 字典 - 项编号
      */
     @ApiModelProperty(value = "字典 - 项编号", required = true)
-    @NotNull(message = "字典 - 项编号不能为空")
+    @NotNull
     private Long dictId;
 
     /**
@@ -48,7 +48,7 @@ public class DictItemUpdateDTO implements Serializable {
      * 字典项文本
      */
     @ApiModelProperty(value = "字典项文本", required = true)
-    @NotBlank(message = "字典项文本不能为空")
+    @NotBlank
     private String name;
 
     /**
@@ -67,7 +67,7 @@ public class DictItemUpdateDTO implements Serializable {
      * 排序
      */
     @ApiModelProperty(value = "排序", required = true)
-    @NotNull(message = "排序号不能为空")
+    @NotNull
     private Double sortNo;
 
     /**

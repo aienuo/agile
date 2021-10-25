@@ -58,7 +58,7 @@ public class MenuAddDTO implements Serializable {
      * 菜单名称
      */
     @ApiModelProperty(value = "菜单名称", required = true)
-    @NotBlank(message = "菜单名称不能为空")
+    @NotBlank
     private String name;
 
     /**
@@ -83,14 +83,14 @@ public class MenuAddDTO implements Serializable {
      * 菜单排序
      */
     @ApiModelProperty(value = "菜单排序", required = true)
-    @NotNull(message = "排序号不能为空")
+    @NotNull
     private Double sortNo;
 
     /**
      * 按钮权限冻结状态(0-正常，1-冻结）
      */
     @ApiModelProperty(value = "按钮权限冻结状态(0-正常，1-冻结）", required = true)
-    @NotNull(message = "冻结状态不能为空")
+    @NotNull
     private Integer status;
 
     /**

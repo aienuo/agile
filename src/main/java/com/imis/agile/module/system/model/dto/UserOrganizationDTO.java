@@ -27,7 +27,7 @@ public class UserOrganizationDTO {
      * 组织机构编号
      */
     @ApiModelProperty(value = "组织机构编号", required = true)
-    @NotNull(message = "组织机构编号不能为空")
+    @NotNull
     private Long organizationId;
 
     /**
