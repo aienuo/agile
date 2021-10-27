@@ -110,11 +110,11 @@ public class WebSocketServer {
      */
     public void sendMessageToUser(final MessageData messageData) {
         if (AgileUtil.isNotEmpty(messageData)) {
-            Session session = sessionPool.get(messageData.getPosition());
+            Session session = sessionPool.get(messageData.getReceiver());
             if (AgileUtil.isNotEmpty(session) && session.isOpen()) {
                 try {
                     log.info("【WebSocket】 进行消息发送: {}", messageData);
-                    session.getAsyncRemote().sendText(messageData.toString());
+                    session.getAsyncRemote().sendText(AgileUtil.classToString(messageData));
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
                 }

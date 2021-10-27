@@ -67,16 +67,4 @@ public class MessageData implements Serializable {
     @ApiModelProperty(value = "自定义弹出位置(top-right/top-left/bottom-right/bottom-left)")
     private String position;
 
-    @Override
-    public String toString() {
-        return "{ " +
-                "\"title\" : \"" + this.getTitle()
-                + "\", \"message\" : \"" + this.getMessage()
-                + "\", \"html\" : " + this.getHtml()
-                + ", \"type\" : \"" + this.getType()
-                + "\", \"duration\" : " + this.getDuration()
-                + ", \"position\" : \"" + this.getPosition()
-                + "\" }";
-    }
-
 }

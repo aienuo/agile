@@ -139,15 +139,7 @@ new Vue({
                 this.userCenterDialog = true;
                 const user = JSON.parse(localStorage.getItem("X-Data-User"));
                 this.passwordForm.username = user.username;
-                this.updateForm.username = user.username;
-                this.updateForm.realname = user.realname;
-                this.updateForm.identityNumber = user.identityNumber;
-                this.updateForm.email = user.email;
-                this.updateForm.phone = user.phone;
-                this.updateForm.avatar = user.avatar;
-                this.updateForm.birthday = user.birthday;
-                this.updateForm.sex = user.sex;
-                this.updateForm.age = user.age;
+                this.updateForm = user;
             }
         },
         addTab(tabName, tabUrl) {
@@ -281,7 +273,9 @@ new Vue({
             this.$message.error("WebSocket 发生了错误事件");
         },
         getMessage: function (messageEvent) {
+            console.log(messageEvent.data);
             const data = JSON.parse(messageEvent.data);
+            console.log(data);
             this.$notify({
                 title: data.title,
                 message: data.message,
