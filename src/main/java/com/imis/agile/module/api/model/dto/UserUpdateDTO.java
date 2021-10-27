@@ -25,6 +25,7 @@ import java.time.LocalDate;
 @ApiModel(value = "用户中心 - 用户自助更新参数", description = "用户中心 - 用户自助更新参数")
 @EqualsAndHashCode(callSuper = false)
 public class UserUpdateDTO implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     /**

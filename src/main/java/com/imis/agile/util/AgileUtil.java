@@ -1,5 +1,10 @@
 package com.imis.agile.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.Map;
@@ -14,7 +19,13 @@ import java.util.Map;
  * @version 1.0
  * @since 2021年07月19日 16:47
  */
+@Slf4j
 public class AgileUtil {
+
+    /**
+     * ObjectMapper 提供读取和写入 JSON 的功能
+     */
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     /**
      * 判断指定对象是否为空，支持：
@@ -103,5 +114,39 @@ public class AgileUtil {
         return isNotEmpty(object) && object.toString().chars().allMatch(Character::isDigit);
     }
 
+    /**
+     * JSON字符串转对象
+     *
+     * @param jsonString - JSON对象
+     * @param clazz      - Class<T>
+     * @return Class<T> - 对象
+     */
+    public static <T> T stringToClass(final String jsonString, final Class<T> clazz) {
+        if (isNotEmpty(jsonString) && clazz != null) {
+            try {
+                return clazz.equals(String.class) ? (T) jsonString : OBJECT_MAPPER.readValue(jsonString, clazz);
+            } catch (IOException e) {
+                log.error(e.getMessage(), e);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 对象转JSON字符串
+     *
+     * @param clazz - Class<T>
+     * @return String - JSON字符串
+     */
+    public static <T> String classToString(final T clazz) {
+        if (clazz != null) {
+            try {
+                return clazz instanceof String ? (String) clazz : OBJECT_MAPPER.writeValueAsString(clazz);
+            } catch (JsonProcessingException e) {
+                log.error(e.getMessage(), e);
+            }
+        }
+        return null;
+    }
 
 }

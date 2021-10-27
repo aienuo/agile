@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -24,7 +25,9 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ApiModel(value = "字典项 - 查询返回值", description = "字典项 - 查询返回值")
-public class DictVO {
+public class DictVO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * ID

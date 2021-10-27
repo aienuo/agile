@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 /**
  * 用户登录表单对象 DTO
@@ -18,7 +19,9 @@ import javax.validation.constraints.NotBlank;
 @ApiModel(value = "登录对象", description = "登录对象")
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class LoginDTO {
+public class LoginDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "账号", required = true)
     @NotBlank
