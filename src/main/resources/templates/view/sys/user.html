@@ -138,657 +138,230 @@
         </el-dialog>
 
         <el-dialog title="详情" width="80%" :visible.sync="detailDialog" :modal="false" :close-on-click-modal="false">
-            <!--<template>
-                <div ref="print">
-                    <div style="margin:0 auto;">
-                        <table class="table table-striped table-bordered" align="center" valign="center">
-                            <tr>
-                                <td class="column" colspan="9">泰晟环境服务（山东）有限公司应聘登记表</td>
-                            </tr>
-                            <tr>
-                                <td class="column">姓名</td>
-                                <td class="value"></td>
-                                <td class="column">性别</td>
-                                <td class="value"></td>
-                                <td class="column">民族</td>
-                                <td class="value">汉</td>
-                                <td class="column">出生年月</td>
-                                <td class="value"></td>
-                                <td class="value" rowspan="3"></td>
-                            </tr>
-                            <tr>
-                                <td class="column">政治面貌</td>
-                                <td class="value"></td>
-                                <td class="column">身份证号</td>
-                                <td class="value" colspan="3"></td>
-                                <td class="column">婚姻状况</td>
-                                <td class="value"></td>
-                                &lt;!&ndash;<td class="value"></td>&ndash;&gt;
-                            </tr>
-                            <tr>
-                                <td class="column">现家庭地址</td>
-                                <td class="value" colspan="4"></td>
-                                <td class="column">户口所在地</td>
-                                <td class="value" colspan="2"></td>
-                                &lt;!&ndash;<td class="value"></td>&ndash;&gt;
-                            </tr>
-                            <tr>
-                                <td class="column">专业职称证书</td>
-                                <td class="value" colspan="2"></td>
-                                <td class="column">国家注册师证书</td>
-                                <td class="value" colspan="2"></td>
-                                <td class="column">工人等级技术证书</td>
-                                <td class="value" colspan="2"></td>
-                            </tr>
-                            <tr>
-                                <td class="column" rowspan="4">教育经历</td>
-                                <td class="column">学历信息</td>
-                                <td class="column" colspan="2">毕业院校</td>
-                                <td class="column" colspan="2">专业</td>
-                                <td class="column">学历</td>
-                                <td class="column" colspan="2">学习时间</td>
-                            </tr>
-                            <tr>
-                                &lt;!&ndash;<td class="column"></td>&ndash;&gt;
-                                <td class="column">全日制</td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value"></td>
-                                <td class="value" colspan="2"></td>
-                            </tr>
-                            <tr>
-                                &lt;!&ndash;<td class="column"></td>&ndash;&gt;
-                                <td class="column">自学考试</td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value"></td>
-                                <td class="value" colspan="2"></td>
-                            </tr>
-                            <tr>
-                                &lt;!&ndash;<td class="column"></td>&ndash;&gt;
-                                <td class="column">在职成人教育</td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value"></td>
-                                <td class="value" colspan="2"></td>
-                            </tr>
-                            <tr>
-                                <td class="column" rowspan="6">工作经历</td>
-                                <td class="column" colspan="2">工作单位</td>
-                                <td class="column">职务（职位）</td>
-                                <td class="column" colspan="2">工作时间</td>
-                                <td class="column" colspan="3">离职原因</td>
-                            </tr>
-                            <tr>
-                                &lt;!&ndash;<td class="column"></td>&ndash;&gt;
-                                <td class="value" colspan="2"></td>
-                                <td class="value"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="3"></td>
-                            </tr>
-                            <tr>
-                                &lt;!&ndash;<td class="column"></td>&ndash;&gt;
-                                <td class="value" colspan="2"></td>
-                                <td class="value"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="3"></td>
-                            </tr>
-                            <tr>
-                                &lt;!&ndash;<td class="column"></td>&ndash;&gt;
-                                <td class="value" colspan="2"></td>
-                                <td class="value"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="3"></td>
-                            </tr>
-                            <tr>
-                                &lt;!&ndash;<td class="column"></td>&ndash;&gt;
-                                <td class="value" colspan="2"></td>
-                                <td class="value"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="3"></td>
-                            </tr>
-                            <tr>
-                                &lt;!&ndash;<td class="column"></td>&ndash;&gt;
-                                <td class="value" colspan="2"></td>
-                                <td class="value"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="3"></td>
-                            </tr>
-                            <tr>
-                                <td class="column" rowspan="6">家庭主要成员及社会关系</td>
-                                <td class="column">基本信息</td>
-                                <td class="column" colspan="2">工作单位</td>
-                                <td class="column" colspan="2">政治面貌</td>
-                                <td class="column" colspan="2">职务（职位）</td>
-                                <td class="column">年龄</td>
-                            </tr>
-                            <tr>
-                                &lt;!&ndash;<td class="column"></td>&ndash;&gt;
-                                <td class="column">父亲</td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value"></td>
-                            </tr>
-                            <tr>
-                                &lt;!&ndash;<td class="column"></td>&ndash;&gt;
-                                <td class="column">母亲</td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value"></td>
-                            </tr>
-                            <tr>
-                                &lt;!&ndash;<td class="column"></td>&ndash;&gt;
-                                <td class="column">配偶</td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value"></td>
-                            </tr>
-                            <tr>
-                                &lt;!&ndash;<td class="column"></td>&ndash;&gt;
-                                <td class="column">子女</td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value"></td>
-                            </tr>
-                            <tr>
-                                &lt;!&ndash;<td class="column"></td>&ndash;&gt;
-                                <td class="value"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value" colspan="2"></td>
-                                <td class="value"></td>
-                            </tr>
-                            <tr>
-                                <td class="column">主要工作业绩</td>
-                                <td class="value" colspan="8"></td>
-                            </tr>
-                            <tr>
-                                <td class="column">所受奖励情况</td>
-                                <td class="value" colspan="8"></td>
-                            </tr>
-                            <tr>
-                                <td class="column">所受处分（处罚）情况</td>
-                                <td class="value" colspan="8"></td>
-                            </tr>
-                            <tr>
-                                <td class="column">特长</td>
-                                <td class="value" colspan="8"></td>
-                            </tr>
-                            <tr>
-                                <td class="column" rowspan=2">本人电话</td>
-                                <td class="column">手机</td>
-                                <td class="value" colspan="7"></td>
-                            </tr>
-                            <tr>
-                                &lt;!&ndash;<td class="column"></td>&ndash;&gt;
-                                <td class="column">座机</td>
-                                <td class="value" colspan="7"></td>
-                            </tr>
-                            <tr>
-                                <td class="column">应急联系人及电话</td>
-                                <td class="column">姓名</td>
-                                <td class="value" colspan="3"></td>
-                                <td class="column">电话</td>
-                                <td class="value" colspan="3"></td>
-                            </tr>
-                            <tr>
-                                <td class="value" colspan="3">申请应聘职位</td>
-                                <td class="value" colspan="3">面试、测试情况</td>
-                                <td class="value" colspan="3">录用情况</td>
-                            </tr>
-                            <tr>
-                                <td class="value" rowspan="2" colspan="3"></td>
-                                <td class="value" rowspan="2" colspan="3"></td>
-                                <td class="value" rowspan="2" colspan="3"></td>
-                            </tr>
-                            <tr>
-                            </tr>
-                        </table>
-                    </div>
+            <template>
+                <div style="margin:0 auto;">
+                    <table class="table table-striped table-bordered" align="center" valign="center">
+                        <tr>
+                            <td class="column" colspan="9">泰晟环境服务（山东）有限公司应聘登记表</td>
+                        </tr>
+                        <tr>
+                            <td class="column">姓名</td>
+                            <td class="value"></td>
+                            <td class="column">性别</td>
+                            <td class="value">
+                                <el-tag type="danger" v-if="0">女</el-tag>
+                                <el-tag v-if="1">男</el-tag>
+                                <el-tag type="info" v-if="2">未知</el-tag>
+                            </td>
+                            <td class="column">民族</td>
+                            <td class="value">汉</td>
+                            <td class="column">出生年月</td>
+                            <td class="value"></td>
+                            <td class="value" rowspan="3">
+                                <el-image src="https://avatars.githubusercontent.com/u/47814002?s=60&v=4"></el-image>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="column">政治面貌</td>
+                            <td class="value">
+                                <el-tag type="info" v-if="0">群众</el-tag>
+                                <el-tag type="success" v-if="1">团员</el-tag>
+                                <el-tag type="danger" v-if="2">党员</el-tag>
+                            </td>
+                            <td class="column">身份证号</td>
+                            <td class="value" colspan="3"></td>
+                            <td class="column">婚姻状况</td>
+                            <td class="value">
+                                <el-tag type="danger" v-if="0">已婚</el-tag>
+                                <el-tag v-else="1">未婚</el-tag>
+                            </td>
+                            <!--<td class="value"></td>-->
+                        </tr>
+                        <tr>
+                            <td class="column">现家庭地址</td>
+                            <td class="value" colspan="4"></td>
+                            <td class="column">户口所在地</td>
+                            <td class="value" colspan="2"></td>
+                            <!--<td class="value"></td>-->
+                        </tr>
+                        <tr>
+                            <td class="column">专业职称证书</td>
+                            <td class="value" colspan="2"></td>
+                            <td class="column">国家注册师证书</td>
+                            <td class="value" colspan="2"></td>
+                            <td class="column">工人等级技术证书</td>
+                            <td class="value" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td class="column" rowspan="4">教育经历</td>
+                            <td class="column">学历信息</td>
+                            <td class="column" colspan="2">毕业院校</td>
+                            <td class="column" colspan="2">专业</td>
+                            <td class="column">学历</td>
+                            <td class="column" colspan="2">学习时间</td>
+                        </tr>
+                        <tr>
+                            <!--<td class="column"></td>-->
+                            <td class="column">全日制</td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value"></td>
+                            <td class="value" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <!--<td class="column"></td>-->
+                            <td class="column">自学考试</td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value"></td>
+                            <td class="value" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <!--<td class="column"></td>-->
+                            <td class="column">在职成人教育</td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value"></td>
+                            <td class="value" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td class="column" rowspan="6">工作经历</td>
+                            <td class="column" colspan="2">工作单位</td>
+                            <td class="column">职务（职位）</td>
+                            <td class="column" colspan="2">工作时间</td>
+                            <td class="column" colspan="3">离职原因</td>
+                        </tr>
+                        <tr>
+                            <!--<td class="column"></td>-->
+                            <td class="value" colspan="2"></td>
+                            <td class="value"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="3"></td>
+                        </tr>
+                        <tr>
+                            <!--<td class="column"></td>-->
+                            <td class="value" colspan="2"></td>
+                            <td class="value"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="3"></td>
+                        </tr>
+                        <tr>
+                            <!--<td class="column"></td>-->
+                            <td class="value" colspan="2"></td>
+                            <td class="value"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="3"></td>
+                        </tr>
+                        <tr>
+                            <!--<td class="column"></td>-->
+                            <td class="value" colspan="2"></td>
+                            <td class="value"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="3"></td>
+                        </tr>
+                        <tr>
+                            <!--<td class="column"></td>-->
+                            <td class="value" colspan="2"></td>
+                            <td class="value"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="3"></td>
+                        </tr>
+                        <tr>
+                            <td class="column" rowspan="6">家庭主要成员及社会关系</td>
+                            <td class="column">基本信息</td>
+                            <td class="column" colspan="2">工作单位</td>
+                            <td class="column" colspan="2">政治面貌</td>
+                            <td class="column" colspan="2">职务（职位）</td>
+                            <td class="column">年龄</td>
+                        </tr>
+                        <tr>
+                            <!--<td class="column"></td>-->
+                            <td class="column">父亲</td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <!--<td class="column"></td>-->
+                            <td class="column">母亲</td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <!--<td class="column"></td>-->
+                            <td class="column">配偶</td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <!--<td class="column"></td>-->
+                            <td class="column">子女</td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <!--<td class="column"></td>-->
+                            <td class="value"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value" colspan="2"></td>
+                            <td class="value"></td>
+                        </tr>
+                        <tr>
+                            <td class="column">主要工作业绩</td>
+                            <td class="value" colspan="8"></td>
+                        </tr>
+                        <tr>
+                            <td class="column">所受奖励情况</td>
+                            <td class="value" colspan="8"></td>
+                        </tr>
+                        <tr>
+                            <td class="column">所受处分（处罚）情况</td>
+                            <td class="value" colspan="8"></td>
+                        </tr>
+                        <tr>
+                            <td class="column">特长</td>
+                            <td class="value" colspan="8"></td>
+                        </tr>
+                        <tr>
+                            <td class="column" rowspan=2">本人电话</td>
+                            <td class="column">手机</td>
+                            <td class="value" colspan="7"></td>
+                        </tr>
+                        <tr>
+                            <!--<td class="column"></td>-->
+                            <td class="column">座机</td>
+                            <td class="value" colspan="7"></td>
+                        </tr>
+                        <tr>
+                            <td class="column">应急联系人及电话</td>
+                            <td class="column">姓名</td>
+                            <td class="value" colspan="3"></td>
+                            <td class="column">电话</td>
+                            <td class="value" colspan="3"></td>
+                        </tr>
+                        <tr>
+                            <td class="value" colspan="3">申请应聘职位</td>
+                            <td class="value" colspan="3">面试、测试情况</td>
+                            <td class="value" colspan="3">录用情况</td>
+                        </tr>
+                        <tr>
+                            <td class="value" rowspan="2" colspan="3"></td>
+                            <td class="value" rowspan="2" colspan="3"></td>
+                            <td class="value" rowspan="2" colspan="3"></td>
+                        </tr>
+                        <tr>
+                        </tr>
+                    </table>
                 </div>
-            </template>-->
-
-            <el-descriptions border :column="5" :colon="false">
-                <el-descriptions-item span ="4">
-                    <el-descriptions border :column="4" :colon="false">
-                        <el-descriptions-item>
-                            <template slot="label">
-                                <i class="el-icon-user"></i>
-                                真实姓名
-                            </template>
-                            {{ detailForm.realname }}
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                            <template slot="label">
-                                性别
-                            </template>
-                            <el-tag v-if="detailForm.sex == 0" size="small">女</el-tag>
-                            <el-tag v-if="detailForm.sex == 1" size="small">男</el-tag>
-                            <el-tag v-if="detailForm.sex == 2" size="small">未知</el-tag>
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                            <template slot="label">
-                                民族
-                            </template>
-                            <el-tag size="small">汉</el-tag>
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                            <template slot="label">
-                                <i class="el-icon-date"></i>
-                                出生年月
-                            </template>
-                            {{ detailForm.birthday }}
-                        </el-descriptions-item>
-
-                        <el-descriptions-item>
-                            <template slot="label">
-                                政治面貌
-                            </template>
-                            <el-tag size="small">群众</el-tag>
-                        </el-descriptions-item>
-                        <el-descriptions-item span ="2">
-                            <template slot="label">
-                                <i class="el-icon-postcard"></i>
-                                身份证号
-                            </template>
-                            {{ detailForm.identityNumber }}
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                            <template slot="label">
-                                婚姻状况
-                            </template>
-                            <el-tag size="small">未婚</el-tag>
-                        </el-descriptions-item>
-                        <el-descriptions-item span ="3">
-                            <template slot="label">
-                                <i class="el-icon-office-building"></i>
-                                现家庭住址
-                            </template>
-                            山东省泰安市高新区北集坡街道办事处南官庄村187号
-                        </el-descriptions-item>
-
-                        <el-descriptions-item>
-                            <template slot="label">
-                                <i class="el-icon-location-outline"></i>
-                                户口所在地
-                            </template>
-                            山东泰安岱岳区
-                        </el-descriptions-item>
-                        <el-descriptions-item span ="1.5">
-                            <template slot="label">
-                                专业技术职称证书
-                            </template>
-
-                        </el-descriptions-item>
-                        <el-descriptions-item span ="1.5">
-                            <template slot="label">
-                                国家注册师证书
-                            </template>
-
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                            <template slot="label">
-                                工人技术等级证书
-                            </template>
-
-                        </el-descriptions-item>
-                    </el-descriptions>
-                </el-descriptions-item>
-                <el-descriptions-item span ="1">
-                    <el-avatar size="medium" shape="square" :src="detailForm.avatar" class="avatar"></el-avatar>
-                </el-descriptions-item>
-                <el-descriptions-item span ="5">
-                    <el-descriptions border :column="5" :colon="false">
-                        <el-descriptions-item>
-                            <template slot="label">
-                                <i class="el-icon-user"></i>
-                                真实姓名
-                            </template>
-                            {{ detailForm.realname }}
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                            <template slot="label">
-                                性别
-                            </template>
-                            <el-tag v-if="detailForm.sex == 0" size="small">女</el-tag>
-                            <el-tag v-if="detailForm.sex == 1" size="small">男</el-tag>
-                            <el-tag v-if="detailForm.sex == 2" size="small">未知</el-tag>
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                            <template slot="label">
-                                民族
-                            </template>
-                            <el-tag size="small">汉</el-tag>
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                            <template slot="label">
-                                <i class="el-icon-date"></i>
-                                出生年月
-                            </template>
-                            {{ detailForm.birthday }}
-                        </el-descriptions-item>
-
-                        <el-descriptions-item>
-                            <template slot="label">
-                                政治面貌
-                            </template>
-                            <el-tag size="small">群众</el-tag>
-                        </el-descriptions-item>
-                        <el-descriptions-item span ="2">
-                            <template slot="label">
-                                <i class="el-icon-postcard"></i>
-                                身份证号
-                            </template>
-                            {{ detailForm.identityNumber }}
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                            <template slot="label">
-                                婚姻状况
-                            </template>
-                            <el-tag size="small">未婚</el-tag>
-                        </el-descriptions-item>
-                        <el-descriptions-item span ="3">
-                            <template slot="label">
-                                <i class="el-icon-office-building"></i>
-                                现家庭住址
-                            </template>
-                            山东省泰安市高新区北集坡街道办事处南官庄村187号
-                        </el-descriptions-item>
-
-                        <el-descriptions-item>
-                            <template slot="label">
-                                <i class="el-icon-location-outline"></i>
-                                户口所在地
-                            </template>
-                            山东泰安岱岳区
-                        </el-descriptions-item>
-                        <el-descriptions-item span ="1.5">
-                            <template slot="label">
-                                专业技术职称证书
-                            </template>
-
-                        </el-descriptions-item>
-                        <el-descriptions-item span ="1.5">
-                            <template slot="label">
-                                国家注册师证书
-                            </template>
-
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                            <template slot="label">
-                                工人技术等级证书
-                            </template>
-
-                        </el-descriptions-item>
-                    </el-descriptions>
-                </el-descriptions-item>
-                <el-descriptions-item span ="5">
-                    <el-descriptions border :column="5" :colon="false">
-                        <el-descriptions-item>
-                            <template slot="label">
-                                <i class="el-icon-user"></i>
-                                真实姓名
-                            </template>
-                            {{ detailForm.realname }}
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                            <template slot="label">
-                                性别
-                            </template>
-                            <el-tag v-if="detailForm.sex == 0" size="small">女</el-tag>
-                            <el-tag v-if="detailForm.sex == 1" size="small">男</el-tag>
-                            <el-tag v-if="detailForm.sex == 2" size="small">未知</el-tag>
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                            <template slot="label">
-                                民族
-                            </template>
-                            <el-tag size="small">汉</el-tag>
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                            <template slot="label">
-                                <i class="el-icon-date"></i>
-                                出生年月
-                            </template>
-                            {{ detailForm.birthday }}
-                        </el-descriptions-item>
-
-                        <el-descriptions-item>
-                            <template slot="label">
-                                政治面貌
-                            </template>
-                            <el-tag size="small">群众</el-tag>
-                        </el-descriptions-item>
-                        <el-descriptions-item span ="2">
-                            <template slot="label">
-                                <i class="el-icon-postcard"></i>
-                                身份证号
-                            </template>
-                            {{ detailForm.identityNumber }}
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                            <template slot="label">
-                                婚姻状况
-                            </template>
-                            <el-tag size="small">未婚</el-tag>
-                        </el-descriptions-item>
-                        <el-descriptions-item span ="3">
-                            <template slot="label">
-                                <i class="el-icon-office-building"></i>
-                                现家庭住址
-                            </template>
-                            山东省泰安市高新区北集坡街道办事处南官庄村187号
-                        </el-descriptions-item>
-
-                        <el-descriptions-item>
-                            <template slot="label">
-                                <i class="el-icon-location-outline"></i>
-                                户口所在地
-                            </template>
-                            山东泰安岱岳区
-                        </el-descriptions-item>
-                        <el-descriptions-item span ="1.5">
-                            <template slot="label">
-                                专业技术职称证书
-                            </template>
-
-                        </el-descriptions-item>
-                        <el-descriptions-item span ="1.5">
-                            <template slot="label">
-                                国家注册师证书
-                            </template>
-
-                        </el-descriptions-item>
-                        <el-descriptions-item>
-                            <template slot="label">
-                                工人技术等级证书
-                            </template>
-
-                        </el-descriptions-item>
-                    </el-descriptions>
-                </el-descriptions-item>
-            </el-descriptions>
-
-                <!--<el-row :gutter="20">
-                    <el-col :span="20">
-                        <el-descriptions class="margin-top" :column="4" border>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    <i class="el-icon-user"></i>
-                                    真实姓名
-                                </template>
-                                {{ detailForm.realname }}
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    性别
-                                </template>
-                                <el-tag v-if="detailForm.sex == 0" size="small">女</el-tag>
-                                <el-tag v-if="detailForm.sex == 1" size="small">男</el-tag>
-                                <el-tag v-if="detailForm.sex == 2" size="small">未知</el-tag>
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    民族
-                                </template>
-                                <el-tag size="small">汉</el-tag>
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    <i class="el-icon-date"></i>
-                                    出生年月
-                                </template>
-                                {{ detailForm.birthday }}
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    政治面貌
-                                </template>
-                                <el-tag size="small">群众</el-tag>
-                            </el-descriptions-item>
-                            <el-descriptions-item span ="2">
-                                <template slot="label">
-                                    <i class="el-icon-postcard"></i>
-                                    身份证号
-                                </template>
-                                {{ detailForm.identityNumber }}
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    婚姻状况
-                                </template>
-                                <el-tag size="small">未婚</el-tag>
-                            </el-descriptions-item>
-                            <el-descriptions-item span ="3">
-                                <template slot="label">
-                                    <i class="el-icon-office-building"></i>
-                                    现家庭住址
-                                </template>
-                                山东省泰安市高新区北集坡街道办事处南官庄村187号
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    <i class="el-icon-location-outline"></i>
-                                    户口所在地
-                                </template>
-                                山东泰安岱岳区
-                            </el-descriptions-item>
-                            <el-descriptions-item span ="1.5">
-                                <template slot="label">
-                                    专业技术职称证书
-                                </template>
-
-                            </el-descriptions-item>
-                            <el-descriptions-item span ="1.5">
-                                <template slot="label">
-                                    国家注册师证书
-                                </template>
-
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    工人技术等级证书
-                                </template>
-
-                            </el-descriptions-item>
-                        </el-descriptions>
-                    </el-col>
-                    <el-col :span="4">
-                        <el-avatar size="medium" shape="square" :src="detailForm.avatar" class="avatar"></el-avatar>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="4" style="width: 14%">
-                        <el-link :underline="false" icon="el-icon-reading">教育经历</el-link>
-                    </el-col>
-                    <el-col :span="20" style="width: 86%">
-                        <el-descriptions class="margin-top" :column="4" border>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    <i class="el-icon-user"></i>
-                                    真实姓名
-                                </template>
-                                {{ detailForm.realname }}
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    性别
-                                </template>
-                                <el-tag v-if="detailForm.sex == 0" size="small">女</el-tag>
-                                <el-tag v-if="detailForm.sex == 1" size="small">男</el-tag>
-                                <el-tag v-if="detailForm.sex == 2" size="small">未知</el-tag>
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    民族
-                                </template>
-                                <el-tag size="small">汉</el-tag>
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    <i class="el-icon-date"></i>
-                                    出生年月
-                                </template>
-                                {{ detailForm.birthday }}
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    政治面貌
-                                </template>
-                                <el-tag size="small">群众</el-tag>
-                            </el-descriptions-item>
-                            <el-descriptions-item span ="2">
-                                <template slot="label">
-                                    <i class="el-icon-postcard"></i>
-                                    身份证号
-                                </template>
-                                {{ detailForm.identityNumber }}
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    婚姻状况
-                                </template>
-                                <el-tag size="small">未婚</el-tag>
-                            </el-descriptions-item>
-                            <el-descriptions-item span ="3">
-                                <template slot="label">
-                                    <i class="el-icon-office-building"></i>
-                                    现家庭住址
-                                </template>
-                                山东省泰安市高新区北集坡街道办事处南官庄村187号
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    <i class="el-icon-location-outline"></i>
-                                    户口所在地
-                                </template>
-                                山东泰安岱岳区
-                            </el-descriptions-item>
-                            <el-descriptions-item span ="1.5">
-                                <template slot="label">
-                                    专业技术职称证书
-                                </template>
-
-                            </el-descriptions-item>
-                            <el-descriptions-item span ="1.5">
-                                <template slot="label">
-                                    国家注册师证书
-                                </template>
-
-                            </el-descriptions-item>
-                            <el-descriptions-item>
-                                <template slot="label">
-                                    工人技术等级证书
-                                </template>
-
-                            </el-descriptions-item>
-                        </el-descriptions>
-                    </el-col>
-            </el-row>-->
+            </template>
             <div slot="footer" class="dialog-footer">
                 <el-button icon="el-icon-circle-close" @click="detailDialog = false">取 消</el-button>
                 <el-button icon="el-icon-circle-check" type="primary" @click="print">打 印</el-button>
@@ -937,43 +510,49 @@
         height: 178px;
         display: block;
     }
+
     /* 详情表格 */
-    /*.table{*/
-    /*    border-collapse: collapse;*/
-    /*    border-spacing: 0;*/
-    /*    background-color: transparent;*/
-    /*    display: table;*/
-    /*    width: 100%;*/
-    /*    max-width: 100%;*/
-    /*    width: 800px;*/
-    /*    margin:0 auto;*/
-    /*}*/
-    /*.table td{*/
-    /*    text-align:center;*/
-    /*    vertical-align:middle;*/
-    /*    font-size: 14px;*/
-    /*    font-family: 'Arial Normal', 'Arial';*/
-    /*    color: #333333;*/
-    /*    padding: 8px 12px;*/
-    /*}*/
-    /*.table-bordered {*/
-    /*    border: 1px solid #ddd;*/
-    /*}*/
-    /**{*/
-    /*    margin: 0px;*/
-    /*    padding: 0px;*/
-    /*}*/
-    /*.column{*/
-    /*    width:30px;*/
-    /*    height:30px;*/
-    /*    border:1px solid #333;*/
-    /*    background: #f1f1f1;*/
-    /*}*/
-    /*.value{*/
-    /*    width:70px;*/
-    /*    height:30px;*/
-    /*    border:1px solid #333;*/
-    /*}*/
+    .table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        background-color: transparent;
+        display: table;
+        width: 100%;
+        max-width: 100%;
+        width: 800px;
+        margin: 0 auto;
+    }
+
+    .table td {
+        text-align: center;
+        vertical-align: middle;
+        font-size: 14px;
+        font-family: 'Arial Normal', 'Arial';
+        color: #333333;
+        padding: 8px 12px;
+    }
+
+    .table-bordered {
+        border: 1px solid #ddd;
+    }
+
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .column {
+        width: 30px;
+        height: 30px;
+        border: 1px solid #333;
+        background: #f1f1f1;
+    }
+
+    .value {
+        width: 70px;
+        height: 30px;
+        border: 1px solid #333;
+    }
 
 </style>
 </html>

@@ -44,6 +44,7 @@ new Vue({
             },
             sexItem: [],
             roleList: [],
+            organizationTreeList: [],
             avatar: '',
             actionUrl: '/sys/common/upload',
             insertForm: {
@@ -189,18 +190,32 @@ new Vue({
             }
             return isLt2M;
         },
-        // 开启新增表单
-        openInsertDialog() {
-            this.insertDialog = true;
-            if (this.$refs.insertForm !== undefined) {
-                this.$refs.insertForm.resetFields();
-            }
+        // 查询角色列表
+        queryRole() {
             axios.get('/sys/role/list')
                 .then((res) => {
                     if (res.code === 6666) {
                         this.roleList = res.data;
                     }
                 });
+        },
+        // 查询树机构
+        queryOrganizationTree() {
+            axios.get('/sys/organization/tree')
+                .then((res) => {
+                    if (res.code === 6666) {
+                        this.organizationTreeList = res.data;
+                    }
+                });
+        },
+        // 开启新增表单
+        openInsertDialog() {
+            this.insertDialog = true;
+            if (this.$refs.insertForm !== undefined) {
+                this.$refs.insertForm.resetFields();
+            }
+            this.queryRole();
+            this.queryOrganizationTree();
         },
         // 新增表单提交
         insert() {
@@ -313,15 +328,15 @@ new Vue({
                     }
                 });
         },
+        // 打印
+        print(){
+            this.$message.error("未开发的功能");
+        },
         // 开启更新表单
         openUpdateDialog(row) {
             this.updateDialog = true;
-            axios.get('/sys/role/list')
-                .then((res) => {
-                    if (res.code === 6666) {
-                        this.roleList = res.data;
-                    }
-                });
+            this.queryRole();
+            this.queryOrganizationTree();
             axios.get('/sys/user/query/' + row.id)
                 .then((res) => {
                     if (res.code === 6666) {

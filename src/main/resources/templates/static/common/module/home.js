@@ -65,6 +65,7 @@ new Vue({
                 newPassword: '',
                 confirmPassword: ''
             },
+            websocketUrl: "ws://localhost:8088/websocket/",
             // 校验规则
             rules: {
                 realname: [
@@ -101,7 +102,8 @@ new Vue({
         }
     },
     mounted() {
-
+        // 初始化
+        this.initWebSocket();
     },
     methods: {
         // 点击按钮，切换菜单的折叠与展开
@@ -256,6 +258,60 @@ new Vue({
                 }
             });
         },
+        // 初始化 WebSocket
+        initWebSocket: function () {
+            if (typeof (WebSocket) === "undefined") {
+                this.$message.error("浏览器不支持 WebSocket");
+            } else {
+                // 实例化socket
+                const url = this.websocketUrl + this.user.username;
+                this.socket = new WebSocket(url)
+                // 监听socket连接
+                this.socket.onopen = this.open
+                // 监听socket错误信息
+                this.socket.onerror = this.error
+                // 监听socket消息
+                this.socket.onmessage = this.getMessage
+            }
+        },
+        open: function () {
+            this.$message("WebSocket 连接成功");
+        },
+        error: function () {
+            this.$message.error("WebSocket 发生了错误事件");
+        },
+        getMessage: function (messageEvent) {
+            const data = JSON.parse(messageEvent.data);
+            this.$notify({
+                title: data.title,
+                message: data.message,
+                dangerouslyUseHTMLString: data.html,
+                type: data.type,
+                duration: data.duration,
+                position: data.position,
+                offset: 55,
+            });
+        },
+        send: function () {
+            const messageData = {
+                sender: this.user.username,
+                receiver: this.user.username,
+                title: '给你一个惊喜',
+                message: '<strong>这是 <a href="http://www.baidu.com">一个惊喜</a></strong>',
+                html: true,
+                type: 'warning',
+                duration: 9999,
+                position: 'top-right',
+            };
+            this.socket.send(JSON.stringify(messageData))
+        },
+        close: function () {
+            this.socket.close();
+        }
+    },
+    destroyed() {
+        // 销毁监听
+        this.socket.onclose = this.close
     },
     created() {
         if (localStorage.getItem("X-Access-Token")) {
