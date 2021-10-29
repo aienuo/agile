@@ -96,11 +96,11 @@ public class MenuBus extends BaseBus {
         }
         if (AgileUtil.isNotEmpty(update.getName()) && !menu.getName().equals(update.getName())) {
             // 验证 菜单权限名称 是否存在重复
-            Menu menuById = this.menuService.getOne(Wrappers.<Menu>lambdaQuery()
+            Menu menuByName = this.menuService.getOne(Wrappers.<Menu>lambdaQuery()
                     .eq(Menu::getName, update.getName()).eq(Menu::getMenuType, update.getMenuType())
                     .eq(AgileUtil.isNotEmpty(update.getParentId()), Menu::getParentId, update.getParentId()), Boolean.FALSE
             );
-            ArgumentResponseEnum.MENU_VALID_ERROR_UPDATE_04.assertIsNull(menuById);
+            ArgumentResponseEnum.MENU_VALID_ERROR_UPDATE_04.assertIsNull(menuByName);
         }
         MenuConverter.INSTANCE.getUpdateEntity(menu, update);
         return menu;

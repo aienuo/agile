@@ -101,11 +101,11 @@ public class OrganizationBus extends BaseBus {
         }
         if (AgileUtil.isNotEmpty(update.getOrganizationName()) && !organization.getOrganizationName().equals(update.getOrganizationName())) {
             // 验证 组织机构名称 是否存在重复
-            Organization organizationById = this.organizationService.getOne(Wrappers.<Organization>lambdaQuery()
+            Organization organizationByName = this.organizationService.getOne(Wrappers.<Organization>lambdaQuery()
                     .eq(Organization::getOrganizationName, update.getOrganizationName())
                     .eq(AgileUtil.isNotEmpty(update.getParentId()), Organization::getParentId, update.getParentId()), Boolean.FALSE
             );
-            ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_04.assertIsNull(organizationById);
+            ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_04.assertIsNull(organizationByName);
         }
         OrganizationConverter.INSTANCE.getUpdateEntity(organization, update);
         return organization;
