@@ -6,7 +6,7 @@
     <!-- Linux服务器节点配置，主要包含的属性：profile(名称)、host(主机号)、port(端口号)、username(登陆用户名)、password(登陆密码) -->
     <servers>
         <!-- 可以配置多个server节点,代表的是目标服务器 -->
-        <server profile="dev" host="172.25.19.34" port="22" username="root" password="root"></server>
+        <server profile="dev" host="192.168.211.111" port="22" username="root" password="root"></server>
         <server profile="prod" host="172.25.19.34" port="22" username="root" password="root"></server>
     </servers>
     <deploys>
@@ -21,16 +21,16 @@
                 startShell:             启动脚本，必须配置完整路径，必须存在，并且必须是可执行的，需要有 Linux 的 x 权限
                 stopShell:              停止脚本,必须配置完整路径，必须存在，并且必须是可执行的，需要有 Linux 的 x 权限
         -->
-        <!-- 开发环境 使用自带脚本 -->
+        <!-- 开发环境 自定义脚本 开启远程调试 -->
         <deploy profile="dev"
                 source="target/agile-1.0.jar"
                 target="/home/agile/dev/agile-1.0.jar"
                 processName="agile-1.0.jar"
-                activeDefaultStart="true"
-                startShell="/home/agile/dev/startup.sh">
+                activeDefaultStart="true">
+                <!--startShell="/home/agile/dev/startup.sh">-->
         </deploy>
 
-        <!-- 生产环境 -->
+        <!-- 生产环境 保留上一个版本 -->
         <deploy profile="prod"
                 source="target/agile-1.0.jar"
                 target="/home/agile/prod/agile-1.0.jar"
