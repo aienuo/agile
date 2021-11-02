@@ -65,7 +65,6 @@ new Vue({
                 newPassword: '',
                 confirmPassword: ''
             },
-            websocketUrl: "ws://localhost:8088/websocket/",
             // 校验规则
             rules: {
                 realname: [
@@ -256,7 +255,9 @@ new Vue({
                 this.$message.error("浏览器不支持 WebSocket");
             } else {
                 // 实例化socket
-                const url = this.websocketUrl + this.user.username;
+                const ipPort = document.location ? document.location.host : "localhost:80";
+                const url = "ws://" + ipPort + "/websocket/" + this.user.username;
+                console.log(url);
                 this.socket = new WebSocket(url)
                 // 监听socket连接
                 this.socket.onopen = this.open
