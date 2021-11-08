@@ -66,6 +66,7 @@ public class UserAddDTO implements Serializable {
      * 性别(2-默认未知，1-男，0-女)
      */
     @ApiModelProperty(hidden = true)
+    @NotNull
     @Min(0)
     @Max(2)
     private Integer sex;
