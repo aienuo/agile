@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -39,7 +41,10 @@ public class MenuAddDTO implements Serializable {
     /**
      * 菜单类型（0-一级菜单，1-子菜单，2-按钮权限）
      */
-    @ApiModelProperty(value = "菜单类型（0-一级菜单，1-子菜单，2-按钮权限）")
+    @ApiModelProperty(value = "菜单类型（0-一级菜单，1-子菜单，2-按钮权限）", required = true)
+    @NotNull
+    @Min(0)
+    @Max(2)
     private Integer menuType;
 
     /**

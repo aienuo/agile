@@ -25,17 +25,17 @@ public class QueryDictItemDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
-     */
-    @ApiModelProperty(value = "字典 - 值ID")
-    private Long id;
-
-    /**
      * 字典 - 项编号
      */
     @ApiModelProperty(value = "字典 - 项编号", required = true)
     @NotNull
     private Long dictId;
+
+    /**
+     * ID
+     */
+    @ApiModelProperty(value = "字典 - 值ID")
+    private Long id;
 
     /**
      * 字典项文本

@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -60,7 +62,10 @@ public class DictItemUpdateDTO implements Serializable {
     /**
      * 禁用状态(true1-禁用，false0-不禁用）
      */
-    @ApiModelProperty(value = "禁用状态(true1-禁用，false0-不禁用）")
+    @ApiModelProperty(value = "禁用状态(true1-禁用，false0-不禁用）", required = true)
+    @NotNull
+    @Min(0)
+    @Max(1)
     private Integer disabled;
 
     /**
