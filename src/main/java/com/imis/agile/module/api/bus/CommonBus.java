@@ -82,7 +82,8 @@ public class CommonBus extends BaseBus {
             File file = new File(filePath);
             if (!file.exists()) {
                 // 创建文件根目录
-                file.mkdirs();
+                boolean mkdirs = file.mkdirs();
+                ArgumentResponseEnum.FILE_ADD_ERR_PATH_NO_EXIST.assertIsTrue(mkdirs);
             }
             String savePath = file.getPath() + File.separator + fileName;
             File saveFile = new File(savePath);
@@ -173,6 +174,7 @@ public class CommonBus extends BaseBus {
                 if (!multipartFile.isEmpty()) {
                     //  参数Key
                     String name = multipartFile.getName();
+                    log.debug(name);
                     //  文件全名称
                     String originalFilename = multipartFile.getOriginalFilename();
                     //  4.文件对象
@@ -196,6 +198,7 @@ public class CommonBus extends BaseBus {
                         this.doFileUploadForLocal(uploadPath, newName, multipartFile);
                     } else {
                         // TODO：自己整合其他
+                        ArgumentResponseEnum.FILE_ADD_ERR.assertFailWithMsg("自己整合其他非 本地保存文件 的方式");
                     }
                     fileList.add(file);
                 }
