@@ -58,7 +58,7 @@ public class BasePageDTO implements Serializable {
      * 创建人
      */
     @ApiModelProperty(value = "创建人")
-    private Long createBy;
+    private String createBy;
 
     /**
      * 创建时间
@@ -69,7 +69,7 @@ public class BasePageDTO implements Serializable {
     @JsonFormat(timezone = "GMT+8", pattern = CommonConstant.NORM_DATETIME_PATTERN)
     @DateTimeFormat(pattern = CommonConstant.NORM_DATETIME_PATTERN)
     private LocalDateTime createTimeStart;
-    @ApiModelProperty(value = "创建时间-始")
+    @ApiModelProperty(value = "创建时间-止")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(timezone = "GMT+8", pattern = CommonConstant.NORM_DATETIME_PATTERN)
@@ -80,7 +80,7 @@ public class BasePageDTO implements Serializable {
      * 更新人
      */
     @ApiModelProperty(value = "更新人")
-    private Long updateBy;
+    private String updateBy;
 
     /**
      * 更新时间
@@ -91,7 +91,7 @@ public class BasePageDTO implements Serializable {
     @JsonFormat(timezone = "GMT+8", pattern = CommonConstant.NORM_DATETIME_PATTERN)
     @DateTimeFormat(pattern = CommonConstant.NORM_DATETIME_PATTERN)
     private LocalDateTime updateTimeStart;
-    @ApiModelProperty(value = "更新时间-始")
+    @ApiModelProperty(value = "更新时间-止")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(timezone = "GMT+8", pattern = CommonConstant.NORM_DATETIME_PATTERN)
