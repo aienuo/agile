@@ -6,6 +6,7 @@ import com.imis.agile.constant.CommonConstant;
 import com.imis.agile.interceptor.AuthenticationInterceptor;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -42,6 +43,12 @@ import java.util.List;
 @EnableSwagger2WebMvc
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfiguration implements WebMvcConfigurer {
+
+    /**
+     * 文件本地存储路径（跟jar包同级目录，自动拼接 “./”）
+     */
+    @Value(value = "${imis-boot.path.upload}")
+    private String uploadPath;
 
     private final OpenApiExtensionResolver openApiExtensionResolver;
 
@@ -137,6 +144,11 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry resourceHandlerRegistry) {
+        // 本地文件上传-路径模式
+        String pathPatterns = StringPool.SLASH + uploadPath + StringPool.SLASH + StringPool.ASTERISK + StringPool.ASTERISK;
+        // 本地文件上传-文件资源位置（跟jar包同级目录，自动拼接 “./”）
+        String resourceLocations = "file" + StringPool.COLON + StringPool.DOT + StringPool.SLASH + uploadPath + StringPool.SLASH;
+        resourceHandlerRegistry.addResourceHandler(pathPatterns).addResourceLocations(resourceLocations);
         resourceHandlerRegistry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
         resourceHandlerRegistry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
         resourceHandlerRegistry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");

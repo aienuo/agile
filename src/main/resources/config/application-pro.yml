@@ -1,9 +1,9 @@
 imis-boot:
   uploadType: local
   path:
-    upload: ./fileFloder
+    upload: fileFloder
 server:
-  port: 8088
+  port: 80
 spring:
   datasource:
     dynamic:

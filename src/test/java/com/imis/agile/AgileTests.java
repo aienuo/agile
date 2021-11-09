@@ -1,6 +1,7 @@
 package com.imis.agile;
 
 import com.imis.agile.util.ComputerUniqueIdentificationUtil;
+import com.imis.agile.util.IdCardUtil;
 import com.imis.agile.util.PasswordUtil;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +20,8 @@ class AgileTests {
 
         String id1 = "370911199603234811";
         String id2 = "370911196707244832";
+
+        System.out.println(IdCardUtil.isIdCard(id2));
 
         System.out.println(id1.matches(regexp1));
         System.out.println(id2.matches(regexp1));

@@ -55,7 +55,7 @@ public class CommonBus extends BaseBus {
     }
 
     /**
-     * 文件本地存储路径
+     * 文件本地存储路径（跟jar包同级目录，自动拼接 “./”）
      */
     @Value(value = "${imis-boot.path.upload}")
     private String uploadPath;
@@ -163,6 +163,8 @@ public class CommonBus extends BaseBus {
         List<com.imis.agile.module.system.model.entity.File> fileList = new ArrayList<>();
         // 3.requestMultiFileMap 请求参数 - 文件
         MultiValueMap<String, MultipartFile> requestMultiFileMap = multipartHttpServletRequest.getMultiFileMap();
+        // IP + Port
+        String localUrl = getHttpServletRequest().getRequestURL().toString().replaceAll(getHttpServletRequest().getRequestURI(), StringPool.SLASH);
         for (Map.Entry<String, List<MultipartFile>> multiFileMap : requestMultiFileMap.entrySet()) {
             // 参数Key
             String multiFileKey = multiFileMap.getKey();
@@ -192,10 +194,12 @@ public class CommonBus extends BaseBus {
                     file.setFileName(newName);
                     file.setRealName(originalFilename);
                     file.setDescription(StringPool.EMPTY);
-                    file.setFileUrl(uploadPath + StringPool.SLASH + newName);
                     if (CommonConstant.UPLOAD_TYPE_LOCAL.equals(uploadType)) {
-                        // 文件本地保存
-                        this.doFileUploadForLocal(uploadPath, newName, multipartFile);
+                        // 文件地址
+                        file.setFileUrl(localUrl + uploadPath + StringPool.SLASH + newName);
+                        // 文件本地保存（uploadPath跟jar包同级目录，自动拼接 “./”）
+                        String filePath = StringPool.DOT + StringPool.SLASH + uploadPath;
+                        this.doFileUploadForLocal(filePath, newName, multipartFile);
                     } else {
                         // TODO：自己整合其他
                         ArgumentResponseEnum.FILE_ADD_ERR.assertFailWithMsg("自己整合其他非 本地保存文件 的方式");

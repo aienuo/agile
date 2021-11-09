@@ -179,7 +179,12 @@ new Vue({
         handleAvatarSuccess(idx, res, file, name) {
             if (res.code === 6666) {
                 let data = res.data;
-                this.insertForm.avatar = data[data.length - 1].url;
+                const url = data[data.length - 1].fileUrl;
+                if ("updateForm" === idx){
+                    this.updateForm.avatar = url;
+                }else {
+                    this.insertForm.avatar = url;
+                }
             }
         },
         // 文件上传之前
