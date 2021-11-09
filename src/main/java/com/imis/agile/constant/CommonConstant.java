@@ -46,6 +46,11 @@ public interface CommonConstant {
     String RESPONSE_I18N_PREFIX = "response.";
 
     /**
+     * unknown
+     */
+    String STRING_UNKNOWN = "unknown";
+
+    /**
      * 标准日期格式：yyyy-MM-dd
      */
     String NORM_DATE_PATTERN = "yyyy-MM-dd";

@@ -1,6 +1,7 @@
 package com.imis.agile.module.websocket;
 
 import com.imis.agile.util.AgileUtil;
+import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @Slf4j
 @Component
+@EqualsAndHashCode
 @ServerEndpoint("/websocket/{username}")
 public class WebSocketServer {
 

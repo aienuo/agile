@@ -1,5 +1,6 @@
 package com.imis.agile.util;
 
+import com.imis.agile.constant.CommonConstant;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2020年04月19日 10:08
  */
 @Slf4j
-public class IPUtils {
+public class IPV4Utils {
 
     /**
      * 获取IP地址
@@ -37,10 +38,10 @@ public class IPUtils {
      */
     public static String getClientIpAddress(HttpServletRequest request) {
         String ip = request.getRemoteAddr();
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || CommonConstant.STRING_UNKNOWN.equalsIgnoreCase(ip)) {
             for (String header : HEADERS_TO_TRY) {
                 String ipByHeader = request.getHeader(header);
-                if (ip != null && ip.length() != 0 && !"unknown".equalsIgnoreCase(ip)) {
+                if (ip != null && ip.length() != 0 && !CommonConstant.STRING_UNKNOWN.equalsIgnoreCase(ip)) {
                     ip = ipByHeader;
                 }
             }

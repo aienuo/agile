@@ -1,15 +1,15 @@
 package com.imis.agile.util;
 
-import java.text.SimpleDateFormat;
+import lombok.extern.slf4j.Slf4j;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p> 身份证号码解析工具类 </p>
+ * 身份证号码解析工具类
  *
  * @author XinLau
  * @remarks 根据《中华人民共和国国家标准GB 11643-1999》中有关公民身份号码的规定，
@@ -30,6 +30,7 @@ import java.util.Map;
  * 某人的身份证号码的前17位依次是11010219600302011，则他身份证号码的第18位数字是3.
  * @since 2020-09-08 16:17
  **/
+@Slf4j
 public class IdCardUtil {
 
     final static Map<Integer, String> ZONE_NUM = new HashMap<>();
@@ -76,194 +77,189 @@ public class IdCardUtil {
     }
 
     /**
-     * <p> 校验身份证信息是否正确 </p>
-     *
-     * @param certNo 身份证号码
-     * @return 是否有效 null和 "" 都是false
-     * @author liuyadong
-     * @since 2020/9/16 10:11
+     * 身份证号码长度
      */
-    public static boolean isIdCard(String certNo) {
-        if (certNo == null || (certNo.length() != 15 && certNo.length() != 18)) {
+    private final static int ID_CARD_15 = 15;
+    private final static int ID_CARD_18 = 18;
+    /**
+     * 魔法值常量数
+     */
+    private final static int NUMBER_0 = 0;
+    private final static int NUMBER_1 = 1;
+    private final static int NUMBER_2 = 2;
+    private final static int NUMBER_3 = 3;
+    private final static int YEAR_START_NUMBER = 1900;
+    private final static int MONTH_NUMBER = 12;
+    private final static int DAY_OF_MONTH_NUMBER = 31;
+
+    /**
+     * 校验身份证信息是否正确
+     *
+     * @param idCardNumber 身份证号码
+     * @return 是否有效 null和 "" 都是false
+     */
+    public static Boolean isIdCard(final String idCardNumber) {
+        if (idCardNumber == null || (idCardNumber.length() != ID_CARD_15 && idCardNumber.length() != ID_CARD_18)) {
             return false;
         }
-        final char[] cs = certNo.toUpperCase().toCharArray();
-        //校验位数
-        int power = 0;
-        for (int i = 0; i < cs.length; i++) {
-            if (i == cs.length - 1 && cs[i] == 'X') {
-                break;//最后一位可以 是X或x
+        final char[] cs = idCardNumber.toUpperCase().toCharArray();
+        final int length = cs.length;
+        // 校验位数
+        int power = NUMBER_0;
+        for (int i = NUMBER_0; i < length; i++) {
+            if (i == length - 1 && cs[i] == 'X') {
+                // 最后一位可以 是X或x
+                break;
             }
             if (cs[i] < '0' || cs[i] > '9') {
                 return false;
             }
-            if (i < cs.length - 1) {
+            if (i < length - 1) {
                 power += (cs[i] - '0') * POWER_LIST[i];
             }
         }
-
-        //校验区位码
-        if (!ZONE_NUM.containsKey(Integer.valueOf(certNo.substring(0, 2)))) {
+        // 校验区位码
+        if (!ZONE_NUM.containsKey(Integer.valueOf(idCardNumber.substring(NUMBER_0, NUMBER_2)))) {
             return false;
         }
-
-        //校验年份
-        String year = null;
-        year = certNo.length() == 15 ? getIdcardCalendar(certNo) : certNo.substring(6, 10);
-
-
-        final int iyear = Integer.parseInt(year);
-        if (iyear < 1900 || iyear > Calendar.getInstance().get(Calendar.YEAR)) {
-            // 1900年的PASS，超过今年的PASS
+        // 校验年份
+        final int intYear = getYearByIdCard(idCardNumber);
+        if (intYear < YEAR_START_NUMBER || intYear > Calendar.getInstance().get(Calendar.YEAR)) {
+            // 1900年的 PASS，超过今年的 PASS
             return false;
         }
-
-        //校验月份
-        String month = certNo.length() == 15 ? certNo.substring(8, 10) : certNo.substring(10, 12);
-        final int imonth = Integer.parseInt(month);
-        if (imonth < 1 || imonth > 12) {
+        // 校验月份
+        final int intMonth = getMonthByIdCard(idCardNumber);
+        if (intMonth < NUMBER_1 || intMonth > MONTH_NUMBER) {
             return false;
         }
-
-        //校验天数
-        String day = certNo.length() == 15 ? certNo.substring(10, 12) : certNo.substring(12, 14);
-        final int iday = Integer.parseInt(day);
-        if (iday < 1 || iday > 31) {
+        // 校验天数
+        final int intDay = getDateByIdCard(idCardNumber);
+        if (intDay < NUMBER_1 || intDay > DAY_OF_MONTH_NUMBER) {
             return false;
         }
-        //校验"校验码"
-        if (certNo.length() == 15) {
+        // 校验 "校验码"
+        if (idCardNumber.length() == ID_CARD_15) {
             return true;
         }
-        return cs[cs.length - 1] == PARITY_BIT[power % 11];
-    }
-
-    private static String getIdcardCalendar(final String certNo) {
-        // 获取出生年月日
-        String birthday = certNo.substring(6, 12);
-        SimpleDateFormat ft = new SimpleDateFormat("yyMMdd");
-        Date birthdate = null;
-        try {
-            birthdate = ft.parse(birthday);
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-        }
-        Calendar cday = Calendar.getInstance();
-        cday.setTime(birthdate);
-        return String.valueOf(cday.get(Calendar.YEAR));
+        return cs[cs.length - NUMBER_1] == PARITY_BIT[power % 11];
     }
 
     /**
-     * <p> 解析身份证获取地址区域编码 </p>
+     * 解析身份证获取地址区域编码
      *
      * @param idCardNumber 身份证号码
      * @return Integer 区域码
-     * @author liuyadong
-     * @since 2020/9/8 16:32
      */
     public static Integer getAreaCode(final String idCardNumber) {
-        String areaStr = idCardNumber.substring(0, 6);
-        Integer areaCode = Integer.parseInt(areaStr);
-        return areaCode;
+        String areaString = idCardNumber.substring(NUMBER_0, 6);
+        return Integer.parseInt(areaString);
     }
 
     /**
-     * <p> 判断来源地址是否属于目标地址 </p>
+     * 判断来源地址是否属于目标地址
      *
      * @param sourceCode 来源地址
      * @param targetCode 目标地址
      * @param level      级别（1：省 2：市  3：县）
-     * @return boolean
-     * @author liuyadong
-     * @since 2020/9/8 17:59
+     * @return Boolean
      */
-    public static boolean ifBelong(final String sourceCode, final String targetCode, final Integer level) {
-        if (level.equals(1)) {
-            return sourceCode.substring(0, 2).equals(targetCode.substring(0, 2));
+    public static Boolean isBelong(final String sourceCode, final String targetCode, final Integer level) {
+        if (level.equals(NUMBER_1)) {
+            return sourceCode.substring(NUMBER_0, NUMBER_2).equals(targetCode.substring(NUMBER_0, NUMBER_2));
         }
-        if (level.equals(2)) {
-            return sourceCode.substring(0, 4).equals(targetCode.substring(0, 4));
+        if (level.equals(NUMBER_2)) {
+            return sourceCode.substring(NUMBER_0, 4).equals(targetCode.substring(NUMBER_0, 4));
         }
-        if (level.equals(3)) {
-            return sourceCode.substring(0, 6).equals(targetCode.substring(0, 6));
+        if (level.equals(NUMBER_3)) {
+            return sourceCode.substring(NUMBER_0, 6).equals(targetCode.substring(NUMBER_0, 6));
         }
         return false;
     }
 
-
     /**
-     * <p> 解析身份证号码获取性别 </p>
+     * 解析身份证号码获取性别
      *
      * @param idCardNumber 身份证号码
-     * @return Integer
-     * @author liuyadong
-     * @since 2020/9/8 16:38
+     * @return Integer 1 - 男；0 - 女
      */
     public static Integer getSex(final String idCardNumber) {
-        String sCardNum = idCardNumber.substring(16, 17);
-        if (Integer.parseInt(sCardNum) % 2 != 0) {
-            return 1;
+        String sex = idCardNumber.substring(12, 15);
+        if (idCardNumber.length() == ID_CARD_18) {
+            sex = idCardNumber.substring(16, 17);
+        }
+        if (Integer.parseInt(sex) % NUMBER_2 != NUMBER_0) {
+            return NUMBER_1;
         } else {
-            return 0;
+            return NUMBER_0;
         }
     }
 
     /**
-     * <p> 解析身份证号码获取年龄 </p>
+     * 解析身份证号码获取年龄
      *
      * @param idCardNumber 身份证号码
      * @return Integer
-     * @author liuyadong
-     * @since 2020/9/8 16:39
      */
     public static Integer getAge(final String idCardNumber) {
-        // 获取当前年
-        Calendar cal = Calendar.getInstance();
-        int iCurrYear = cal.get(Calendar.YEAR);
-        // 出生年
-        String year = idCardNumber.substring(6, 10);
-        return iCurrYear - Integer.parseInt(year);
+        return getBirthByIdCard(idCardNumber).until(LocalDate.now()).getYears();
     }
 
     /**
      * 根据身份编号获取生日
      *
-     * @param idCard 身份编号
+     * @param idCardNumber 身份编号
      * @return 生日(yyyyMMdd)
      */
-    public static LocalDate getBirthByIdCard(final String idCard) {
-        String birth = idCard.substring(6, 14);
-        return LocalDate.parse(birth, DateTimeFormatter.ofPattern("yyyyMMdd"));
+    public static String getBirthStringByIdCard(final String idCardNumber) {
+        String birthday = idCardNumber.substring(6, 14);
+        if (idCardNumber.length() == ID_CARD_15) {
+            birthday = "19" + idCardNumber.substring(6, 12);
+        }
+        return birthday;
+    }
+
+    /**
+     * 根据身份编号获取生日
+     *
+     * @param idCardNumber 身份编号
+     * @return 生日(yyyyMMdd)
+     */
+    public static LocalDate getBirthByIdCard(final String idCardNumber) {
+        return LocalDate.parse(getBirthStringByIdCard(idCardNumber), DateTimeFormatter.ofPattern("yyyyMMdd"));
     }
 
     /**
      * 根据身份编号获取生日年
      *
-     * @param idCard 身份编号
+     * @param idCardNumber 身份编号
      * @return 生日(yyyy)
      */
-    public static Short getYearByIdCard(final String idCard) {
-        return Short.valueOf(idCard.substring(6, 10));
+    public static Integer getYearByIdCard(final String idCardNumber) {
+        LocalDate localDate = getBirthByIdCard(idCardNumber);
+        return localDate.getYear();
     }
 
     /**
      * 根据身份编号获取生日月
      *
-     * @param idCard 身份编号
+     * @param idCardNumber 身份编号
      * @return 生日(MM)
      */
-    public static Short getMonthByIdCard(final String idCard) {
-        return Short.valueOf(idCard.substring(10, 12));
+    public static Integer getMonthByIdCard(final String idCardNumber) {
+        LocalDate localDate = getBirthByIdCard(idCardNumber);
+        return localDate.getMonthValue();
     }
 
     /**
      * 根据身份编号获取生日天
      *
-     * @param idCard 身份编号
+     * @param idCardNumber 身份编号
      * @return 生日(dd)
      */
-    public static Short getDateByIdCard(final String idCard) {
-        return Short.valueOf(idCard.substring(12, 14));
+    public static Integer getDateByIdCard(final String idCardNumber) {
+        LocalDate localDate = getBirthByIdCard(idCardNumber);
+        return localDate.getDayOfMonth();
     }
 
 }
