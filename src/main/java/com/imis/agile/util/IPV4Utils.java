@@ -36,7 +36,7 @@ public class IPV4Utils {
      * @author XinLau
      * @since 2019年6月4日下午4:54:01
      */
-    public static String getClientIpAddress(HttpServletRequest request) {
+    public static String getClientIpAddress(final HttpServletRequest request) {
         String ip = request.getRemoteAddr();
         if (ip == null || ip.length() == 0 || CommonConstant.STRING_UNKNOWN.equalsIgnoreCase(ip)) {
             for (String header : HEADERS_TO_TRY) {

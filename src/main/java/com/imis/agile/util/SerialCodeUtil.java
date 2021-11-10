@@ -89,7 +89,7 @@ public class SerialCodeUtil {
      * @creed The only constant is change ! ! !
      * @since 2020/6/6 14:32
      */
-    private static int getMaxNumByLength(final Integer length) {
+    private static Integer getMaxNumByLength(final Integer length) {
         if (length == 0) {
             return 0;
         }
@@ -117,8 +117,8 @@ public class SerialCodeUtil {
             String afterCode = code.substring(code.length() - 1 - NUM_LENGTH, code.length());
             char afterCodeLetter = afterCode.substring(0, 1).charAt(0);
             int afterCodeNum = Integer.parseInt(afterCode.substring(1));
-            String nextNum = StringPool.EMPTY;
-            char nextLetter = LETTER_A;
+            String nextNum;
+            char nextLetter;
             // 先判断数字等于999*，则计数从1重新开始，递增
             if (afterCodeNum == getMaxNumByLength(NUM_LENGTH)) {
                 nextNum = getNextStrNum(0);

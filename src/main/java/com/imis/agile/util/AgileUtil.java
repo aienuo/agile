@@ -1,5 +1,6 @@
 package com.imis.agile.util;
 
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +9,8 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -118,7 +121,7 @@ public class AgileUtil {
      * JSON字符串转对象
      *
      * @param jsonString - JSON对象
-     * @param clazz      - Class<T>
+     * @param clazz-     Class<T>
      * @return Class<T> - 对象
      */
     public static <T> T stringToClass(final String jsonString, final Class<T> clazz) {
@@ -147,6 +150,35 @@ public class AgileUtil {
             }
         }
         return null;
+    }
+
+    /**
+     * 删除 HTML 标签
+     *
+     * @param htmlStr - HTML
+     * @return String - 字符串
+     */
+    public static String delHTMLTag(String htmlStr) {
+        // 定义script的正则表达式
+        final String regExScript = "<script[^>]*?>[\\s\\S]*?<\\/script>";
+        // 定义style的正则表达式
+        final String regExStyle = "<style[^>]*?>[\\s\\S]*?<\\/style>";
+        // 定义HTML标签的正则表达式
+        final String regExHtml = "<[^>]+>";
+        // 过滤script标签
+        Pattern scriptPattern = Pattern.compile(regExScript, Pattern.CASE_INSENSITIVE);
+        Matcher scriptMatcher = scriptPattern.matcher(htmlStr);
+        htmlStr = scriptMatcher.replaceAll(StringPool.EMPTY);
+        // 过滤style标签
+        Pattern stylePattern = Pattern.compile(regExStyle, Pattern.CASE_INSENSITIVE);
+        Matcher styleMatcher = stylePattern.matcher(htmlStr);
+        htmlStr = styleMatcher.replaceAll(StringPool.EMPTY);
+        // 过滤html标签
+        Pattern htmlPattern = Pattern.compile(regExHtml, Pattern.CASE_INSENSITIVE);
+        Matcher htmlMatcher = htmlPattern.matcher(htmlStr);
+        htmlStr = htmlMatcher.replaceAll(StringPool.EMPTY);
+        // 返回文本字符串
+        return htmlStr.trim();
     }
 
 }

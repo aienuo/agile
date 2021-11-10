@@ -100,7 +100,7 @@ public class PasswordUtil {
      * @creed The only constant is change ! ! !
      * @since 2020/3/9 8:59
      */
-    public static String getStringUuid(int length) {
+    public static String getStringUuid(final int length) {
         String uuid = getStringUuid();
         if (length < 1) {
             return uuid;
@@ -129,7 +129,7 @@ public class PasswordUtil {
      * @param password 生成密钥时所使用的密码
      * @return Key PBE算法密钥
      */
-    private static Key getPbeKey(String password) {
+    private static Key getPbeKey(final String password) {
         // 实例化使用的算法
         SecretKeyFactory keyFactory;
         SecretKey secretKey = null;
@@ -152,9 +152,8 @@ public class PasswordUtil {
      * @param password  生成密钥时所使用的密码
      * @param salt      盐值
      * @return 加密后的密文字符串
-     * @throws Exception
      */
-    public static String encrypt(String plaintext, String password, String salt) {
+    public static String encrypt(final String plaintext, final String password, final String salt) {
         Key key = getPbeKey(password);
         byte[] encipheredData = null;
         PBEParameterSpec parameterSpec = new PBEParameterSpec(salt.getBytes(), ITERATION_COUNT);
@@ -163,7 +162,7 @@ public class PasswordUtil {
             cipher.init(Cipher.ENCRYPT_MODE, key, parameterSpec);
             encipheredData = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
         }
         return bytesToHexString(encipheredData);
     }
@@ -175,9 +174,8 @@ public class PasswordUtil {
      * @param password   生成密钥时所使用的密码(如需解密,该参数需要与加密时使用的一致)
      * @param salt       盐值(如需解密,该参数需要与加密时使用的一致)
      * @return 解密后的明文字符串
-     * @throws Exception
      */
-    public static String decrypt(String ciphertext, String password, String salt) {
+    public static String decrypt(final String ciphertext, final String password, final String salt) {
         Key key = getPbeKey(password);
         byte[] passDec = null;
         PBEParameterSpec parameterSpec = new PBEParameterSpec(salt.getBytes(), ITERATION_COUNT);
@@ -186,7 +184,7 @@ public class PasswordUtil {
             cipher.init(Cipher.DECRYPT_MODE, key, parameterSpec);
             passDec = cipher.doFinal(hexStringToBytes(ciphertext));
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
         }
         assert passDec != null;
         return new String(passDec);
@@ -196,9 +194,9 @@ public class PasswordUtil {
      * 将字节数组转换为十六进制字符串
      *
      * @param src 字节数组
-     * @return
+     * @return String 十六进制字符串
      */
-    public static String bytesToHexString(byte[] src) {
+    public static String bytesToHexString(final byte[] src) {
         StringBuilder stringBuilder = new StringBuilder();
         if (src == null || src.length <= 0) {
             return null;
@@ -218,7 +216,7 @@ public class PasswordUtil {
      * 将十六进制字符串转换为字节数组
      *
      * @param hexString 十六进制字符串
-     * @return
+     * @return byte[] 字节数组
      */
     public static byte[] hexStringToBytes(String hexString) {
         if (hexString == null || StringPool.EMPTY.equals(hexString)) {
