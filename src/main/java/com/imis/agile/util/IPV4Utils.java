@@ -1,6 +1,6 @@
 package com.imis.agile.util;
 
-import com.imis.agile.constant.CommonConstant;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +29,16 @@ public class IPV4Utils {
             "HTTP_FORWARDED_FOR", "HTTP_FORWARDED", "HTTP_VIA", "REMOTE_ADDR", "X-Real-IP"};
 
     /**
+     * 判断IP是否 不满足条件
+     *
+     * @param ip - ip
+     * @return Boolean - 不满足条件，返回 true
+     */
+    private static Boolean headerNotMatch(final String ip) {
+        return ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip);
+    }
+
+    /**
      * getClientIpAddress 获取客户端ip地址(可以穿透代理)
      *
      * @param request - HttpServletRequest
@@ -37,14 +47,20 @@ public class IPV4Utils {
      * @since 2019年6月4日下午4:54:01
      */
     public static String getClientIpAddress(final HttpServletRequest request) {
-        String ip = request.getRemoteAddr();
-        if (ip == null || ip.length() == 0 || CommonConstant.STRING_UNKNOWN.equalsIgnoreCase(ip)) {
-            for (String header : HEADERS_TO_TRY) {
-                String ipByHeader = request.getHeader(header);
-                if (ip != null && ip.length() != 0 && !CommonConstant.STRING_UNKNOWN.equalsIgnoreCase(ip)) {
-                    ip = ipByHeader;
-                }
+        String ip = null;
+        for (String header : HEADERS_TO_TRY) {
+            // 使用Nginx等反向代理软件， 则不能通过request.getRemoteAddr()获取IP地址
+            if (headerNotMatch(ip)) {
+                ip = request.getHeader(header);
             }
+        }
+        if (headerNotMatch(ip)) {
+            // request.getRemoteAddr()获取IP地址 优先级别最低
+            ip = request.getRemoteAddr();
+        }
+        if (headerNotMatch(ip) && ip.length() > 15 && ip.indexOf(StringPool.COMMA) > 0) {
+            // 如果使用了多级反向代理的话，X-Forwarded-For的值并不止一个，而是一串IP地址，X-Forwarded-For中第一个非unknown的有效IP字符串，则为真实IP地址
+            ip = ip.substring(0, ip.indexOf(StringPool.COMMA));
         }
         return ip;
     }
