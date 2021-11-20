@@ -29,13 +29,13 @@ public class IPV4Utils {
             "HTTP_FORWARDED_FOR", "HTTP_FORWARDED", "HTTP_VIA", "REMOTE_ADDR", "X-Real-IP"};
 
     /**
-     * 判断IP是否 不满足条件
+     * 判断IP是否符合规则
      *
      * @param ip - ip
-     * @return Boolean - 不满足条件，返回 true
+     * @return Boolean - 满足条件，返回 true
      */
-    private static Boolean headerNotMatch(final String ip) {
-        return ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip);
+    private static Boolean conform(final String ip) {
+        return null != ip && ip.length() > 0 && !"unknown".equalsIgnoreCase(ip);
     }
 
     /**
@@ -50,19 +50,23 @@ public class IPV4Utils {
         String ip = null;
         for (String header : HEADERS_TO_TRY) {
             // 使用Nginx等反向代理软件， 则不能通过request.getRemoteAddr()获取IP地址
-            if (headerNotMatch(ip)) {
-                ip = request.getHeader(header);
+            String ipByHeader = request.getHeader(header);
+            if (null != ipByHeader && ipByHeader.length() > 0 && !"unknown".equalsIgnoreCase(ipByHeader)) {
+                ip = ipByHeader;
+                // 循环处理逻辑在干同一件事情，取到值终止执行
+                break;
             }
         }
-        if (headerNotMatch(ip)) {
+        if (null == ip) {
             // request.getRemoteAddr()获取IP地址 优先级别最低
             ip = request.getRemoteAddr();
         }
-        if (headerNotMatch(ip) && ip.length() > 15 && ip.indexOf(StringPool.COMMA) > 0) {
-            // 如果使用了多级反向代理的话，X-Forwarded-For的值并不止一个，而是一串IP地址，X-Forwarded-For中第一个非unknown的有效IP字符串，则为真实IP地址
-            ip = ip.substring(0, ip.indexOf(StringPool.COMMA));
+        if (null == ip) {
+            // 兜底，防止IP为 null
+            return StringPool.EMPTY;
         }
-        return ip;
+        // 如果使用了多级反向代理的话，X-Forwarded-For的值并不止一个，而是一串IP地址，X-Forwarded-For中第一个非unknown的有效IP字符串，则为真实IP地址
+        return ip.indexOf(StringPool.COMMA) > 0 ? ip.substring(0, ip.indexOf(StringPool.COMMA)) : ip;
     }
 
 }
