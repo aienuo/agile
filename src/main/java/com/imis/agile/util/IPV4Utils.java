@@ -29,16 +29,6 @@ public class IPV4Utils {
             "HTTP_FORWARDED_FOR", "HTTP_FORWARDED", "HTTP_VIA", "REMOTE_ADDR", "X-Real-IP"};
 
     /**
-     * 判断IP是否符合规则
-     *
-     * @param ip - ip
-     * @return Boolean - 满足条件，返回 true
-     */
-    private static Boolean conform(final String ip) {
-        return null != ip && ip.length() > 0 && !"unknown".equalsIgnoreCase(ip);
-    }
-
-    /**
      * getClientIpAddress 获取客户端ip地址(可以穿透代理)
      *
      * @param request - HttpServletRequest
