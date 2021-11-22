@@ -29,6 +29,35 @@ public class IPV4Utils {
             "HTTP_FORWARDED_FOR", "HTTP_FORWARDED", "HTTP_VIA", "REMOTE_ADDR", "X-Real-IP"};
 
     /**
+     * @param checkIp - 被测试IP
+     * @return Boolean - false - 标识IP存在问题
+     */
+    private static Boolean isNotUnknown(final String checkIp) {
+        return null != checkIp && checkIp.length() > 0 && !"unknown".equalsIgnoreCase(checkIp);
+    }
+
+    /**
+     * 如果使用了多级反向代理的话，X-Forwarded-For的值并不止一个，而是一串IP地址，X-Forwarded-For中第一个非unknown的有效IP字符串，则为真实IP地址
+     *
+     * @param ip - 获得的IP地址
+     * @return String - 第一个非unknown IP地址
+     */
+    private static String getMultistageReverseProxyIp(String ip) {
+        // 多级反向代理检测
+        if (null != ip && ip.indexOf(StringPool.COMMA) > 0) {
+            String[] ips = ip.trim().split(StringPool.COMMA);
+            for (String subIp : ips) {
+                if (isNotUnknown(subIp)) {
+                    ip = subIp;
+                    // 循环处理逻辑在干同一件事情，取到值终止执行
+                    break;
+                }
+            }
+        }
+        return ip;
+    }
+
+    /**
      * getClientIpAddress 获取客户端ip地址(可以穿透代理)
      *
      * @param request - HttpServletRequest
@@ -41,7 +70,7 @@ public class IPV4Utils {
         for (String header : HEADERS_TO_TRY) {
             // 使用Nginx等反向代理软件， 则不能通过request.getRemoteAddr()获取IP地址
             String ipByHeader = request.getHeader(header);
-            if (null != ipByHeader && ipByHeader.length() > 0 && !"unknown".equalsIgnoreCase(ipByHeader)) {
+            if (isNotUnknown(ipByHeader)) {
                 ip = ipByHeader;
                 // 循环处理逻辑在干同一件事情，取到值终止执行
                 break;
@@ -55,8 +84,12 @@ public class IPV4Utils {
             // 兜底，防止IP为 null
             return StringPool.EMPTY;
         }
+        String localAddress = "0:0:0:0:0:0:0:1";
+        if (localAddress.equals(ip)) {
+            return "127.0.0.1";
+        }
         // 如果使用了多级反向代理的话，X-Forwarded-For的值并不止一个，而是一串IP地址，X-Forwarded-For中第一个非unknown的有效IP字符串，则为真实IP地址
-        return ip.indexOf(StringPool.COMMA) > 0 ? ip.substring(0, ip.indexOf(StringPool.COMMA)) : ip;
+        return getMultistageReverseProxyIp(ip);
     }
 
 }
