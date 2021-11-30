@@ -124,7 +124,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         if (aBoolean) {
             // TODO: 基于 其他方式 进行 Token 校验
         }
-        User user = getUserByToken(token);
+        User user = this.getUserByToken(token);
         log.debug("URL：{}，username：{}，OldToken：{}", uri, user.getUsername(), token);
         return user;
     }
@@ -157,11 +157,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         // 校验 Token 是否合法
-        User user = verificationToken(request);
-        // if (!"admin".equals(user.getUsername())) {
-            // 校验 URL权限 是否合法
-            verificationPermissions(request, user);
-        // }
+        User user = this.verificationToken(request);
+        // 校验 URL权限 是否合法
+        this.verificationPermissions(request, user);
         return Boolean.TRUE;
     }
 
@@ -181,7 +179,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             aBoolean = Boolean.FALSE;
         }
         // 校验 Token
-        User user = getUserByToken(token);
+        User user = this.getUserByToken(token);
         token = JwtUtil.sign(user.getUsername(), user.getPassword());
         // 刷新 Token
         if (aBoolean) {

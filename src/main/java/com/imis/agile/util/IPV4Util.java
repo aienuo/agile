@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
- * IPUtils<br>
+ * IPV4Util<br>
  * IP地址 工具类
  * </p>
  *
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2020年04月19日 10:08
  */
 @Slf4j
-public class IPV4Utils {
+public class IPV4Util {
 
     /**
      * 获取IP地址

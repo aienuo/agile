@@ -3,7 +3,6 @@ package com.imis.agile.config;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
 import com.imis.agile.constant.CommonConstant;
-import com.imis.agile.interceptor.AuthenticationInterceptor;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -154,16 +153,6 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
         resourceHandlerRegistry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
         resourceHandlerRegistry.addResourceHandler("/static/**").addResourceLocations("classpath:/templates/static/");
         resourceHandlerRegistry.addResourceHandler("/**").addResourceLocations("classpath:/templates/");
-    }
-
-    /**
-     * 权限拦截器
-     *
-     * @return AuthenticationInterceptor - 权限拦截器
-     */
-    @Bean
-    public AuthenticationInterceptor authenticationInterceptor() {
-        return new AuthenticationInterceptor();
     }
 
     /**
