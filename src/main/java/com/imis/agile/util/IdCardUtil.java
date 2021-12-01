@@ -152,8 +152,11 @@ public class IdCardUtil {
      * @return Integer 区域码
      */
     public static Integer getAreaCode(final String idCardNumber) {
-        String areaString = idCardNumber.substring(NUMBER_0, 6);
-        return Integer.parseInt(areaString);
+        if (idCardNumber != null && idCardNumber.length() > 0) {
+            String areaString = idCardNumber.substring(NUMBER_0, 6);
+            return Integer.parseInt(areaString);
+        }
+        return null;
     }
 
     /**
@@ -165,16 +168,18 @@ public class IdCardUtil {
      * @return Boolean
      */
     public static Boolean isBelong(final String sourceCode, final String targetCode, final Integer level) {
-        if (level.equals(NUMBER_1)) {
-            return sourceCode.substring(NUMBER_0, NUMBER_2).equals(targetCode.substring(NUMBER_0, NUMBER_2));
+        if (sourceCode != null && sourceCode.length() > 0 && targetCode != null && targetCode.length() > 0) {
+            if (level.equals(NUMBER_1)) {
+                return sourceCode.substring(NUMBER_0, NUMBER_2).equals(targetCode.substring(NUMBER_0, NUMBER_2));
+            }
+            if (level.equals(NUMBER_2)) {
+                return sourceCode.substring(NUMBER_0, 4).equals(targetCode.substring(NUMBER_0, 4));
+            }
+            if (level.equals(NUMBER_3)) {
+                return sourceCode.substring(NUMBER_0, 6).equals(targetCode.substring(NUMBER_0, 6));
+            }
         }
-        if (level.equals(NUMBER_2)) {
-            return sourceCode.substring(NUMBER_0, 4).equals(targetCode.substring(NUMBER_0, 4));
-        }
-        if (level.equals(NUMBER_3)) {
-            return sourceCode.substring(NUMBER_0, 6).equals(targetCode.substring(NUMBER_0, 6));
-        }
-        return false;
+        return Boolean.FALSE;
     }
 
     /**
@@ -184,15 +189,19 @@ public class IdCardUtil {
      * @return Integer 1 - 男；0 - 女
      */
     public static Integer getSex(final String idCardNumber) {
-        String sex = idCardNumber.substring(12, 15);
-        if (idCardNumber.length() == ID_CARD_18) {
-            sex = idCardNumber.substring(16, 17);
+        if (idCardNumber != null && idCardNumber.length() > 0) {
+            String sex = idCardNumber.substring(12, 15);
+            if (idCardNumber.length() == ID_CARD_18) {
+                sex = idCardNumber.substring(16, 17);
+            }
+            if (Integer.parseInt(sex) % NUMBER_2 != NUMBER_0) {
+                return NUMBER_1;
+            } else {
+                return NUMBER_0;
+            }
         }
-        if (Integer.parseInt(sex) % NUMBER_2 != NUMBER_0) {
-            return NUMBER_1;
-        } else {
-            return NUMBER_0;
-        }
+        // 0-女；1-男；2-未知
+        return 2;
     }
 
     /**
@@ -202,7 +211,10 @@ public class IdCardUtil {
      * @return Integer
      */
     public static Integer getAge(final String idCardNumber) {
-        return getBirthByIdCard(idCardNumber).until(LocalDate.now()).getYears();
+        if (idCardNumber != null && idCardNumber.length() > 0) {
+            return getBirthByIdCard(idCardNumber).until(LocalDate.now()).getYears();
+        }
+        return 0;
     }
 
     /**
@@ -212,11 +224,14 @@ public class IdCardUtil {
      * @return 生日(yyyyMMdd)
      */
     public static String getBirthStringByIdCard(final String idCardNumber) {
-        String birthday = idCardNumber.substring(6, 14);
-        if (idCardNumber.length() == ID_CARD_15) {
-            birthday = "19" + idCardNumber.substring(6, 12);
+        if (idCardNumber != null && idCardNumber.length() > 0) {
+            String birthday = idCardNumber.substring(6, 14);
+            if (idCardNumber.length() == ID_CARD_15) {
+                birthday = "19" + idCardNumber.substring(6, 12);
+            }
+            return birthday;
         }
-        return birthday;
+        return null;
     }
 
     /**
@@ -226,7 +241,13 @@ public class IdCardUtil {
      * @return 生日(yyyyMMdd)
      */
     public static LocalDate getBirthByIdCard(final String idCardNumber) {
-        return LocalDate.parse(getBirthStringByIdCard(idCardNumber), DateTimeFormatter.ofPattern("yyyyMMdd"));
+        if (idCardNumber != null && idCardNumber.length() > 0) {
+            String birthday = getBirthStringByIdCard(idCardNumber);
+            if (birthday != null && birthday.length() > 0) {
+                return LocalDate.parse(birthday, DateTimeFormatter.ofPattern("yyyyMMdd"));
+            }
+        }
+        return null;
     }
 
     /**
@@ -237,7 +258,10 @@ public class IdCardUtil {
      */
     public static Integer getYearByIdCard(final String idCardNumber) {
         LocalDate localDate = getBirthByIdCard(idCardNumber);
-        return localDate.getYear();
+        if (localDate != null) {
+            return localDate.getYear();
+        }
+        return null;
     }
 
     /**
@@ -248,7 +272,10 @@ public class IdCardUtil {
      */
     public static Integer getMonthByIdCard(final String idCardNumber) {
         LocalDate localDate = getBirthByIdCard(idCardNumber);
-        return localDate.getMonthValue();
+        if (localDate != null) {
+            return localDate.getMonthValue();
+        }
+        return null;
     }
 
     /**
@@ -259,7 +286,10 @@ public class IdCardUtil {
      */
     public static Integer getDateByIdCard(final String idCardNumber) {
         LocalDate localDate = getBirthByIdCard(idCardNumber);
-        return localDate.getDayOfMonth();
+        if (localDate != null) {
+            return localDate.getDayOfMonth();
+        }
+        return null;
     }
 
 }
