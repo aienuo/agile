@@ -129,6 +129,8 @@ public class LoginBus extends BaseBus {
         if (AgileUtil.isNotEmpty(update.getIdentityNumber()) && !user.getIdentityNumber().equals(update.getIdentityNumber())) {
             // 身份证件号码
             String identityNumber = update.getIdentityNumber();
+            // 验证身份证件号码格式是否正确
+            ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_03.assertIsTrue(IdCardUtil.isIdCard(identityNumber));
             // 验证 身份证号码 是否存在重复
             User userByIdentityNumber = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getIdentityNumber, identityNumber), Boolean.FALSE);
             ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_03.assertIsNull(userByIdentityNumber);

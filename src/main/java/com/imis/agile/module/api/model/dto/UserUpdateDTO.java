@@ -5,7 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -52,15 +54,11 @@ public class UserUpdateDTO implements Serializable {
      * 出生日期
      */
     @ApiModelProperty(hidden = true)
-    @Past
     private LocalDate birthday;
     /**
      * 性别(2-默认未知，1-男，0-女)
      */
     @ApiModelProperty(hidden = true)
-    @NotNull
-    @Min(0)
-    @Max(2)
     private Integer sex;
 
     /**

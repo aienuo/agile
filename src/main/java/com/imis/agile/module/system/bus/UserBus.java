@@ -81,6 +81,8 @@ public class UserBus extends BaseBus {
     private User userAddVerification(final UserAddDTO add) {
         // 身份证件号码
         String identityNumber = add.getIdentityNumber();
+        // 验证身份证件号码格式是否正确
+        ArgumentResponseEnum.USER_VALID_ERROR_ADD_02.assertIsTrue(IdCardUtil.isIdCard(identityNumber));
         // 验证 用户帐号\身份证号码 是否存在重复
         User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, add.getUsername()).or().eq(User::getIdentityNumber, identityNumber), Boolean.FALSE);
         ArgumentResponseEnum.USER_VALID_ERROR_ADD_02.assertIsNull(user);
@@ -115,6 +117,8 @@ public class UserBus extends BaseBus {
         if (AgileUtil.isNotEmpty(update.getIdentityNumber()) && !user.getIdentityNumber().equals(update.getIdentityNumber())) {
             // 身份证件号码
             String identityNumber = update.getIdentityNumber();
+            // 验证身份证件号码格式是否正确
+            ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_03.assertIsTrue(IdCardUtil.isIdCard(identityNumber));
             // 验证 身份证号码 是否存在重复
             User userByIdentityNumber = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getIdentityNumber, identityNumber), Boolean.FALSE);
             ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_03.assertIsNull(userByIdentityNumber);
