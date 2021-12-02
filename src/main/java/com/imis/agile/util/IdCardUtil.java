@@ -3,7 +3,6 @@ package com.imis.agile.util;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -123,19 +122,19 @@ public class IdCardUtil {
             return false;
         }
         // 校验年份
-        final int intYear = getYearByIdCard(idCardNumber);
-        if (intYear < YEAR_START_NUMBER || intYear > Calendar.getInstance().get(Calendar.YEAR)) {
+        final Integer intYear = getYearByIdCard(idCardNumber);
+        if (intYear == null || intYear < YEAR_START_NUMBER || intYear > Calendar.getInstance().get(Calendar.YEAR)) {
             // 1900年的 PASS，超过今年的 PASS
             return false;
         }
         // 校验月份
-        final int intMonth = getMonthByIdCard(idCardNumber);
-        if (intMonth < NUMBER_1 || intMonth > MONTH_NUMBER) {
+        final Integer intMonth = getMonthByIdCard(idCardNumber);
+        if (intMonth == null || intMonth < NUMBER_1 || intMonth > MONTH_NUMBER) {
             return false;
         }
         // 校验天数
-        final int intDay = getDateByIdCard(idCardNumber);
-        if (intDay < NUMBER_1 || intDay > DAY_OF_MONTH_NUMBER) {
+        final Integer intDay = getDateByIdCard(idCardNumber);
+        if (intDay == null || intDay < NUMBER_1 || intDay > DAY_OF_MONTH_NUMBER) {
             return false;
         }
         // 校验 "校验码"
@@ -243,8 +242,13 @@ public class IdCardUtil {
     public static LocalDate getBirthByIdCard(final String idCardNumber) {
         if (idCardNumber != null && idCardNumber.length() > 0) {
             String birthday = getBirthStringByIdCard(idCardNumber);
-            if (birthday != null && birthday.length() > 0) {
-                return LocalDate.parse(birthday, DateTimeFormatter.ofPattern("yyyyMMdd"));
+            if (birthday != null && birthday.length() == 8) {
+                try {
+                    // 防止恶意日期
+                    return LocalDate.of(Integer.parseInt(birthday.substring(0, 4)), Integer.parseInt(birthday.substring(4, 6)), Integer.parseInt(birthday.substring(6, 8)));
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                }
             }
         }
         return null;
