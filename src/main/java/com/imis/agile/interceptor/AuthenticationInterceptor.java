@@ -15,7 +15,7 @@ import com.imis.agile.util.AgileUtil;
 import com.imis.agile.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * @since 2021年01月20日 13:24
  */
 @Slf4j
-@Component
+@Configuration
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
     /**

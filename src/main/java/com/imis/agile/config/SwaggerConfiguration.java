@@ -3,16 +3,14 @@ package com.imis.agile.config;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
 import com.imis.agile.constant.CommonConstant;
+import com.imis.agile.interceptor.AuthenticationInterceptor;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
@@ -100,8 +98,8 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 .modelRef(new ModelRef("string"))
                 // 更新参数类型
                 .parameterType("header")
-                // 更新参数是否为必需或可选
-                .required(Boolean.TRUE)
+                // TODO：更新参数是否为必需或可选
+                .required(Boolean.FALSE)
                 // 构建
                 .build());
         return parameterList;
@@ -186,11 +184,49 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
         registry.addViewController("/").setViewName("index");
     }
 
+    /**
+     * 创建 身份验证拦截器
+     *
+     * @return AuthenticationInterceptor
+     */
+    @Bean
+    public AuthenticationInterceptor setAuthenticationInterceptor() {
+        return new AuthenticationInterceptor();
+    }
+
+    /**
+     * 添加拦截器
+     *
+     * @param registry - InterceptorRegistry
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // 多个拦截器组成一个拦截器链
+        // addPathPatterns 用于添加拦截规则
+        // excludePathPatterns 用户排除拦截
+        // 由于Spring boot 2.x依赖的Spring 5.x版本，使用Spring 5.x时，静态资源也会执行自定义的拦截器
+        // 所有导致静态资源不可访问的问题
+        String[] excludePathArray = new String[]{
+                "/login", "/index.html", "/doc.html", "/webjars/**", "/swagger-resources/**", "/static/**", "/sm/**", "/error/**"
+        };
+        registry.addInterceptor(setAuthenticationInterceptor()).addPathPatterns("/**").excludePathPatterns(excludePathArray);
+    }
+
+    /**
+     * 创建 Swagger 接口的 分类
+     *
+     * @return Docket 分类
+     */
     @Bean
     public Docket createLoginRelatedApi() {
         return createRestApi("1、登陆相关模块", "com.imis.agile.module.api.controller", "注册、登录、注销、改密、登陆后获取功能菜单（带Token）、常用接口、下拉接口");
     }
 
+    /**
+     * 创建 Swagger 接口的 分类
+     *
+     * @return Docket 分类
+     */
     @Bean
     public Docket createSystemManagementApi() {
         return createRestApi("2、系统管理模块", "com.imis.agile.module.system.controller", "用户管理、角色管理、功能菜单、组织机构、字典管理、系统日志");
