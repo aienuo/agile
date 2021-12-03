@@ -158,7 +158,7 @@ public class AgileUtil {
      * @param htmlStr - HTML
      * @return String - 字符串
      */
-    public static String delHTMLTag(String htmlStr) {
+    public static String delHtmlTag(String htmlStr) {
         // 定义script的正则表达式
         final String regExScript = "<script[^>]*?>[\\s\\S]*?<\\/script>";
         // 定义style的正则表达式
