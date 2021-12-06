@@ -181,7 +181,7 @@ public class JwtUtil {
      */
     public static void setCookie(final String cookieName, final String value) {
         // Max-Age属性指定从现在开始 Cookie 存在的秒数 - 一个小时
-        setCookie(cookieName, value, CommonConstant.MAX_AGE, Boolean.FALSE);
+        setCookie(cookieName, value, CommonConstant.MAX_AGE, Boolean.TRUE);
     }
 
     /**
@@ -193,10 +193,17 @@ public class JwtUtil {
      * @param secure       - HttpOnly属性指定该 Cookie 无法通过 JavaScript 脚本拿到
      */
     public static void setCookie(final String cookieName, final String value, final int cookieMaxAge, final Boolean secure) {
-        Cookie cookie = new Cookie(cookieName, value);
+        Cookie cookie = getCookie(cookieName);
+        if (cookie == null) {
+            cookie = new Cookie(cookieName, value);
+        } else {
+            cookie.setValue(value);
+        }
         cookie.setMaxAge(cookieMaxAge);
         cookie.setHttpOnly(secure);
-        cookie.setPath(StringPool.SLASH);
+        // 只有获取该cookie所在路径，才能实现对应的修改
+        cookie.setPath(AgileUtil.isEmpty(cookie.getPath()) ? StringPool.SLASH : cookie.getPath());
+        cookie.setDomain(AgileUtil.isEmpty(cookie.getDomain()) ? getHttpServletRequest().getServerName(): cookie.getDomain());
         getHttpServletResponse().addCookie(cookie);
     }
 
@@ -208,7 +215,7 @@ public class JwtUtil {
      */
     public static void updateCookieValue(final String cookieName, final String value) {
         // Max-Age属性指定从现在开始 Cookie 存在的秒数 - 一个小时
-        updateCookieValue(cookieName, value, CommonConstant.MAX_AGE, Boolean.FALSE);
+        updateCookieValue(cookieName, value, CommonConstant.MAX_AGE, Boolean.TRUE);
     }
 
     /**
@@ -220,15 +227,7 @@ public class JwtUtil {
      * @param secure       - HttpOnly属性指定该 Cookie 无法通过 JavaScript 脚本拿到
      */
     public static void updateCookieValue(final String cookieName, final String value, final int cookieMaxAge, final Boolean secure) {
-        Cookie cookie = getCookie(cookieName);
-        if (cookie != null) {
-            cookie.setValue(value);
-            cookie.setMaxAge(cookieMaxAge);
-            cookie.setHttpOnly(secure);
-            // 只有获取该cookie所在路径，才能实现对应的修改
-            cookie.setPath(StringPool.SLASH);
-        }
-        getHttpServletResponse().addCookie(cookie);
+        setCookie(cookieName, value, cookieMaxAge, secure);
     }
 
     /**
