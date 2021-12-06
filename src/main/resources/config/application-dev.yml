@@ -24,6 +24,7 @@ mybatis-plus:
 knife4j:
   enable: true
   production: false
+  cors: true
   setting:
     enableVersion: true
     enableSwaggerModels: true

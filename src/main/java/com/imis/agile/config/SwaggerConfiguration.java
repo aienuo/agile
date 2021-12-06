@@ -163,7 +163,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
         // 允许跨域访问的路径
         registry.addMapping("/**")
                 // 允许跨域访问的源
-                .allowedOrigins("*")
+                .allowedOriginPatterns("*")
                 // 允许请求方法
                 .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE")
                 // 预检间隔时间
@@ -207,7 +207,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
         // 由于Spring boot 2.x依赖的Spring 5.x版本，使用Spring 5.x时，静态资源也会执行自定义的拦截器
         // 所有导致静态资源不可访问的问题
         String[] excludePathArray = new String[]{
-                "/login", "/index.html", "/doc.html", "/webjars/**", "/swagger-resources/**", "/static/**", "/sm/**", "/error/**"
+                "/login", "/index.html", "/doc.html", "/favicon.ico", "/webjars/**", "/swagger-resources/**", "/static/**", "/sm/**", "/error/**"
         };
         registry.addInterceptor(setAuthenticationInterceptor()).addPathPatterns("/**").excludePathPatterns(excludePathArray);
     }

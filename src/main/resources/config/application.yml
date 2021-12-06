@@ -22,8 +22,6 @@ spring:
     name: agile
   main:
     allow-bean-definition-overriding: true
-  resources:
-    static-locations: classpath:/templates/
   servlet:
     multipart:
       max-file-size: 10MB
@@ -66,12 +64,17 @@ spring:
   aop:
     proxy-target-class: true
   mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
     static-path-pattern: /**
   autoconfigure:
     exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
   thymeleaf:
     prefix: classpath:/templates/
     cache: false
+  web:
+    resources:
+      static-locations: classpath:/templates/
 mybatis-plus:
   mapper-locations: classpath:com/imis/agile/module/**/mapper/xml/*Mapper.xml
   global-config:
