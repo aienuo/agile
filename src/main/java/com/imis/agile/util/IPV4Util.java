@@ -18,6 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class IPV4Util {
 
+    public final static String LOCAL_IP = "127.0.0.1";
+
+    public final static String LOCAL_ADDRESS = "0:0:0:0:0:0:0:1";
+
     /**
      * 获取IP地址
      * <p>
@@ -33,7 +37,7 @@ public class IPV4Util {
      * @return Boolean - false - 标识IP存在问题
      */
     private static Boolean isNotUnknown(final String checkIp) {
-        return null != checkIp && checkIp.length() > 0 && !"unknown".equalsIgnoreCase(checkIp);
+        return AgileUtil.isNotEmpty(checkIp) && !"unknown".equalsIgnoreCase(checkIp);
     }
 
     /**
@@ -80,13 +84,12 @@ public class IPV4Util {
             // request.getRemoteAddr()获取IP地址 优先级别最低
             ip = request.getRemoteAddr();
         }
-        if (null == ip) {
+        if (!isNotUnknown(ip)) {
             // 兜底，防止IP为 null
             return StringPool.EMPTY;
         }
-        String localAddress = "0:0:0:0:0:0:0:1";
-        if (localAddress.equals(ip)) {
-            return "127.0.0.1";
+        if (LOCAL_ADDRESS.equals(ip)) {
+            return LOCAL_IP;
         }
         // 如果使用了多级反向代理的话，X-Forwarded-For的值并不止一个，而是一串IP地址，X-Forwarded-For中第一个非unknown的有效IP字符串，则为真实IP地址
         return getMultistageReverseProxyIp(ip);
