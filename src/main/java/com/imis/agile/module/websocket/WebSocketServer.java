@@ -1,6 +1,7 @@
 package com.imis.agile.module.websocket;
 
 import com.imis.agile.util.AgileUtil;
+import com.imis.agile.util.JacksonUtils;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -98,7 +99,7 @@ public class WebSocketServer {
     @OnMessage
     public void onMessage(@PathParam(value = "username") String username, String messageData) {
         log.debug("【WebSocket】收到客户端 {} 的消息: {}", username, messageData);
-        MessageData message = AgileUtil.stringToClass(messageData, MessageData.class);
+        MessageData message = JacksonUtils.parse(messageData, MessageData.class);
         this.sendMessageToUser(message);
     }
 
@@ -116,7 +117,7 @@ public class WebSocketServer {
             if (AgileUtil.isNotEmpty(session) && session.isOpen()) {
                 try {
                     log.info("【WebSocket】 进行消息发送: {}", messageData);
-                    session.getAsyncRemote().sendText(AgileUtil.classToString(messageData));
+                    session.getAsyncRemote().sendText(JacksonUtils.toJSONString(messageData));
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
                 }

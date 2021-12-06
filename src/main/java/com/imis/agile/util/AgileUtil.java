@@ -1,11 +1,9 @@
 package com.imis.agile.util;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.Map;
@@ -118,47 +116,15 @@ public class AgileUtil {
     }
 
     /**
-     * JSON字符串转对象
-     *
-     * @param jsonString - JSON对象
-     * @param clazz-     Class<T>
-     * @return Class<T> - 对象
-     */
-    public static <T> T stringToClass(final String jsonString, final Class<T> clazz) {
-        if (isNotEmpty(jsonString) && clazz != null) {
-            try {
-                return clazz.equals(String.class) ? (T) jsonString : OBJECT_MAPPER.readValue(jsonString, clazz);
-            } catch (IOException e) {
-                log.error(e.getMessage(), e);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 对象转JSON字符串
-     *
-     * @param clazz - Class<T>
-     * @return String - JSON字符串
-     */
-    public static <T> String classToString(final T clazz) {
-        if (clazz != null) {
-            try {
-                return clazz instanceof String ? (String) clazz : OBJECT_MAPPER.writeValueAsString(clazz);
-            } catch (JsonProcessingException e) {
-                log.error(e.getMessage(), e);
-            }
-        }
-        return null;
-    }
-
-    /**
      * 删除 HTML 标签
      *
      * @param htmlStr - HTML
      * @return String - 字符串
      */
     public static String delHtmlTag(String htmlStr) {
+        if (isEmpty(htmlStr)){
+            return htmlStr;
+        }
         // 定义script的正则表达式
         final String regExScript = "<script[^>]*?>[\\s\\S]*?<\\/script>";
         // 定义style的正则表达式
