@@ -3,9 +3,12 @@
 
 <head>
     <meta charset="utf-8"/>
+    <!-- 避免IE使用兼容模式 -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title>主页</title>
     <base th:href="${#request.getContextPath()}+'/'">
+    <!-- 360浏览器急速模式 -->
+    <meta name="renderer" content="webkit">
     <link rel="icon" href="/static/favicon.ico"/>
     <link rel="stylesheet" href="/static/common/element/index.css"/>
 </head>

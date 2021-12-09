@@ -47,7 +47,7 @@ public class AgileUtil {
             return Boolean.TRUE;
         }
         if (object instanceof CharSequence) {
-            return object.toString().length() == 0;
+            return 0 == object.toString().length();
         } else if (object instanceof Map) {
             return ((Map<?, ?>) object).isEmpty();
         } else if (object instanceof Iterable) {
