@@ -17,8 +17,8 @@ import com.imis.agile.module.system.service.IRoleMenuService;
 import com.imis.agile.module.system.service.IUserRoleService;
 import com.imis.agile.util.AgileUtil;
 import com.imis.agile.util.BuildingTreeData;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,28 +35,19 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 @DS(DataBaseConstant.DATA_SOURCE_MASTER)
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IMenuService {
 
     /**
      * 用户角色关联 服务类
      */
-    private IUserRoleService userRoleService;
-
-    @Autowired
-    public void setUserRoleService(IUserRoleService userRoleService) {
-        this.userRoleService = userRoleService;
-    }
+    private final IUserRoleService userRoleService;
 
     /**
      * 角色菜单权限关联 服务类
      */
-    private IRoleMenuService roleMenuService;
-
-    @Autowired
-    public void setRoleMenuService(IRoleMenuService roleMenuService) {
-        this.roleMenuService = roleMenuService;
-    }
+    private final IRoleMenuService roleMenuService;
 
     /**
      * 查询系统用户的角色信息

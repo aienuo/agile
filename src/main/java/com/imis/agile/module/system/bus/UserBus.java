@@ -20,7 +20,8 @@ import com.imis.agile.response.CommonResponse;
 import com.imis.agile.util.AgileUtil;
 import com.imis.agile.util.IdCardUtil;
 import com.imis.agile.util.PasswordUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,38 +37,25 @@ import java.util.List;
  * @version 1.0
  * @since 2020年04月15日 11:54
  */
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserBus extends BaseBus {
 
     /**
      * 系统用户 服务类
      */
-    private IUserService userService;
-
-    @Autowired
-    public void setUserService(IUserService userService) {
-        this.userService = userService;
-    }
+    private final IUserService userService;
 
     /**
      * 用户角色关联 服务类
      */
-    private IUserRoleService userRoleService;
-
-    @Autowired
-    public void setUserRoleService(IUserRoleService userRoleService) {
-        this.userRoleService = userRoleService;
-    }
+    private final IUserRoleService userRoleService;
 
     /**
      * 用户组织机构关联 服务类
      */
-    private IUserOrganizationService userOrganizationService;
-
-    @Autowired
-    public void setUserOrganizationService(IUserOrganizationService userOrganizationService) {
-        this.userOrganizationService = userOrganizationService;
-    }
+    private final IUserOrganizationService userOrganizationService;
 
     /**
      * 添加校验

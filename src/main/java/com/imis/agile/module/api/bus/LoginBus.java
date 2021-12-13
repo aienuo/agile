@@ -14,8 +14,8 @@ import com.imis.agile.module.system.service.*;
 import com.imis.agile.response.BaseResponse;
 import com.imis.agile.response.CommonResponse;
 import com.imis.agile.util.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,57 +34,33 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class LoginBus extends BaseBus {
 
     /**
      * 系统用户 服务类
      */
-    private IUserService userService;
-
-    @Autowired
-    public void setUserService(IUserService userService) {
-        this.userService = userService;
-    }
+    private final IUserService userService;
 
     /**
      * 角色管理 服务类
      */
-    private IRoleService roleService;
-
-    @Autowired
-    public void setRoleService(IRoleService roleService) {
-        this.roleService = roleService;
-    }
+    private final IRoleService roleService;
 
     /**
      * 菜单权限 服务类
      */
-    private IMenuService menuService;
-
-    @Autowired
-    public void setMenuService(IMenuService menuService) {
-        this.menuService = menuService;
-    }
+    private final IMenuService menuService;
 
     /**
      * 字典 - 项 服务类
      */
-    private IDictService dictService;
-
-    @Autowired
-    public void setDictService(IDictService dictService) {
-        this.dictService = dictService;
-    }
+    private final IDictService dictService;
 
     /**
      * 字典 - 值 服务类
      */
-    private IDictItemService dictItemService;
-
-    @Autowired
-    public void setDictItemService(IDictItemService dictItemService) {
-        this.dictItemService = dictItemService;
-    }
+    private final IDictItemService dictItemService;
 
     /**
      * 构建登录返回值

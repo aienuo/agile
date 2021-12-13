@@ -16,7 +16,8 @@ import com.imis.agile.module.system.service.IDictService;
 import com.imis.agile.response.BaseResponse;
 import com.imis.agile.response.CommonResponse;
 import com.imis.agile.util.AgileUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,28 +34,20 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @since 2021年08月16日 10:49
  */
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class DictBus extends BaseBus {
 
     /**
      * 字典 - 项 服务类
      */
-    private IDictService dictService;
-
-    @Autowired
-    public void setDictService(IDictService dictService) {
-        this.dictService = dictService;
-    }
+    private final IDictService dictService;
 
     /**
      * 字典 - 值 服务类
      */
-    private IDictItemService dictItemService;
-
-    @Autowired
-    public void setDictItemService(IDictItemService dictItemService) {
-        this.dictItemService = dictItemService;
-    }
+    private final IDictItemService dictItemService;
 
     /**
      * 添加校验

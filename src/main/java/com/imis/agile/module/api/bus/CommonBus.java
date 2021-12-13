@@ -11,8 +11,8 @@ import com.imis.agile.module.system.service.IFileService;
 import com.imis.agile.response.BaseResponse;
 import com.imis.agile.response.CommonResponse;
 import com.imis.agile.util.AgileUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -42,17 +42,13 @@ import java.util.Map;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CommonBus extends BaseBus {
 
     /**
      * 文件存放 服务类
      */
-    private IFileService fileService;
-
-    @Autowired
-    public void setFileService(IFileService fileService) {
-        this.fileService = fileService;
-    }
+    private final IFileService fileService;
 
     /**
      * 文件本地存储路径（跟jar包同级目录，自动拼接 “./”）

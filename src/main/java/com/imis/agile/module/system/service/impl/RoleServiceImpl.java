@@ -14,8 +14,8 @@ import com.imis.agile.module.system.model.vo.RolePageVO;
 import com.imis.agile.module.system.service.IRoleService;
 import com.imis.agile.module.system.service.IUserRoleService;
 import com.imis.agile.util.AgileUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,18 +32,14 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 @DS(DataBaseConstant.DATA_SOURCE_MASTER)
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
     /**
      * 用户角色关联 服务类
      */
-    private IUserRoleService userRoleService;
-
-    @Autowired
-    public void setUserRoleService(IUserRoleService userRoleService) {
-        this.userRoleService = userRoleService;
-    }
+    private final IUserRoleService userRoleService;
 
     /**
      * 查询系统用户的角色信息

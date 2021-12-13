@@ -20,7 +20,8 @@ import com.imis.agile.module.system.service.IUserRoleService;
 import com.imis.agile.response.BaseResponse;
 import com.imis.agile.response.CommonResponse;
 import com.imis.agile.util.AgileUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,38 +37,25 @@ import java.util.List;
  * @version 1.0
  * @since 2021年07月28日 11:27
  */
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class RoleBus extends BaseBus {
 
     /**
      * 系统角色 服务类
      */
-    private IRoleService roleService;
-
-    @Autowired
-    public void setRoleService(IRoleService roleService) {
-        this.roleService = roleService;
-    }
+    private final IRoleService roleService;
 
     /**
      * 用户角色关联 服务类
      */
-    private IUserRoleService userRoleService;
-
-    @Autowired
-    public void setUserRoleService(IUserRoleService userRoleService) {
-        this.userRoleService = userRoleService;
-    }
+    private final IUserRoleService userRoleService;
 
     /**
      * 角色菜单权限关联 服务类
      */
-    private IRoleMenuService roleMenuService;
-
-    @Autowired
-    public void setRoleMenuService(IRoleMenuService roleMenuService) {
-        this.roleMenuService = roleMenuService;
-    }
+    private final IRoleMenuService roleMenuService;
 
     /**
      * 添加校验

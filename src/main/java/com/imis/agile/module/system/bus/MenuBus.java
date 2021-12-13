@@ -15,7 +15,8 @@ import com.imis.agile.module.system.service.IRoleMenuService;
 import com.imis.agile.response.BaseResponse;
 import com.imis.agile.response.CommonResponse;
 import com.imis.agile.util.AgileUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,28 +31,20 @@ import java.util.List;
  * @version 1.0
  * @since 2021年08月09日 12:03
  */
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class MenuBus extends BaseBus {
 
     /**
      * 菜单权限 服务类
      */
-    private IMenuService menuService;
-
-    @Autowired
-    public void setMenuService(IMenuService menuService) {
-        this.menuService = menuService;
-    }
+    private final IMenuService menuService;
 
     /**
      * 角色菜单权限关联 服务类
      */
-    private IRoleMenuService roleMenuService;
-
-    @Autowired
-    public void setRoleMenuService(IRoleMenuService roleMenuService) {
-        this.roleMenuService = roleMenuService;
-    }
+    private final IRoleMenuService roleMenuService;
 
     /**
      * 添加校验

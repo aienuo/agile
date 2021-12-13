@@ -16,7 +16,8 @@ import com.imis.agile.module.system.service.IUserOrganizationService;
 import com.imis.agile.response.BaseResponse;
 import com.imis.agile.response.CommonResponse;
 import com.imis.agile.util.AgileUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,28 +36,20 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @since 2021年08月24日 14:54
  */
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class OrganizationBus extends BaseBus {
 
     /**
      * 组织机构 服务类
      */
-    private IOrganizationService organizationService;
-
-    @Autowired
-    public void setOrganizationService(IOrganizationService organizationService) {
-        this.organizationService = organizationService;
-    }
+    private final IOrganizationService organizationService;
 
     /**
      * 用户组织机构关联 服务类
      */
-    private IUserOrganizationService userOrganizationService;
-
-    @Autowired
-    public void setUserOrganizationService(IUserOrganizationService userOrganizationService) {
-        this.userOrganizationService = userOrganizationService;
-    }
+    private final IUserOrganizationService userOrganizationService;
 
     /**
      * 添加校验
