@@ -71,8 +71,13 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             List<RoleMenu> roleMenuList = this.roleMenuService.list(Wrappers.<RoleMenu>lambdaQuery().in(RoleMenu::getRoleId, roleIdList));
             if (AgileUtil.isNotEmpty(userRoleList)) {
                 List<Long> menuIdList = roleMenuList.stream().map(RoleMenu::getMenuId).filter(AgileUtil::isNotEmpty).distinct().collect(Collectors.toList());
-                BuildingTreeData<MenuTreeVO> buildingTreeData = new BuildingTreeData<>();
-                return buildingTreeData.buildingTreeData(this.baseMapper.queryMenuTreeListByIdList(menuIdList));
+                // 查询数据
+                List<MenuTreeVO> menuList = this.baseMapper.queryMenuTreeListByIdList(menuIdList);
+                if (AgileUtil.isNotEmpty(menuList)) {
+                    // 构建树形结构数据
+                    BuildingTreeData<MenuTreeVO> buildingTreeData = new BuildingTreeData<>();
+                    return buildingTreeData.buildingTreeData(menuList);
+                }
             }
         }
         return menuTreeList;
