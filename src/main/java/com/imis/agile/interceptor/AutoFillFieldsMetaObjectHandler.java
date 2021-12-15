@@ -49,13 +49,11 @@ public class AutoFillFieldsMetaObjectHandler implements MetaObjectHandler {
         String username = StringPool.EMPTY;
         if (AgileUtil.isEmpty(getFieldValByName(com.imis.agile.constant.DataBaseConstant.CREATE_BY, metaObject))) {
             String token = getHttpServletRequest().getHeader(CommonConstant.X_ACCESS_TOKEN);
-            if (AgileUtil.isEmpty(token)) {
-                token = JwtUtil.getCookieValue(CommonConstant.X_COOKIE_NAME);
-            }
             CommonResponseEnum.TOKEN_500.assertNotEmpty(token);
             // 获取 Token 中的 username
             username = JwtUtil.getUsername(token);
         }
+        CommonResponseEnum.TOKEN_500.assertNotEmpty(username);
         log.debug("执行 插入数据时的填充策略");
         this.strictInsertFill(metaObject, com.imis.agile.constant.DataBaseConstant.CREATE_BY, String.class, username);
         this.strictInsertFill(metaObject, com.imis.agile.constant.DataBaseConstant.CREATE_TIME, java.time.LocalDateTime.class, java.time.LocalDateTime.now());
@@ -74,13 +72,11 @@ public class AutoFillFieldsMetaObjectHandler implements MetaObjectHandler {
         String username = StringPool.EMPTY;
         if (AgileUtil.isEmpty(getFieldValByName(com.imis.agile.constant.DataBaseConstant.UPDATE_BY, metaObject))) {
             String token = getHttpServletRequest().getHeader(CommonConstant.X_ACCESS_TOKEN);
-            if (AgileUtil.isEmpty(token)) {
-                token = JwtUtil.getCookieValue(CommonConstant.X_COOKIE_NAME);
-            }
             CommonResponseEnum.TOKEN_500.assertNotEmpty(token);
             // 获取 Token 中的 username
             username = JwtUtil.getUsername(token);
         }
+        CommonResponseEnum.TOKEN_500.assertNotEmpty(username);
         log.debug("执行 更新数据时的填充策略");
         this.strictUpdateFill(metaObject, com.imis.agile.constant.DataBaseConstant.UPDATE_BY, String.class, username);
         this.strictUpdateFill(metaObject, com.imis.agile.constant.DataBaseConstant.UPDATE_TIME, java.time.LocalDateTime.class, java.time.LocalDateTime.now());

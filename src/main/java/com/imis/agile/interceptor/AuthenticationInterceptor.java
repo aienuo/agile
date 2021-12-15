@@ -16,6 +16,7 @@ import com.imis.agile.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -89,6 +90,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
      */
     private User getUserByToken(final String token) {
         CommonResponseEnum.TOKEN_500.assertNotEmpty(token);
+        // 获得Token是否到期
         CommonResponseEnum.TOKEN_500.assertIsFalse(JwtUtil.isDue(token));
         // 获取 Token 中的 username
         String username = JwtUtil.getUsername(token);
@@ -96,6 +98,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         // 判断用户状态
         User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username), Boolean.FALSE);
         CommonResponseEnum.ERROR_500.assertNotNullWithMsg(user, "用户不存在");
+        // 校验Token是否正确
+        CommonResponseEnum.TOKEN_500.assertIsTrue(JwtUtil.verify(token, username, user.getPassword()));
         // 删除状态（0-正常，1-已删除）
         CommonResponseEnum.ERROR_500.assertIsTrueWithMsg(CommonConstant.DEL_FLAG_0.equals(user.getDelFlag()), "账号注销");
         // 冻结状态(0-正常，1-冻结）
@@ -112,20 +116,10 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
      * @since 2020/3/6 14:26
      */
     private User verificationToken(HttpServletRequest request) {
-        String uri = request.getRequestURI();
-        Boolean aBoolean = Boolean.TRUE;
         // 获取 Token
         String token = request.getHeader(CommonConstant.X_ACCESS_TOKEN);
-        if (AgileUtil.isEmpty(token)) {
-            token = JwtUtil.getCookieValue(CommonConstant.X_COOKIE_NAME);
-            aBoolean = Boolean.FALSE;
-        }
-        // 校验
-        if (aBoolean) {
-            // TODO: 基于 其他方式 进行 Token 校验
-        }
         User user = this.getUserByToken(token);
-        log.debug("URL：{}，username：{}，OldToken：{}", uri, user.getUsername(), token);
+        log.debug("URL：{}，username：{}，OldToken：{}", request.getRequestURI(), user.getUsername(), token);
         return user;
     }
 
@@ -169,26 +163,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) {
-        String uri = request.getRequestURI();
-        // 获取 Token
-        String token = request.getHeader(CommonConstant.X_ACCESS_TOKEN);
-        Boolean aBoolean = Boolean.TRUE;
-        if (AgileUtil.isEmpty(token)) {
-            // Cookie 方式
-            token = JwtUtil.getCookieValue(CommonConstant.X_COOKIE_NAME);
-            aBoolean = Boolean.FALSE;
-        }
         // 校验 Token
-        User user = this.getUserByToken(token);
-        token = JwtUtil.sign(user.getUsername(), user.getPassword());
+        User user = this.verificationToken(request);
         // 刷新 Token
-        if (aBoolean) {
-            // TODO: 基于 其他方式 进行 Token 刷新
-        } else {
-            // 往 Cookie 中 设置 新 Token， 从而达到刷新 Token 过期时间 的效果
-            JwtUtil.updateCookieValue(CommonConstant.X_COOKIE_NAME, token);
-        }
-        log.debug("URL：{}，username：{}，NewToken：{}", uri, user.getUsername(), token);
+        String token = JwtUtil.sign(user.getUsername(), user.getPassword());
+        // 往 Header 中 设置 新 Token， 从而达到刷新 Token 过期时间 的效果
+        response.setHeader(CommonConstant.X_ACCESS_TOKEN, token);
+        response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, CommonConstant.X_ACCESS_TOKEN);
+        log.debug("URL：{}，username：{}，NewToken：{}", request.getRequestURI(), user.getUsername(), token);
     }
 
 }

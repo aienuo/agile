@@ -84,8 +84,7 @@ new Vue({
                     {type: 'string', message: '手机号码格式不正确', pattern: /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-7|9])|(?:5[0-3|5-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1|8|9]))\d{8}$/, trigger: ['blur', 'change']}
                 ],
                 oldPassword: [
-                    {required: true, message: '请输入原登录密码', trigger: 'blur'},
-                    {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+                    {required: true, message: '请输入原登录密码', trigger: 'blur'}
                 ],
                 newPassword: [
                     {required: true, message: '请输入登录密码', trigger: 'blur'},

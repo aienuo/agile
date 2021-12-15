@@ -201,15 +201,11 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // 多个拦截器组成一个拦截器链
-        // addPathPatterns 用于添加拦截规则
-        // excludePathPatterns 用户排除拦截
-        // 由于Spring boot 2.x依赖的Spring 5.x版本，使用Spring 5.x时，静态资源也会执行自定义的拦截器
-        // 所有导致静态资源不可访问的问题
-        String[] excludePathArray = new String[]{
-                "/login", "/index.html", "/doc.html", "/favicon.ico", "/webjars/**", "/swagger-resources/**", "/static/**", "/sm/**", "/error/**"
+        // 多个拦截器组成一个拦截器链 addPathPatterns 用于添加拦截规则
+        String[] pathArray = new String[]{
+                "/info/**", "/sys/**", "/websocket/**", "/update", "/password"
         };
-        registry.addInterceptor(setAuthenticationInterceptor()).addPathPatterns("/**").excludePathPatterns(excludePathArray);
+        registry.addInterceptor(setAuthenticationInterceptor()).addPathPatterns(pathArray);
     }
 
     /**

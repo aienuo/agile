@@ -16,8 +16,10 @@ import com.imis.agile.response.CommonResponse;
 import com.imis.agile.util.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -73,6 +75,7 @@ public class LoginBus extends BaseBus {
      * @since 2020/3/6 14:26
      */
     private CommonResponse<LoginVO> buildingData(final User user, final String password) {
+        HttpServletResponse httpServletResponse = getHttpServletResponse();
         // 验证密码
         ArgumentResponseEnum.USER_VALID_ERROR_LOGIN_02.assertIsTrue(user.getPassword().equals(PasswordUtil.encrypt(user.getUsername(), password, user.getSalt())));
         // 删除状态（0-正常，1-已删除）
@@ -84,8 +87,9 @@ public class LoginBus extends BaseBus {
         userLogin.setToken(JwtUtil.sign(user.getUsername(), user.getPassword()));
         // 系统用户
         userLogin.setUser(UserConverter.INSTANCE.getReturnValue(user));
-        // 往 Cookie 中 设置 Token
-        JwtUtil.setCookie(CommonConstant.X_COOKIE_NAME, userLogin.getToken());
+        // 往 Header 中 设置 Token
+        httpServletResponse.setHeader(CommonConstant.X_ACCESS_TOKEN, userLogin.getToken());
+        httpServletResponse.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, CommonConstant.X_ACCESS_TOKEN);
         // 登录用户返回值
         return new CommonResponse<>(userLogin);
     }
@@ -236,6 +240,7 @@ public class LoginBus extends BaseBus {
      * @since 2020/3/5 17:25
      */
     public CommonResponse<String> password(final PasswordUpdateDTO update) {
+        HttpServletResponse httpServletResponse = getHttpServletResponse();
         // 1、验证用户存在
         User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, update.getUsername()), Boolean.FALSE);
         ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_02.assertNotNull(user);
@@ -251,8 +256,9 @@ public class LoginBus extends BaseBus {
         ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_01.assertIsTrue(save);
         // 6、更新Token
         String token = JwtUtil.sign(user.getUsername(), user.getPassword());
-        // 往 Cookie 中 设置 Token
-        JwtUtil.setCookie(CommonConstant.X_COOKIE_NAME, token);
+        // 往 Header 中 设置 Token 刷新
+        httpServletResponse.setHeader(CommonConstant.X_ACCESS_TOKEN, token);
+        httpServletResponse.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, CommonConstant.X_ACCESS_TOKEN);
         return new CommonResponse<>(token);
     }
 

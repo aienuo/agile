@@ -98,7 +98,6 @@
                             password: this.loginForm.password
                         }).then((res) => {
                             if (res.code === 6666) {
-                                localStorage.setItem('X-Access-Token', JSON.stringify(res.data.token));
                                 localStorage.setItem('X-Data-User', JSON.stringify(res.data.user));
                                 if (this.loginForm.remember) {
                                     const account = this.loginForm.username + "_" + Base64.encode(this.loginForm.password);

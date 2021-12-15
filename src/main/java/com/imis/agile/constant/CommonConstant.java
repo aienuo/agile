@@ -21,19 +21,9 @@ public interface CommonConstant {
     String X_ACCESS_TOKEN = "X-Access-Token";
 
     /**
-     * 自定义Cookie
-     */
-    String X_COOKIE_NAME = "X.SESSION.ID";
-
-    /**
      * Token缓存时间：3600000毫秒即一小时
      */
     Long EXPIRE_TIME = 60 * 60 * 1000L;
-
-    /**
-     * Max-Age属性指定从现在开始 Cookie 存在的秒数 - 一个小时
-     */
-    Integer MAX_AGE = 60 * 60;
 
     /**
      * 文件上传类型
