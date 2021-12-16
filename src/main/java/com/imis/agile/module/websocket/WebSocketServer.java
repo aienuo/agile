@@ -117,7 +117,7 @@ public class WebSocketServer {
             if (AgileUtil.isNotEmpty(session) && session.isOpen()) {
                 try {
                     log.info("【WebSocket】 进行消息发送: {}", messageData);
-                    session.getAsyncRemote().sendText(JacksonUtils.toJSONString(messageData));
+                    session.getAsyncRemote().sendText(JacksonUtils.toJsonString(messageData));
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
                 }

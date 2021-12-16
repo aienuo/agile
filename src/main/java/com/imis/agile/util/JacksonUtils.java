@@ -53,7 +53,7 @@ public class JacksonUtils {
     /**
      * 把JavaBean转换为json字符串
      */
-    public static String toJSONString(Object object) {
+    public static String toJsonString(Object object) {
         try {
             return toJsonThrows(object);
         } catch (Exception e) {

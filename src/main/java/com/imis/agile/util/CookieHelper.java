@@ -25,17 +25,6 @@ public class CookieHelper {
     public final static int CLEAR_IMMEDIATELY_REMOVE = 0;
 
     /**
-     * 防止伪造 SESSIONID 攻击. 用户登录校验成功销毁当前 JSESSIONID. 创建可信的 JSESSIONID
-     *
-     * @param request - 当前HTTP请求
-     * @param value   - 用户ID等唯一信息
-     */
-    public static void authJSESSIONID(final HttpServletRequest request, final String value) {
-        request.getSession().invalidate();
-        request.getSession().setAttribute(value, true);
-    }
-
-    /**
      * 根据cookieName获取Cookie
      *
      * @param request    - HttpServletRequest
@@ -79,8 +68,8 @@ public class CookieHelper {
      */
     public static void clearAllCookie(final HttpServletRequest request, final HttpServletResponse response, final String domain, final String path) {
         Cookie[] cookies = request.getCookies();
-        for (int i = 0; i < cookies.length; i++) {
-            clearCookie(response, cookies[i].getName(), domain, path);
+        for (Cookie cookie : cookies) {
+            clearCookie(response, cookie.getName(), domain, path);
         }
         log.info("clearAllCookie in domain " + domain);
     }
