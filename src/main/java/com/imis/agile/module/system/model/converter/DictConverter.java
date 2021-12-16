@@ -56,8 +56,8 @@ public interface DictConverter {
             @Mapping(target = DataBaseConstant.P_KEY, ignore = true),
             @Mapping(target = DataBaseConstant.CREATE_BY, ignore = true),
             @Mapping(target = DataBaseConstant.CREATE_TIME, ignore = true),
-            @Mapping(target = DataBaseConstant.UPDATE_BY, ignore = true),
-            @Mapping(target = DataBaseConstant.UPDATE_TIME, ignore = true),
+            @Mapping(target = DataBaseConstant.UPDATE_BY, expression = "java(null)"),
+            @Mapping(target = DataBaseConstant.UPDATE_TIME, expression = "java(null)"),
     })
     void getUpdateEntity(@MappingTarget final Dict dict, final DictUpdateDTO update);
 
@@ -89,8 +89,8 @@ public interface DictConverter {
             @Mapping(target = DataBaseConstant.P_KEY, ignore = true),
             @Mapping(target = DataBaseConstant.CREATE_BY, ignore = true),
             @Mapping(target = DataBaseConstant.CREATE_TIME, ignore = true),
-            @Mapping(target = DataBaseConstant.UPDATE_BY, ignore = true),
-            @Mapping(target = DataBaseConstant.UPDATE_TIME, ignore = true),
+            @Mapping(target = DataBaseConstant.UPDATE_BY, expression = "java(null)"),
+            @Mapping(target = DataBaseConstant.UPDATE_TIME, expression = "java(null)"),
             @Mapping(target = "disabled", expression = "java(update.getDisabled() == 1)"),
     })
     void getUpdateEntity(@MappingTarget final DictItem dictItem, final DictItemUpdateDTO update);

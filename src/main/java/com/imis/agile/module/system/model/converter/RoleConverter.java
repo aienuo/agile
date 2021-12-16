@@ -59,8 +59,8 @@ public interface RoleConverter {
             @Mapping(target = DataBaseConstant.P_KEY, ignore = true),
             @Mapping(target = DataBaseConstant.CREATE_BY, ignore = true),
             @Mapping(target = DataBaseConstant.CREATE_TIME, ignore = true),
-            @Mapping(target = DataBaseConstant.UPDATE_BY, ignore = true),
-            @Mapping(target = DataBaseConstant.UPDATE_TIME, ignore = true),
+            @Mapping(target = DataBaseConstant.UPDATE_BY, expression = "java(null)"),
+            @Mapping(target = DataBaseConstant.UPDATE_TIME, expression = "java(null)"),
             @Mapping(target = "roleCode", ignore = true),
     })
     void getUpdateEntity(@MappingTarget final Role role, final RoleUpdateDTO update);

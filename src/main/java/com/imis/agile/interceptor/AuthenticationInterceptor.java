@@ -108,22 +108,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     }
 
     /**
-     * 校验 Token 是否合法
-     *
-     * @param request - HttpServletRequest
-     * @author XinLau
-     * @creed The only constant is change ! ! !
-     * @since 2020/3/6 14:26
-     */
-    private User verificationToken(HttpServletRequest request) {
-        // 获取 Token
-        String token = request.getHeader(CommonConstant.X_ACCESS_TOKEN);
-        User user = this.getUserByToken(token);
-        log.debug("URL：{}，username：{}，OldToken：{}", request.getRequestURI(), user.getUsername(), token);
-        return user;
-    }
-
-    /**
      * 校验 URL权限 是否合法
      *
      * @param request - HttpServletRequest
@@ -150,8 +134,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        // 获取 Token
+        String token = request.getHeader(CommonConstant.X_ACCESS_TOKEN);
         // 校验 Token 是否合法
-        User user = this.verificationToken(request);
+        User user = this.getUserByToken(token);
+        log.debug("URL：{}，username：{}，OldToken：{}", request.getRequestURI(), user.getUsername(), token);
         // 校验 URL权限 是否合法
         this.verificationPermissions(request, user);
         return Boolean.TRUE;
@@ -163,14 +150,21 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) {
-        // 校验 Token
-        User user = this.verificationToken(request);
+        // 获取 Token
+        String token = request.getHeader(CommonConstant.X_ACCESS_TOKEN);
+        CommonResponseEnum.TOKEN_500.assertNotEmpty(token);
+        // 获取 Token 中的 username
+        String username = JwtUtil.getUsername(token);
+        CommonResponseEnum.TOKEN_500.assertNotEmpty(username);
+        // 判断用户状态
+        User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username), Boolean.FALSE);
+        CommonResponseEnum.ERROR_500.assertNotNullWithMsg(user, "用户不存在");
         // 刷新 Token
-        String token = JwtUtil.sign(user.getUsername(), user.getPassword());
+        String newToken = JwtUtil.sign(user.getUsername(), user.getPassword());
         // 往 Header 中 设置 新 Token， 从而达到刷新 Token 过期时间 的效果
-        response.setHeader(CommonConstant.X_ACCESS_TOKEN, token);
+        response.setHeader(CommonConstant.X_ACCESS_TOKEN, newToken);
         response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, CommonConstant.X_ACCESS_TOKEN);
-        log.debug("URL：{}，username：{}，NewToken：{}", request.getRequestURI(), user.getUsername(), token);
+        log.debug("URL：{}，username：{}，NewToken：{}", request.getRequestURI(), user.getUsername(), newToken);
     }
 
 }

@@ -14,7 +14,6 @@ import com.imis.agile.util.BuildingTreeData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,28 +65,6 @@ public class DictItemServiceImpl extends ServiceImpl<DictItemMapper, DictItem> i
     public List<ItemVO> queryDictItemListByDictIdList(final List<String> dictIdList) {
         List<ItemVO> dictItemList = this.baseMapper.queryDictItemListByDictIdList(dictIdList);
         if (AgileUtil.isNotEmpty(dictItemList)) {
-            // 构建数据
-            BuildingTreeData<ItemVO> buildingTreeData = new BuildingTreeData<>();
-            return buildingTreeData.buildingTreeData(dictItemList);
-        }
-        return dictItemList;
-    }
-
-    /**
-     * 字典 - 值 查询
-     *
-     * @param dictCode - 字典 - 项 编码
-     * @return List<ItemVO>
-     * @author XinLau
-     * @creed The only constant is change ! ! !
-     * @since 2020/3/5 17:25
-     */
-    @Override
-    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
-    public List<ItemVO> queryDictItemListByDictCode(final String dictCode) {
-        List<ItemVO> dictItemList = new ArrayList<>();
-        if (AgileUtil.isNotEmpty(dictCode)) {
-            dictItemList = this.baseMapper.queryDictItemListByDictCode(dictCode);
             // 构建数据
             BuildingTreeData<ItemVO> buildingTreeData = new BuildingTreeData<>();
             return buildingTreeData.buildingTreeData(dictItemList);

@@ -239,7 +239,7 @@ public class LoginBus extends BaseBus {
      * @creed The only constant is change ! ! !
      * @since 2020/3/5 17:25
      */
-    public CommonResponse<String> password(final PasswordUpdateDTO update) {
+    public BaseResponse password(final PasswordUpdateDTO update) {
         HttpServletResponse httpServletResponse = getHttpServletResponse();
         // 1、验证用户存在
         User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, update.getUsername()), Boolean.FALSE);
@@ -254,12 +254,7 @@ public class LoginBus extends BaseBus {
         // 5、更新用户
         boolean save = this.userService.updateById(user);
         ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_01.assertIsTrue(save);
-        // 6、更新Token
-        String token = JwtUtil.sign(user.getUsername(), user.getPassword());
-        // 往 Header 中 设置 Token 刷新
-        httpServletResponse.setHeader(CommonConstant.X_ACCESS_TOKEN, token);
-        httpServletResponse.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, CommonConstant.X_ACCESS_TOKEN);
-        return new CommonResponse<>(token);
+        return new CommonResponse<>();
     }
 
 }

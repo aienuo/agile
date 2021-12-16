@@ -69,16 +69,15 @@ public class AutoFillFieldsMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void updateFill(MetaObject metaObject) {
-        String username = StringPool.EMPTY;
         if (AgileUtil.isEmpty(getFieldValByName(com.imis.agile.constant.DataBaseConstant.UPDATE_BY, metaObject))) {
             String token = getHttpServletRequest().getHeader(CommonConstant.X_ACCESS_TOKEN);
             CommonResponseEnum.TOKEN_500.assertNotEmpty(token);
             // 获取 Token 中的 username
-            username = JwtUtil.getUsername(token);
+            String username = JwtUtil.getUsername(token);
+            CommonResponseEnum.TOKEN_500.assertNotEmpty(username);
+            this.strictUpdateFill(metaObject, com.imis.agile.constant.DataBaseConstant.UPDATE_BY, String.class, username);
         }
-        CommonResponseEnum.TOKEN_500.assertNotEmpty(username);
         log.debug("执行 更新数据时的填充策略");
-        this.strictUpdateFill(metaObject, com.imis.agile.constant.DataBaseConstant.UPDATE_BY, String.class, username);
         this.strictUpdateFill(metaObject, com.imis.agile.constant.DataBaseConstant.UPDATE_TIME, java.time.LocalDateTime.class, java.time.LocalDateTime.now());
     }
 

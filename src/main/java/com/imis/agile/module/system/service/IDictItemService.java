@@ -41,17 +41,6 @@ public interface IDictItemService extends IService<DictItem> {
     List<ItemVO> queryDictItemListByDictIdList(final List<String> dictIdList);
 
     /**
-     * 字典 - 值 查询
-     *
-     * @param dictCode - 字典 - 项 编码
-     * @return List<ItemVO>
-     * @author XinLau
-     * @creed The only constant is change ! ! !
-     * @since 2020/3/5 17:25
-     */
-    List<ItemVO> queryDictItemListByDictCode(final String dictCode);
-
-    /**
      * 字典 - 数据库表名称
      *
      * @return List<ItemVO>

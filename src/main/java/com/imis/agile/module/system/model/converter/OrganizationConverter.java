@@ -55,8 +55,8 @@ public interface OrganizationConverter {
             @Mapping(target = DataBaseConstant.P_KEY, ignore = true),
             @Mapping(target = DataBaseConstant.CREATE_BY, ignore = true),
             @Mapping(target = DataBaseConstant.CREATE_TIME, ignore = true),
-            @Mapping(target = DataBaseConstant.UPDATE_BY, ignore = true),
-            @Mapping(target = DataBaseConstant.UPDATE_TIME, ignore = true),
+            @Mapping(target = DataBaseConstant.UPDATE_BY, expression = "java(null)"),
+            @Mapping(target = DataBaseConstant.UPDATE_TIME, expression = "java(null)"),
     })
     void getUpdateEntity(@MappingTarget final Organization organization, final OrganizationUpdateDTO update);
 

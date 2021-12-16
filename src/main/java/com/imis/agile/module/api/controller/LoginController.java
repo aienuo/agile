@@ -59,7 +59,7 @@ public class LoginController extends BaseController<LoginBus> {
     @PutMapping(path = "/password")
     @ApiOperation(value = "修改密码接口", notes = "用户自助修改密码")
     @ApiOperationSupport(order = 4, author = "XinLau")
-    public CommonResponse<String> password(@RequestBody @Valid PasswordUpdateDTO update) {
+    public BaseResponse password(@RequestBody @Valid PasswordUpdateDTO update) {
         return service.password(update);
     }
 

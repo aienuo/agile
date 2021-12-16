@@ -10,11 +10,12 @@ axios.interceptors.request.use(config => {
     if (config.responseType === 'blob') {
         config.timeout = 1000 * 60 * 5
     }
-    let token = JSON.parse(localStorage.getItem("X-Access-Token"));
+    let token = localStorage.getItem("X-Access-Token");
     if (token) {
-        config.headers.token = token;
+        const headerToken = JSON.parse(token);
+        config.headers.token = headerToken;
         if (!config.headers['X-Access-Token']) {
-            config.headers['X-Access-Token'] = token;
+            config.headers['X-Access-Token'] = headerToken;
         }
     }
     return config;

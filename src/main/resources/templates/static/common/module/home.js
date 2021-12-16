@@ -233,7 +233,6 @@ new Vue({
                     axios.put('/password', JSON.parse(JSON.stringify(passwordForm)))
                         .then((res) => {
                             if (res.code === 6666) {
-                                localStorage.setItem('X-Access-Token', JSON.stringify(res.data));
                                 this.$message({
                                     type: 'success',
                                     message: '修改成功'

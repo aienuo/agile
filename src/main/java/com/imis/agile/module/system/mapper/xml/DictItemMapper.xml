@@ -77,18 +77,6 @@
         ORDER BY sort_no
     </select>
 
-    <!-- 字典 - 项 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
-    <select id="queryDictItemListByDictCode" resultMap="listQueryByDictIdList">
-        SELECT
-            i.id, i.dict_id, i.parent_id, i.name, i.value, i.disabled, i.sort_no, i.description
-        FROM
-            <include refid="sys_dict_item_table_name"/> AS i
-        <where>
-            i.dict_id = (SELECT d.id FROM <include refid="com.imis.agile.module.system.mapper.DictMapper.sys_dict_table_name"/> AS d WHERE d.dict_code = #{dictCode})
-        </where>
-        ORDER BY i.sort_no
-    </select>
-
     <!-- 字典 - 数据库表名称 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
     <select id="queryTableItemList" resultMap="listQueryByDictIdList">
         SELECT
