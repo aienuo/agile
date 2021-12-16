@@ -34,6 +34,8 @@ axios.interceptors.response.use(response => {
     console.log(token);
     if (token) {
         localStorage.setItem('X-Access-Token', JSON.stringify(token));
+    } else {
+        parent.location.href = '/';
     }
     return response.data;
 });

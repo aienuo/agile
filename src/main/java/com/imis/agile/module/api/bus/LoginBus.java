@@ -240,7 +240,6 @@ public class LoginBus extends BaseBus {
      * @since 2020/3/5 17:25
      */
     public BaseResponse password(final PasswordUpdateDTO update) {
-        HttpServletResponse httpServletResponse = getHttpServletResponse();
         // 1、验证用户存在
         User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, update.getUsername()), Boolean.FALSE);
         ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_02.assertNotNull(user);
