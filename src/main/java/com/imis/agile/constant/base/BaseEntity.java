@@ -29,7 +29,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public abstract class BaseEntity extends Model<BaseEntity> implements Serializable {
+public abstract class BaseEntity<T extends Model<T>> extends Model<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
