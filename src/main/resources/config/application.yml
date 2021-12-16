@@ -77,6 +77,7 @@ spring:
       static-locations: classpath:/templates/
 mybatis-plus:
   mapper-locations: classpath:com/imis/agile/module/**/mapper/xml/*Mapper.xml
+  checkConfigLocation: true
   global-config:
     banner: false
     db-config:

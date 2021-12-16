@@ -6,15 +6,20 @@
 package com.imis.agile.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Locale;
 
 /**
  * JSON 字符与对像转换
@@ -27,27 +32,41 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JacksonUtils {
 
-    private static ObjectMapper OBJECT_MAPPER;
+    private static class JacksonHolder {
+        private static final ObjectMapper INSTANCE;
 
-    /**
-     * 获取 Jackson ObjectMapper 为空则初始化
-     *
-     * @return {@link ObjectMapper}
-     */
-    public static ObjectMapper getObjectMapper() {
-        if (null == OBJECT_MAPPER) {
-            OBJECT_MAPPER = new ObjectMapper();
-            OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            OBJECT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            // 忽略 transient 关键词属性
-            OBJECT_MAPPER.configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
+        static {
+            JsonFactory jsonFactory = JsonFactory.builder()
+                    // 可解析反斜杠引用的所有字符
+                    .configure(JsonReadFeature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true)
+                    // 允许JSON字符串包含非引号控制字符（值小于32的ASCII字符，包含制表符和换行符）
+                    .configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS, true).build();
             // Long 转为 String 防止 js 丢失精度
             SimpleModule simpleModule = new SimpleModule();
             simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
-            OBJECT_MAPPER.registerModule(simpleModule);
-            OBJECT_MAPPER.registerModule(new JavaTimeModule());
+            // 日期格式
+            JavaTimeModule javaTimeModule = new JavaTimeModule();
+            // 构建
+            INSTANCE = JsonMapper.builder(jsonFactory)
+                    .configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true)
+                    .defaultLocale(Locale.CHINA)
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .serializationInclusion(JsonInclude.Include.NON_NULL)
+                    .addModules(simpleModule, javaTimeModule)
+                    .build();
+
+            INSTANCE.findAndRegisterModules();
+
         }
-        return OBJECT_MAPPER;
+    }
+
+    /**
+     * 获取 ObjectMapper 实例
+     *
+     * @return ObjectMapper
+     */
+    public static ObjectMapper getObjectMapper() {
+        return JacksonHolder.INSTANCE;
     }
 
     /**
