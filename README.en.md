@@ -9,10 +9,9 @@ Java Framework For Enterprise Web Applications
 #### TODO
 
 | SerialNumber | Module | Function | describe |
-| :---: | :--- | :--- | :--- |
-| 1 | Menu permissions | Infinitus menu display | Custom Infinitus Menu Components |
-| 2 | authority management | Control access | shiro |
-| 3 | User Management | Choose an organization | Can choose whether to be responsible for this organization |
+|:------------:| :--- | :--- | :--- |
+|      1       | Menu permissions | Infinitus menu display | Custom Infinitus Menu Components |
+|      2       | User Management | Choose an organization | Can choose whether to be responsible for this organization |
 
 #### Thanks
 
