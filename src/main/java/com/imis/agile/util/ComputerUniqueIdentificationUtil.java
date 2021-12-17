@@ -65,8 +65,8 @@ public class ComputerUniqueIdentificationUtil {
 
             fw.write(vbs);
             fw.close();
-            Process p = Runtime.getRuntime().exec("cscript //NoLogo " + file.getPath());
-            BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            Process process = Runtime.getRuntime().exec("cscript //NoLogo " + file.getPath());
+            BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = input.readLine()) != null) {
                 result.append(line);
@@ -88,12 +88,10 @@ public class ComputerUniqueIdentificationUtil {
      */
     private static String getLinuxMainBoardSerialNumber() {
         StringBuilder result = new StringBuilder();
-        String maniBordCmd = "dmidecode | grep 'Serial Number' | awk '{print $3}' | tail -1";
-        Process p;
         try {
             // 管道
-            p = Runtime.getRuntime().exec(new String[]{"sh", "-c", maniBordCmd});
-            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            Process process = Runtime.getRuntime().exec(new String[]{"sh", "-c", "dmidecode | grep 'Serial Number' | awk '{print $3}' | tail -1"});
+            BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = br.readLine()) != null) {
                 result.append(line);
@@ -117,13 +115,12 @@ public class ComputerUniqueIdentificationUtil {
      */
     private static String getMacFromBytes(byte[] bytes) {
         StringBuilder mac = new StringBuilder();
-        byte currentByte;
         boolean first = false;
         for (byte b : bytes) {
             if (first) {
                 mac.append(StringPool.DASH);
             }
-            currentByte = (byte) ((b & 240) >> 4);
+            byte currentByte = (byte) ((b & 240) >> 4);
             mac.append(Integer.toHexString(currentByte));
             currentByte = (byte) (b & 15);
             mac.append(Integer.toHexString(currentByte));
@@ -141,21 +138,18 @@ public class ComputerUniqueIdentificationUtil {
      * @since 2020/10/10 17:15
      */
     private static String getWindowsMacAddress() {
-        InetAddress ip = null;
-        NetworkInterface ni = null;
         List<String> macList = new ArrayList<>();
         try {
-            Enumeration<NetworkInterface> netInterfaces = NetworkInterface
-                    .getNetworkInterfaces();
+            Enumeration<NetworkInterface> netInterfaces = NetworkInterface.getNetworkInterfaces();
             while (netInterfaces.hasMoreElements()) {
-                ni = netInterfaces.nextElement();
-                //  遍历所有 IP 特定情况，可以考虑用 ni.getName() 判断
-                Enumeration<InetAddress> ips = ni.getInetAddresses();
-                while (ips.hasMoreElements()) {
-                    ip = ips.nextElement();
-                    // 非127.0.0.1
-                    if (!ip.isLoopbackAddress() && ip.getHostAddress().matches("(\\d{1,3}\\.){3}\\d{1,3}")) {
-                        macList.add(getMacFromBytes(ni.getHardwareAddress()));
+                NetworkInterface networkInterface = netInterfaces.nextElement();
+                // 遍历所有 IP 特定情况，可以考虑用 ni.getName() 判断
+                Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
+                while (inetAddresses.hasMoreElements()) {
+                    InetAddress inetAddress = inetAddresses.nextElement();
+                    // 非 127.0.0.1
+                    if (!inetAddress.isLoopbackAddress() && inetAddress.getHostAddress().matches("(\\d{1,3}\\.){3}\\d{1,3}")) {
+                        macList.add(getMacFromBytes(networkInterface.getHardwareAddress()));
                     }
                 }
             }
@@ -179,20 +173,18 @@ public class ComputerUniqueIdentificationUtil {
      */
     private static String getLinuxMacAddressForEth0() {
         String mac = null;
-        Process process;
         try {
             // Linux下的命令，一般取eth0作为本地主网卡
-            process = Runtime.getRuntime().exec("ifconfig eth0");
+            Process process = Runtime.getRuntime().exec("ifconfig eth0");
             InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream());
             try (
                     // 显示信息中包含有 MAC 地址信息
                     BufferedReader bufferedReader = new BufferedReader(inputStreamReader)
             ) {
                 String line;
-                int index = -1;
                 while ((line = bufferedReader.readLine()) != null) {
                     // 寻找标示字符串[hwaddr]
-                    index = line.toLowerCase().indexOf("hwaddr");
+                    int index = line.toLowerCase().indexOf("hwaddr");
                     if (index >= 0) {
                         // 找到并取出 MAC 地址并去除2边空格
                         mac = line.substring(index + "hwaddr".length() + 1).trim();
@@ -201,8 +193,7 @@ public class ComputerUniqueIdentificationUtil {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            log.error("获取 Linux MAC 信息错误 {}", e);
+            log.error("获取 Linux MAC 信息错误 {}", e.getMessage());
         }
         return mac;
     }
@@ -217,17 +208,15 @@ public class ComputerUniqueIdentificationUtil {
      */
     private static String getLinuxMacAddress() {
         String mac = null;
-        Process process;
         try {
             // Linux 下的命令 显示或设置网络设备
-            process = Runtime.getRuntime().exec("ifconfig");
+            Process process = Runtime.getRuntime().exec("ifconfig");
             InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream());
             try (
                     // 显示信息中包含有 MAC 地址信息
                     BufferedReader bufferedReader = new BufferedReader(inputStreamReader)
             ) {
                 String line;
-                int index = -1;
                 while ((line = bufferedReader.readLine()) != null) {
                     Pattern pat = Pattern.compile(REGEX);
                     Matcher mat = pat.matcher(line);
@@ -237,7 +226,7 @@ public class ComputerUniqueIdentificationUtil {
                 }
             }
         } catch (IOException e) {
-            log.error("获取 Linux MAC 信息错误 {}", e);
+            log.error("获取 Linux MAC 信息错误 {}", e.getMessage());
         }
         return mac;
     }
@@ -275,7 +264,7 @@ public class ComputerUniqueIdentificationUtil {
             }
             file.delete();
         } catch (Exception e) {
-            log.error("获取 Windows CPU 信息错误 {}", e);
+            log.error("获取 Windows CPU 信息错误 {}", e.getMessage());
         }
         return result.toString().trim();
     }
@@ -290,19 +279,16 @@ public class ComputerUniqueIdentificationUtil {
      */
     private static String getLinuxProcessorIdentification() {
         String result = "";
-        String cpuIdCmd = "dmidecode";
-        Process process = null;
         try {
             // 管道
-            process = Runtime.getRuntime().exec(new String[]{"sh", "-c", cpuIdCmd});
+            Process process = Runtime.getRuntime().exec(new String[]{"sh", "-c", "dmidecode"});
             InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream());
             try (
                     BufferedReader bufferedReader = new BufferedReader(inputStreamReader)
             ) {
                 String line;
-                int index = -1;
                 while ((line = bufferedReader.readLine()) != null) {
-                    index = line.toLowerCase().indexOf("uuid");
+                    int index = line.toLowerCase().indexOf("uuid");
                     if (index >= 0) {
                         result = line.substring(index + "uuid".length() + 1).trim();
                         break;
@@ -310,7 +296,7 @@ public class ComputerUniqueIdentificationUtil {
                 }
             }
         } catch (IOException e) {
-            log.error("获取 Linux CPU 信息错误 {}", e);
+            log.error("获取 Linux CPU 信息错误 {}", e.getMessage());
         }
         return result.trim();
     }
@@ -452,12 +438,7 @@ public class ComputerUniqueIdentificationUtil {
 
         @Override
         public String toString() {
-            return '{' +
-                    "\"namePrefix=\":\"" + namePrefix + "\"," +
-                    "\"mainBoardSerialNumber=\":\"" + mainBoardSerialNumber + "\"," +
-                    "\"macAddress=\":\"" + macAddress + "\"," +
-                    "\"cpuIdentification=\":\"" + cpuIdentification +
-                    "\"}";
+            return JacksonUtils.toJsonString(this);
         }
     }
 

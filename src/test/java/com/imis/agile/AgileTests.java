@@ -63,6 +63,7 @@ class AgileTests {
         System.out.println("当前计算机的 CPU 序列号：" + ComputerUniqueIdentificationUtil.getCpuIdentification());
         System.out.println("当前计算机网卡的 MAC 地址：" + ComputerUniqueIdentificationUtil.getMacAddress());
         System.out.println("当前计算机主板序列号：" + ComputerUniqueIdentificationUtil.getMainBoardSerialNumber());
+        System.out.println("当前计算机唯一标识：" + ComputerUniqueIdentificationUtil.getComputerUniqueIdentification());
         System.out.println("当前计算机唯一标识：" + ComputerUniqueIdentificationUtil.getComputerUniqueIdentificationString());
     }
 
