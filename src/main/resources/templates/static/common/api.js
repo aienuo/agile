@@ -2,11 +2,11 @@
 axios.defaults.baseURl = "/"
 // 跨域传递 Cookie 设置
 axios.defaults.withCredentials = true
-// 默认请求域名配置：
-axios.defaults.timeout = 3000
+// 默认请求域名配置 5秒：
+axios.defaults.timeout = 1000 * 5
 // 请求拦截器（在请求之前进行一些配置，设置全局参数）
 axios.interceptors.request.use(config => {
-    // 导出时 超时时间设为5min
+    // 导出时 超时时间设为 5分钟
     if (config.responseType === 'blob') {
         config.timeout = 1000 * 60 * 5
     }
@@ -39,3 +39,7 @@ axios.interceptors.response.use(response => {
     }
     return response.data;
 });
+// JS反调试 & 无限DEBUGGER
+setInterval(() => {
+    (function (a) {return (function (a) {return (Function('Function(arguments[0]+"' + a + '")()'))})(a)})('bugger')('de', 0, 0, (0, 0));
+}, 1000);
