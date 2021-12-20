@@ -2,7 +2,7 @@
 
 # Agile
 
-[中文](README.md) | 英文
+[Chinese](README.md) | English
 
 #### Description
 
@@ -89,4 +89,4 @@ Java Framework For Enterprise Web Applications
 
 If you think it’s not bad, please have a cup of coffee ☺☺☺
 
-![收钱码](src/main/resources/templates/static/common/images/收钱码.jpg)
+![Sponsor](src/main/resources/templates/static/common/images/收钱码.jpg)
