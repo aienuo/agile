@@ -2,7 +2,7 @@
 
 # Agile
 
-中文 | [英文](README.en.md)
+中文 | [English](README.en.md)
 
 #### 介绍
 
