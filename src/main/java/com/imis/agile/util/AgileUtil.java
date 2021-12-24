@@ -1,7 +1,6 @@
 package com.imis.agile.util;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Array;
@@ -22,11 +21,6 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 public class AgileUtil {
-
-    /**
-     * ObjectMapper 提供读取和写入 JSON 的功能
-     */
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     /**
      * 判断指定对象是否为空，支持：
