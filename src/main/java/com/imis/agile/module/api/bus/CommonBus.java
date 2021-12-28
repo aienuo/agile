@@ -198,7 +198,7 @@ public class CommonBus extends BaseBus {
                         this.doFileUploadForLocal(filePath, newName, multipartFile);
                     } else {
                         // TODO：自己整合其他
-                        ArgumentResponseEnum.FILE_ADD_ERR.assertFailWithMsg("自己整合其他非 本地保存文件 的方式");
+                        ArgumentResponseEnum.FILE_ADD_ERR.assertFailWithMessage("自己整合其他非 本地保存文件 的方式");
                     }
                     fileList.add(file);
                 }

@@ -97,13 +97,13 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         CommonResponseEnum.TOKEN_500.assertNotEmpty(username);
         // 判断用户状态
         User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username), Boolean.FALSE);
-        CommonResponseEnum.ERROR_500.assertNotNullWithMsg(user, "用户不存在");
+        CommonResponseEnum.ERROR_500.assertNotNullWithMessage(user, "用户不存在");
         // 校验Token是否正确
         CommonResponseEnum.TOKEN_500.assertIsTrue(JwtUtil.verify(token, username, user.getPassword()));
         // 删除状态（0-正常，1-已删除）
-        CommonResponseEnum.ERROR_500.assertIsTrueWithMsg(CommonConstant.DEL_FLAG_0.equals(user.getDelFlag()), "账号注销");
+        CommonResponseEnum.ERROR_500.assertIsTrueWithMessage(CommonConstant.DEL_FLAG_0.equals(user.getDelFlag()), "账号注销");
         // 冻结状态(0-正常，1-冻结）
-        CommonResponseEnum.ERROR_500.assertIsTrueWithMsg(CommonConstant.USER_FREEZE_0.equals(user.getStatus()), "账号冻结");
+        CommonResponseEnum.ERROR_500.assertIsTrueWithMessage(CommonConstant.USER_FREEZE_0.equals(user.getStatus()), "账号冻结");
         return user;
     }
 

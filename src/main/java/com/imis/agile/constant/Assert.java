@@ -47,7 +47,7 @@ public interface Assert {
      * @param args         - message占位符对应的参数列表
      * @return BaseException - 基础异常类
      */
-    default BaseException newExceptionWithMsg(String errorMessage, Object... args) {
+    default BaseException newExceptionWithMessage(String errorMessage, Object... args) {
         if (args != null && args.length != 0) {
             errorMessage = MessageFormat.format(errorMessage, args);
         }
@@ -65,7 +65,7 @@ public interface Assert {
      * @param args         message占位符对应的参数列表
      * @return BaseException - 基础异常类
      */
-    default BaseException newExceptionWithMsg(String errorMessage, Throwable t, Object... args) {
+    default BaseException newExceptionWithMessage(String errorMessage, Throwable t, Object... args) {
         if (args != null && args.length != 0) {
             errorMessage = MessageFormat.format(errorMessage, args);
         }
@@ -103,9 +103,9 @@ public interface Assert {
      * @param object       - 待判断对象
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertNotNullWithMsg(Object object, String errorMessage) {
+    default void assertNotNullWithMessage(Object object, String errorMessage) {
         if (object == null) {
-            throw newExceptionWithMsg(errorMessage);
+            throw newExceptionWithMessage(errorMessage);
         }
     }
 
@@ -117,9 +117,9 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertNotNullWithMsg(Object object, String errorMessage, Object... args) {
+    default void assertNotNullWithMessage(Object object, String errorMessage, Object... args) {
         if (object == null) {
-            throw newExceptionWithMsg(errorMessage, args);
+            throw newExceptionWithMessage(errorMessage, args);
         }
     }
 
@@ -129,9 +129,9 @@ public interface Assert {
      * @param object       - 待判断对象
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertNotNullWithMsg(Object object, Supplier<String> errorMessage) {
+    default void assertNotNullWithMessage(Object object, Supplier<String> errorMessage) {
         if (object == null) {
-            throw newExceptionWithMsg(errorMessage.get());
+            throw newExceptionWithMessage(errorMessage.get());
         }
     }
 
@@ -143,9 +143,9 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertNotNullWithMsg(Object object, Supplier<String> errorMessage, Object... args) {
+    default void assertNotNullWithMessage(Object object, Supplier<String> errorMessage, Object... args) {
         if (object == null) {
-            throw newExceptionWithMsg(errorMessage.get(), args);
+            throw newExceptionWithMessage(errorMessage.get(), args);
         }
     }
 
@@ -179,9 +179,9 @@ public interface Assert {
      * @param string       - 待判断字符串
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertNotEmptyWithMsg(String string, String errorMessage) {
+    default void assertNotEmptyWithMessage(String string, String errorMessage) {
         if (null == string || "".equals(string.trim())) {
-            throw newExceptionWithMsg(errorMessage);
+            throw newExceptionWithMessage(errorMessage);
         }
     }
 
@@ -193,9 +193,9 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertNotEmptyWithMsg(String string, String errorMessage, Object... args) {
+    default void assertNotEmptyWithMessage(String string, String errorMessage, Object... args) {
         if (string == null || "".equals(string.trim())) {
-            throw newExceptionWithMsg(errorMessage, args);
+            throw newExceptionWithMessage(errorMessage, args);
         }
     }
 
@@ -229,9 +229,9 @@ public interface Assert {
      * @param arrays       - 待判断数组
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertNotEmptyWithMsg(Object[] arrays, String errorMessage) {
+    default void assertNotEmptyWithMessage(Object[] arrays, String errorMessage) {
         if (arrays == null || arrays.length == 0) {
-            throw newExceptionWithMsg(errorMessage);
+            throw newExceptionWithMessage(errorMessage);
         }
     }
 
@@ -243,9 +243,9 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertNotEmptyWithMsg(Object[] arrays, String errorMessage, Object... args) {
+    default void assertNotEmptyWithMessage(Object[] arrays, String errorMessage, Object... args) {
         if (arrays == null || arrays.length == 0) {
-            throw newExceptionWithMsg(errorMessage, args);
+            throw newExceptionWithMessage(errorMessage, args);
         }
     }
 
@@ -255,9 +255,9 @@ public interface Assert {
      * @param arrays       - 待判断数组
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertNotEmptyWithMsg(Object[] arrays, Supplier<String> errorMessage) {
+    default void assertNotEmptyWithMessage(Object[] arrays, Supplier<String> errorMessage) {
         if (arrays == null || arrays.length == 0) {
-            throw newExceptionWithMsg(errorMessage.get());
+            throw newExceptionWithMessage(errorMessage.get());
         }
     }
 
@@ -269,9 +269,9 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertNotEmptyWithMsg(Object[] arrays, Supplier<String> errorMessage, Object... args) {
+    default void assertNotEmptyWithMessage(Object[] arrays, Supplier<String> errorMessage, Object... args) {
         if (arrays == null || arrays.length == 0) {
-            throw newExceptionWithMsg(errorMessage.get(), args);
+            throw newExceptionWithMessage(errorMessage.get(), args);
         }
     }
 
@@ -304,9 +304,9 @@ public interface Assert {
      * @param c            - 待判断数组
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertNotEmptyWithMsg(Collection<?> c, String errorMessage) {
+    default void assertNotEmptyWithMessage(Collection<?> c, String errorMessage) {
         if (c == null || c.isEmpty()) {
-            throw newExceptionWithMsg(errorMessage);
+            throw newExceptionWithMessage(errorMessage);
         }
     }
 
@@ -317,9 +317,9 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertNotEmptyWithMsg(Collection<?> c, String errorMessage, Object... args) {
+    default void assertNotEmptyWithMessage(Collection<?> c, String errorMessage, Object... args) {
         if (c == null || c.isEmpty()) {
-            throw newExceptionWithMsg(errorMessage, args);
+            throw newExceptionWithMessage(errorMessage, args);
         }
     }
 
@@ -329,9 +329,9 @@ public interface Assert {
      * @param c            - 待判断数组
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertNotEmptyWithMsg(Collection<?> c, Supplier<String> errorMessage) {
+    default void assertNotEmptyWithMessage(Collection<?> c, Supplier<String> errorMessage) {
         if (c == null || c.isEmpty()) {
-            throw newExceptionWithMsg(errorMessage.get());
+            throw newExceptionWithMessage(errorMessage.get());
         }
     }
 
@@ -342,9 +342,9 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertNotEmptyWithMsg(Collection<?> c, Supplier<String> errorMessage, Object... args) {
+    default void assertNotEmptyWithMessage(Collection<?> c, Supplier<String> errorMessage, Object... args) {
         if (c == null || c.isEmpty()) {
-            throw newExceptionWithMsg(errorMessage.get(), args);
+            throw newExceptionWithMessage(errorMessage.get(), args);
         }
     }
 
@@ -377,9 +377,9 @@ public interface Assert {
      * @param map          - 待判断Map
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertNotEmptyWithMsg(Map<?, ?> map, String errorMessage) {
+    default void assertNotEmptyWithMessage(Map<?, ?> map, String errorMessage) {
         if (map == null || map.isEmpty()) {
-            throw newExceptionWithMsg(errorMessage);
+            throw newExceptionWithMessage(errorMessage);
         }
     }
 
@@ -390,9 +390,9 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertNotEmptyWithMsg(Map<?, ?> map, String errorMessage, Object... args) {
+    default void assertNotEmptyWithMessage(Map<?, ?> map, String errorMessage, Object... args) {
         if (map == null || map.isEmpty()) {
-            throw newExceptionWithMsg(errorMessage, args);
+            throw newExceptionWithMessage(errorMessage, args);
         }
     }
 
@@ -402,9 +402,9 @@ public interface Assert {
      * @param map          - 待判断Map
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertNotEmptyWithMsg(Map<?, ?> map, Supplier<String> errorMessage) {
+    default void assertNotEmptyWithMessage(Map<?, ?> map, Supplier<String> errorMessage) {
         if (map == null || map.isEmpty()) {
-            throw newExceptionWithMsg(errorMessage.get());
+            throw newExceptionWithMessage(errorMessage.get());
         }
     }
 
@@ -415,9 +415,9 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertNotEmptyWithMsg(Map<?, ?> map, Supplier<String> errorMessage, Object... args) {
+    default void assertNotEmptyWithMessage(Map<?, ?> map, Supplier<String> errorMessage, Object... args) {
         if (map == null || map.isEmpty()) {
-            throw newExceptionWithMsg(errorMessage.get(), args);
+            throw newExceptionWithMessage(errorMessage.get(), args);
         }
     }
 
@@ -450,9 +450,9 @@ public interface Assert {
      * @param expression   - 待判断布尔变量
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertIsFalseWithMsg(boolean expression, String errorMessage) {
+    default void assertIsFalseWithMessage(boolean expression, String errorMessage) {
         if (expression) {
-            throw newExceptionWithMsg(errorMessage);
+            throw newExceptionWithMessage(errorMessage);
         }
     }
 
@@ -463,9 +463,9 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertIsFalseWithMsg(boolean expression, String errorMessage, Object... args) {
+    default void assertIsFalseWithMessage(boolean expression, String errorMessage, Object... args) {
         if (expression) {
-            throw newExceptionWithMsg(errorMessage, args);
+            throw newExceptionWithMessage(errorMessage, args);
         }
     }
 
@@ -475,9 +475,9 @@ public interface Assert {
      * @param expression   - 待判断布尔变量
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertIsFalseWithMsg(boolean expression, Supplier<String> errorMessage) {
+    default void assertIsFalseWithMessage(boolean expression, Supplier<String> errorMessage) {
         if (expression) {
-            throw newExceptionWithMsg(errorMessage.get());
+            throw newExceptionWithMessage(errorMessage.get());
         }
     }
 
@@ -488,9 +488,9 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertIsFalseWithMsg(boolean expression, Supplier<String> errorMessage, Object... args) {
+    default void assertIsFalseWithMessage(boolean expression, Supplier<String> errorMessage, Object... args) {
         if (expression) {
-            throw newExceptionWithMsg(errorMessage.get(), args);
+            throw newExceptionWithMessage(errorMessage.get(), args);
         }
     }
 
@@ -523,9 +523,9 @@ public interface Assert {
      * @param expression   - 待判断布尔变量
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertIsTrueWithMsg(boolean expression, String errorMessage) {
+    default void assertIsTrueWithMessage(boolean expression, String errorMessage) {
         if (!expression) {
-            throw newExceptionWithMsg(errorMessage);
+            throw newExceptionWithMessage(errorMessage);
         }
     }
 
@@ -536,9 +536,9 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertIsTrueWithMsg(boolean expression, String errorMessage, Object... args) {
+    default void assertIsTrueWithMessage(boolean expression, String errorMessage, Object... args) {
         if (!expression) {
-            throw newExceptionWithMsg(errorMessage, args);
+            throw newExceptionWithMessage(errorMessage, args);
         }
     }
 
@@ -548,9 +548,9 @@ public interface Assert {
      * @param expression   - 待判断布尔变量
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertIsTrueWithMsg(boolean expression, Supplier<String> errorMessage) {
+    default void assertIsTrueWithMessage(boolean expression, Supplier<String> errorMessage) {
         if (!expression) {
-            throw newExceptionWithMsg(errorMessage.get());
+            throw newExceptionWithMessage(errorMessage.get());
         }
     }
 
@@ -561,9 +561,9 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertIsTrueWithMsg(boolean expression, Supplier<String> errorMessage, Object... args) {
+    default void assertIsTrueWithMessage(boolean expression, Supplier<String> errorMessage, Object... args) {
         if (!expression) {
-            throw newExceptionWithMsg(errorMessage.get(), args);
+            throw newExceptionWithMessage(errorMessage.get(), args);
         }
     }
 
@@ -596,9 +596,9 @@ public interface Assert {
      * @param object       - 待判断对象
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertIsNullWithMsg(Object object, String errorMessage) {
+    default void assertIsNullWithMessage(Object object, String errorMessage) {
         if (object != null) {
-            throw newExceptionWithMsg(errorMessage);
+            throw newExceptionWithMessage(errorMessage);
         }
     }
 
@@ -609,9 +609,9 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertIsNullWithMsg(Object object, String errorMessage, Object... args) {
+    default void assertIsNullWithMessage(Object object, String errorMessage, Object... args) {
         if (object != null) {
-            throw newExceptionWithMsg(errorMessage, args);
+            throw newExceptionWithMessage(errorMessage, args);
         }
     }
 
@@ -621,9 +621,9 @@ public interface Assert {
      * @param object       - 待判断对象
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertIsNullWithMsg(Object object, Supplier<String> errorMessage) {
+    default void assertIsNullWithMessage(Object object, Supplier<String> errorMessage) {
         if (object != null) {
-            throw newExceptionWithMsg(errorMessage.get());
+            throw newExceptionWithMessage(errorMessage.get());
         }
     }
 
@@ -634,9 +634,9 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertIsNullWithMsg(Object object, Supplier<String> errorMessage, Object... args) {
+    default void assertIsNullWithMessage(Object object, Supplier<String> errorMessage, Object... args) {
         if (object != null) {
-            throw newExceptionWithMsg(errorMessage.get(), args);
+            throw newExceptionWithMessage(errorMessage.get(), args);
         }
     }
 
@@ -681,12 +681,12 @@ public interface Assert {
      * @param o2           - 待判断对象
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertEqualsWithMsg(Object o1, Object o2, String errorMessage) {
+    default void assertEqualsWithMessage(Object o1, Object o2, String errorMessage) {
         if (o1 == o2) {
             return;
         }
         if (o1 == null || !o1.equals(o2)) {
-            throw newExceptionWithMsg(errorMessage);
+            throw newExceptionWithMessage(errorMessage);
         }
     }
 
@@ -699,12 +699,12 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertEqualsWithMsg(Object o1, Object o2, String errorMessage, Object... args) {
+    default void assertEqualsWithMessage(Object o1, Object o2, String errorMessage, Object... args) {
         if (o1 == o2) {
             return;
         }
         if (o1 == null || !o1.equals(o2)) {
-            throw newExceptionWithMsg(errorMessage, args);
+            throw newExceptionWithMessage(errorMessage, args);
         }
     }
 
@@ -716,12 +716,12 @@ public interface Assert {
      * @param o2           - 待判断对象
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertEqualsWithMsg(Object o1, Object o2, Supplier<String> errorMessage) {
+    default void assertEqualsWithMessage(Object o1, Object o2, Supplier<String> errorMessage) {
         if (o1 == o2) {
             return;
         }
         if (o1 == null || !o1.equals(o2)) {
-            throw newExceptionWithMsg(errorMessage.get());
+            throw newExceptionWithMessage(errorMessage.get());
         }
     }
 
@@ -734,12 +734,12 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertEqualsWithMsg(Object o1, Object o2, Supplier<String> errorMessage, Object... args) {
+    default void assertEqualsWithMessage(Object o1, Object o2, Supplier<String> errorMessage, Object... args) {
         if (o1 == o2) {
             return;
         }
         if (o1 == null || !o1.equals(o2)) {
-            throw newExceptionWithMsg(errorMessage.get(), args);
+            throw newExceptionWithMessage(errorMessage.get(), args);
         }
     }
 
@@ -787,8 +787,8 @@ public interface Assert {
      *
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertFailWithMsg(String errorMessage) {
-        throw newExceptionWithMsg(errorMessage);
+    default void assertFailWithMessage(String errorMessage) {
+        throw newExceptionWithMessage(errorMessage);
     }
 
     /**
@@ -797,8 +797,8 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertFailWithMsg(String errorMessage, Object... args) {
-        throw newExceptionWithMsg(errorMessage, args);
+    default void assertFailWithMessage(String errorMessage, Object... args) {
+        throw newExceptionWithMessage(errorMessage, args);
     }
 
     /**
@@ -809,8 +809,8 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息
      * @param t            - 原始异常
      */
-    default void assertFailWithMsg(String errorMessage, Throwable t) {
-        throw newExceptionWithMsg(errorMessage, t);
+    default void assertFailWithMessage(String errorMessage, Throwable t) {
+        throw newExceptionWithMessage(errorMessage, t);
     }
 
     /**
@@ -822,8 +822,8 @@ public interface Assert {
      * @param t            - 原始异常
      * @param args         - message占位符对应的参数列表
      */
-    default void assertFailWithMsg(String errorMessage, Throwable t, Object... args) {
-        throw newExceptionWithMsg(errorMessage, t, args);
+    default void assertFailWithMessage(String errorMessage, Throwable t, Object... args) {
+        throw newExceptionWithMessage(errorMessage, t, args);
     }
 
     /**
@@ -831,8 +831,8 @@ public interface Assert {
      *
      * @param errorMessage - 自定义的错误信息
      */
-    default void assertFailWithMsg(Supplier<String> errorMessage) {
-        throw newExceptionWithMsg(errorMessage.get());
+    default void assertFailWithMessage(Supplier<String> errorMessage) {
+        throw newExceptionWithMessage(errorMessage.get());
     }
 
     /**
@@ -841,8 +841,8 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息. 支持 {index} 形式的占位符, 比如: errorMessage-用户[{0}]不存在, args-1001, 最后打印-用户[1001]不存在
      * @param args         - message占位符对应的参数列表
      */
-    default void assertFailWithMsg(Supplier<String> errorMessage, Object... args) {
-        throw newExceptionWithMsg(errorMessage.get(), args);
+    default void assertFailWithMessage(Supplier<String> errorMessage, Object... args) {
+        throw newExceptionWithMessage(errorMessage.get(), args);
     }
 
     /**
@@ -853,8 +853,8 @@ public interface Assert {
      * @param errorMessage - 自定义的错误信息
      * @param t            - 原始异常
      */
-    default void assertFailWithMsg(Supplier<String> errorMessage, Throwable t) {
-        throw newExceptionWithMsg(errorMessage.get(), t);
+    default void assertFailWithMessage(Supplier<String> errorMessage, Throwable t) {
+        throw newExceptionWithMessage(errorMessage.get(), t);
     }
 
     /**
@@ -866,8 +866,8 @@ public interface Assert {
      * @param t            - 原始异常
      * @param args         - message占位符对应的参数列表
      */
-    default void assertFailWithMsg(Supplier<String> errorMessage, Throwable t, Object... args) {
-        throw newExceptionWithMsg(errorMessage.get(), t, args);
+    default void assertFailWithMessage(Supplier<String> errorMessage, Throwable t, Object... args) {
+        throw newExceptionWithMessage(errorMessage.get(), t, args);
     }
 
 }
