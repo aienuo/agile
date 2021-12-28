@@ -1,4 +1,4 @@
-package com.imis.agile.response;
+package com.imis.agile.constant.base;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -14,7 +14,7 @@ import java.io.Serializable;
 /**
  * <p>
  * BaseResponse<br>
- * 基础返回结果<br>
+ * 基础返回结果
  * </p>
  *
  * @author XinLau

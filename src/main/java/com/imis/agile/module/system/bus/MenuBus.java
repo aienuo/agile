@@ -2,6 +2,7 @@ package com.imis.agile.module.system.bus;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.imis.agile.constant.base.BaseBus;
+import com.imis.agile.constant.base.BaseResponse;
 import com.imis.agile.constant.enums.ArgumentResponseEnum;
 import com.imis.agile.module.system.model.converter.MenuConverter;
 import com.imis.agile.module.system.model.dto.MenuAddDTO;
@@ -12,7 +13,6 @@ import com.imis.agile.module.system.model.vo.MenuInfoVO;
 import com.imis.agile.module.system.model.vo.MenuTreeInfoVO;
 import com.imis.agile.module.system.service.IMenuService;
 import com.imis.agile.module.system.service.IRoleMenuService;
-import com.imis.agile.response.BaseResponse;
 import com.imis.agile.response.CommonResponse;
 import com.imis.agile.util.AgileUtil;
 import lombok.RequiredArgsConstructor;

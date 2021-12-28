@@ -2,6 +2,7 @@ package com.imis.agile.module.system.bus;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.imis.agile.constant.base.BaseBus;
+import com.imis.agile.constant.base.BaseResponse;
 import com.imis.agile.constant.enums.ArgumentResponseEnum;
 import com.imis.agile.module.system.model.converter.OrganizationConverter;
 import com.imis.agile.module.system.model.dto.OrganizationAddDTO;
@@ -13,7 +14,6 @@ import com.imis.agile.module.system.model.vo.OrganizationInfoVO;
 import com.imis.agile.module.system.model.vo.OrganizationTreeInfoVO;
 import com.imis.agile.module.system.service.IOrganizationService;
 import com.imis.agile.module.system.service.IUserOrganizationService;
-import com.imis.agile.response.BaseResponse;
 import com.imis.agile.response.CommonResponse;
 import com.imis.agile.util.AgileUtil;
 import lombok.RequiredArgsConstructor;

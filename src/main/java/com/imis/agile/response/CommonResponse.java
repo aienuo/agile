@@ -1,6 +1,7 @@
 package com.imis.agile.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.imis.agile.constant.base.BaseResponse;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
