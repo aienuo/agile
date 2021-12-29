@@ -7,7 +7,10 @@ import com.imis.agile.constant.base.BaseBus;
 import com.imis.agile.constant.base.BaseResponse;
 import com.imis.agile.constant.enums.ArgumentResponseEnum;
 import com.imis.agile.module.system.model.converter.UserConverter;
-import com.imis.agile.module.system.model.dto.*;
+import com.imis.agile.module.system.model.dto.PagingQueryUserDTO;
+import com.imis.agile.module.system.model.dto.ResetPasswordDTO;
+import com.imis.agile.module.system.model.dto.UserAddDTO;
+import com.imis.agile.module.system.model.dto.UserUpdateDTO;
 import com.imis.agile.module.system.model.entity.User;
 import com.imis.agile.module.system.model.entity.UserOrganization;
 import com.imis.agile.module.system.model.entity.UserRole;
@@ -170,8 +173,8 @@ public class UserBus extends BaseBus {
             ArgumentResponseEnum.USER_VALID_ERROR_ADD_05.assertIsTrue(saveUserRole);
         }
         // 4、创建用户组织机构关联
-        List<UserOrganizationDTO> organizationList = add.getOrganizationList();
-        if (AgileUtil.isNotEmpty(roleList)) {
+        List<Long> organizationList = add.getOrganizationList();
+        if (AgileUtil.isNotEmpty(organizationList)) {
             List<UserOrganization> userOrganizationList = UserConverter.INSTANCE.getUserOrganizationEntity(user.getId(), organizationList);
             boolean saveUserOrganization = this.userOrganizationService.saveBatch(userOrganizationList);
             ArgumentResponseEnum.USER_VALID_ERROR_ADD_06.assertIsTrue(saveUserOrganization);
@@ -262,7 +265,7 @@ public class UserBus extends BaseBus {
             ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_12.assertIsTrue(saveUserRole);
         }
         // 4、创建用户组织机构关联
-        List<UserOrganizationDTO> organizationList = update.getOrganizationList();
+        List<Long> organizationList = update.getOrganizationList();
         if (AgileUtil.isNotEmpty(roleList)) {
             List<UserOrganization> userOrganizationList = UserConverter.INSTANCE.getUserOrganizationEntity(user.getId(), organizationList);
             boolean saveUserOrganization = this.userOrganizationService.saveBatch(userOrganizationList);

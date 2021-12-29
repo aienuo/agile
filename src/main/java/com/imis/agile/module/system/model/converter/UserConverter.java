@@ -3,7 +3,6 @@ package com.imis.agile.module.system.model.converter;
 import com.imis.agile.constant.DataBaseConstant;
 import com.imis.agile.module.api.model.vo.UserVO;
 import com.imis.agile.module.system.model.dto.UserAddDTO;
-import com.imis.agile.module.system.model.dto.UserOrganizationDTO;
 import com.imis.agile.module.system.model.dto.UserUpdateDTO;
 import com.imis.agile.module.system.model.entity.User;
 import com.imis.agile.module.system.model.entity.UserOrganization;
@@ -144,13 +143,11 @@ public interface UserConverter {
      * @param organizationIdList - 组织机构列表
      * @return List<UserOrganization> - 用户组织机构关联
      */
-    default List<UserOrganization> getUserOrganizationEntity(final Long userId, final List<UserOrganizationDTO> organizationIdList) {
+    default List<UserOrganization> getUserOrganizationEntity(final Long userId, final List<Long> organizationIdList) {
         List<UserOrganization> userOrganizationList = new ArrayList<>();
         organizationIdList.forEach(
-                organization -> userOrganizationList.add(
-                        new UserOrganization().setUserId(userId)
-                                .setOrganizationId(organization.getOrganizationId())
-                                .setResponsible(organization.getResponsible())
+                organizationId -> userOrganizationList.add(
+                        new UserOrganization().setUserId(userId).setOrganizationId(organizationId).setResponsible(0)
                 )
         );
         return userOrganizationList;

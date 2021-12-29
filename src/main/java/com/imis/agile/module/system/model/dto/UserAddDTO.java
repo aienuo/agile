@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -98,8 +97,7 @@ public class UserAddDTO implements Serializable {
     /**
      * 组织机构列表
      */
-    @Valid
     @ApiModelProperty(value = "组织机构列表")
-    private List<UserOrganizationDTO> organizationList;
+    private List<Long> organizationList;
 
 }

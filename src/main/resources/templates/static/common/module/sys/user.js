@@ -55,7 +55,8 @@ new Vue({
                 email: '',
                 phone: '',
                 avatar: '',
-                roleId: [],
+                roleList: [],
+                organizationList: [],
             },
             detailForm: {},
             updateForm: {
@@ -66,7 +67,8 @@ new Vue({
                 email: '',
                 phone: '',
                 avatar: '',
-                roleId: [],
+                roleList: [],
+                organizationList: [],
             },
             passwordResetForm: {
                 userId: '',
