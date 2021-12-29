@@ -40,6 +40,6 @@ axios.interceptors.response.use(response => {
     return response.data;
 });
 // JS反调试 & 无限DEBUGGER
-setInterval(() => {
-    (function (a) {return (function (a) {return (Function('Function(arguments[0]+"' + a + '")()'))})(a)})('bugger')('de', 0, 0, (0, 0));
-}, 1000);
+// setInterval(() => {
+//     (function (a) {return (function (a) {return (Function('Function(arguments[0]+"' + a + '")()'))})(a)})('bugger')('de', 0, 0, (0, 0));
+// }, 1000);

@@ -1,20 +1,21 @@
 // 自定义无限极菜单组件
 Vue.component('agile-menu-tree', {
-    template: '<div class="menuTreeList"><template v-for="(item, index) in menuTreeList"><!-- 有子类型 --><el-submenu v-if="item.children" :key="index" :data="item" :index="item.name + \'_\' + index"><template slot="title"><i :class="item.icon"></i><span slot="title">{{item.name}}</span></template><agile-menu-tree :menuTreeList="item.children"></agile-menu-tree></el-submenu><!-- 无子类型 --><el-menu-item v-else :key="index" :data="item" :index="item.name + \'_\' + index" :route="item.url"><template slot="title"><i :class="item.icon"></i><span slot="title">{{item.name}}</span></template></el-menu-item></template></div>',
+    template: '<div class="menuTreeList"><template v-for="(item, index) in menuTreeList"><!-- 有子类型 --><el-submenu v-if="item.children" :key="index" :data="item" :index="item.name + \'_\' + index"><template slot="title"><i :class="item.icon"></i><span slot="title">{{item.name}}</span></template><agile-menu-tree :menuTreeList="item.children"></agile-menu-tree></el-submenu><!-- 无子类型 --><el-menu-item v-else :key="index" :data="item" :index="item.name + \'_\' + index" :route="item.url" @click="openTable(item)"><template slot="title"><i :class="item.icon"></i><span slot="title">{{item.name}}</span></template></el-menu-item></template></div>',
     props: ['menuTreeList'],
-    data() {
-        return {}
+    data() {return {}},
+    mounted() {},
+    methods: {
+        // 子组件调父组件
+        openTable(item) {
+            this.$emit('openTableParent', item);
+            // 上面不行下面行
+            home.addTab(item);
+        }
     },
-    mounted() {
-
-    },
-    methods: {},
-    created() {
-
-    }
+    created() {}
 });
 
-new Vue({
+const home = new Vue({
     el: '#home',
     components: {},
     data() {
@@ -140,26 +141,29 @@ new Vue({
                 this.updateForm = user;
             }
         },
-        addTab(tabName, tabUrl) {
+        // 开启 Table
+        addTab(table) {
+            console.log(table);
             let isExist = false;
             let tabs = this.editableTabs;
             tabs.forEach((tab, index) => {
-                if (tab.title === tabName) {
+                if (tab.title === table.name) {
                     isExist = true;
                     return;
                 }
             });
             if (isExist) {
-                this.editableTabsValue = tabUrl;
+                this.editableTabsValue = table.url;
                 return;
             }
             tabs.push({
-                title: tabName,
-                name: tabUrl,
-                content: tabUrl
+                title: table.name,
+                name: table.url,
+                content: table.url
             });
-            this.editableTabsValue = tabUrl;
+            this.editableTabsValue = table.url;
         },
+        // 关闭Table
         removeTab(tabName) {
             let tabs = this.editableTabs;
             let activeName = this.editableTabsValue;
