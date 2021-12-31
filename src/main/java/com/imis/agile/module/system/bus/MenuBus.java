@@ -56,7 +56,7 @@ public class MenuBus extends BaseBus {
      * @since 2020/3/9 9:47
      */
     private Menu menuAddVerification(final MenuAddDTO add) {
-        if (AgileUtil.isNotEmpty(add.getParentId())){
+        if (AgileUtil.isNotEmpty(add.getParentId())) {
             // 验证父级菜单权限是否存在
             Menu parent = this.menuService.getById(add.getParentId());
             ArgumentResponseEnum.MENU_VALID_ERROR_ADD_03.assertNotNull(parent);
@@ -82,7 +82,7 @@ public class MenuBus extends BaseBus {
     private Menu menuUpdateVerification(final MenuUpdateDTO update) {
         Menu menu = this.menuService.getById(update.getId());
         ArgumentResponseEnum.MENU_VALID_ERROR_UPDATE_02.assertNotNull(menu);
-        if (AgileUtil.isNotEmpty(update.getParentId()) && !update.getParentId().equals(menu.getParentId())){
+        if (AgileUtil.isNotEmpty(update.getParentId()) && !update.getParentId().equals(menu.getParentId())) {
             // 验证父级菜单权限是否存在
             Menu parent = this.menuService.getById(update.getParentId());
             ArgumentResponseEnum.MENU_VALID_ERROR_UPDATE_03.assertNotNull(parent);
