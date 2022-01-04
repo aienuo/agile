@@ -12,7 +12,6 @@ Java Framework For Enterprise Web Applications
 
 | SerialNumber | Module            | Function               | describe                         |
 |:------------:|:------------------|:-----------------------|:---------------------------------|
-|      1       | Menu permissions  | Infinitus menu display | Custom Infinitus Menu Components |
 
 #### Technology Stack
 

@@ -25,9 +25,9 @@ public class OrganizationInfoVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 菜单权限编号
+     * 组织机构编号
      */
-    @ApiModelProperty(value = "菜单权限编号")
+    @ApiModelProperty(value = "组织机构编号")
     private String id;
 
     /**
@@ -59,5 +59,11 @@ public class OrganizationInfoVO implements Serializable {
      */
     @ApiModelProperty(value = "描述")
     private String description;
+
+    /**
+     * 用户组织机构关联
+     */
+    @ApiModelProperty(value = "用户组织机构关联编号")
+    private String organizationUserId;
 
 }

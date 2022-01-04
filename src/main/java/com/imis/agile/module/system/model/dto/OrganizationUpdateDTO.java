@@ -66,4 +66,10 @@ public class OrganizationUpdateDTO implements Serializable {
     @ApiModelProperty(value = "描述")
     private String description;
 
+    /**
+     * 用户组织机构关联
+     */
+    @ApiModelProperty(value = "用户组织机构关联编号")
+    private Long organizationUserId;
+
 }

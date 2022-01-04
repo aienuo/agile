@@ -15,6 +15,8 @@ new Vue({
             statusItem: [],
             // 父级机构
             parentOrganization: [],
+            // 组织机构下的用户
+            organizationUser: [],
             filterText: '',
             button: {
                 edit: false,
@@ -36,7 +38,8 @@ new Vue({
                 organizationName: '',
                 sortNo: 0.0,
                 status: 1,
-                description: ''
+                description: '',
+                organizationUserId: ''
             },
             // 校验规则
             rules: {
@@ -95,7 +98,10 @@ new Vue({
                         this.$message.error(res.message);
                     }
                 });
+            // 查询树机构
             this.queryOrganizationTree();
+            // 查询机构下的用户
+            this.queryOrganizationUserByOrganizationId(node.id);
         },
         // 编辑树
         editNode() {
@@ -233,6 +239,15 @@ new Vue({
                     }
                 });
         },
+        // 查询机构下的用户
+        queryOrganizationUserByOrganizationId(organizationId) {
+            axios.get('/sys/organization/user/' + organizationId)
+                .then((res) => {
+                    if (res.code === 6666) {
+                        this.organizationUser = res.data;
+                    }
+                });
+        },
         // 开启新增表单
         openInsertDialog(node, data) {
             this.insertDialog = true;
@@ -329,7 +344,7 @@ new Vue({
             });
         },
         // 清空表单
-        clean(){
+        clean() {
             this.updateForm = {
                 sortNo: 0.0,
                 status: 1,

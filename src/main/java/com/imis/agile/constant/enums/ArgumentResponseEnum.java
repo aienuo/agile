@@ -155,6 +155,7 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
     ORGANIZATION_VALID_ERROR_UPDATE_02(200060202, "组织机构更新失败，组织机构信息不存在"),
     ORGANIZATION_VALID_ERROR_UPDATE_03(200060203, "组织机构更新失败，父级组织机构信息不存在"),
     ORGANIZATION_VALID_ERROR_UPDATE_04(200060204, "组织机构更新失败，组织机构名称存在重复"),
+    ORGANIZATION_VALID_ERROR_UPDATE_05(200060205, "组织机构更新失败，更新部门负责人失败"),
     /**
      * 200 06 03 00 - 组织机构 - 删除
      */

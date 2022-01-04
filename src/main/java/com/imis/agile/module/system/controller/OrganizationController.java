@@ -11,6 +11,7 @@ import com.imis.agile.module.system.model.dto.OrganizationEditDTO;
 import com.imis.agile.module.system.model.dto.OrganizationUpdateDTO;
 import com.imis.agile.module.system.model.vo.OrganizationInfoVO;
 import com.imis.agile.module.system.model.vo.OrganizationTreeInfoVO;
+import com.imis.agile.module.system.model.vo.OrganizationUserVO;
 import com.imis.agile.response.CommonResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -80,6 +81,14 @@ public class OrganizationController extends BaseController<OrganizationBus> {
     @ApiOperationSupport(order = 6, author = "XinLau")
     public BaseResponse editTreeNode(@RequestBody @Valid List<OrganizationEditDTO> editList) {
         return service.editTreeNode(editList);
+    }
+
+    @GetMapping(path = "user/{id}")
+    @ApiOperation(value = "组织机构下的用户", notes = "列表查看")
+    @ApiImplicitParam(name = DataBaseConstant.P_KEY, value = "组织机构标识", dataType = "Long", dataTypeClass = Long.class, required = true)
+    @ApiOperationSupport(order = 7, author = "XinLau")
+    public CommonResponse<List<OrganizationUserVO>> queryOrganizationUserByOrganizationId(@PathVariable(name = DataBaseConstant.P_KEY, required = true) Long id) {
+        return service.queryOrganizationUserByOrganizationId(id);
     }
 
 }

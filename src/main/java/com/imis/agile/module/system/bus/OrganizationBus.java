@@ -12,6 +12,7 @@ import com.imis.agile.module.system.model.entity.Organization;
 import com.imis.agile.module.system.model.entity.UserOrganization;
 import com.imis.agile.module.system.model.vo.OrganizationInfoVO;
 import com.imis.agile.module.system.model.vo.OrganizationTreeInfoVO;
+import com.imis.agile.module.system.model.vo.OrganizationUserVO;
 import com.imis.agile.module.system.service.IOrganizationService;
 import com.imis.agile.module.system.service.IUserOrganizationService;
 import com.imis.agile.response.CommonResponse;
@@ -19,6 +20,7 @@ import com.imis.agile.util.AgileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -191,6 +193,12 @@ public class OrganizationBus extends BaseBus {
     public CommonResponse<OrganizationInfoVO> queryById(final Long id) {
         // 查询信息
         OrganizationInfoVO organizationInfo = this.organizationService.queryById(id);
+        if (AgileUtil.isNotEmpty(organizationInfo)) {
+            UserOrganization userOrganization = this.userOrganizationService.getOne(Wrappers.<UserOrganization>lambdaQuery().eq(UserOrganization::getOrganizationId, id).eq(UserOrganization::getResponsible, 1), Boolean.FALSE);
+            if (AgileUtil.isNotEmpty(userOrganization)) {
+                organizationInfo.setOrganizationUserId(String.valueOf(userOrganization.getId()));
+            }
+        }
         return new CommonResponse<>(organizationInfo);
     }
 
@@ -203,12 +211,24 @@ public class OrganizationBus extends BaseBus {
      * @creed The only constant is change ! ! !
      * @since 2020/3/5 17:25
      */
+    @Transactional(rollbackFor = Exception.class)
     public BaseResponse updateById(final OrganizationUpdateDTO update) {
         // 1、更新校验
         Organization organization = this.organizationUpdateVerification(update);
         // 2、更新组织机构
         boolean save = this.organizationService.updateById(organization);
         ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_01.assertIsTrue(save);
+        // 3、更新部门负责人
+        if (AgileUtil.isNotEmpty(update.getOrganizationUserId())) {
+            List<UserOrganization> userOrganizationList = this.userOrganizationService.list(Wrappers.<UserOrganization>lambdaQuery().eq(UserOrganization::getOrganizationId, update.getId()));
+            if (AgileUtil.isNotEmpty(userOrganizationList)) {
+                userOrganizationList.forEach(
+                        userOrganization -> userOrganization.setResponsible(userOrganization.getId().equals(update.getOrganizationUserId()) ? 1 : 0)
+                );
+                boolean updateBatchById = this.userOrganizationService.updateBatchById(userOrganizationList);
+                ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_05.assertIsTrue(updateBatchById);
+            }
+        }
         return new CommonResponse<>();
     }
 
@@ -221,6 +241,7 @@ public class OrganizationBus extends BaseBus {
      * @creed The only constant is change ! ! !
      * @since 2020/3/5 17:25
      */
+    @Transactional(rollbackFor = Exception.class)
     public BaseResponse deleteByIdList(final List<Long> idList) {
         long count = this.organizationService.count(Wrappers.<Organization>lambdaQuery().in(Organization::getParentId, idList));
         ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_DELETE_02.assertIsTrue(count == 0);
@@ -250,6 +271,20 @@ public class OrganizationBus extends BaseBus {
             return new CommonResponse<>();
         }
         return new CommonResponse<>();
+    }
+
+    /**
+     * 根据组织机构编号查询组织机构下的用户
+     *
+     * @param id - 组织机构标识
+     * @return CommonResponse<List < OrganizationUserVO>>
+     * @author XinLau
+     * @creed The only constant is change ! ! !
+     * @since 2020/3/5 17:25
+     */
+    public CommonResponse<List<OrganizationUserVO>> queryOrganizationUserByOrganizationId(final Long id) {
+        List<OrganizationUserVO> organizationUserList = this.userOrganizationService.queryOrganizationUserByOrganizationId(id);
+        return new CommonResponse<>(organizationUserList);
     }
 
 }
