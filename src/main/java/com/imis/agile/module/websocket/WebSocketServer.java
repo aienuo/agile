@@ -1,6 +1,7 @@
 package com.imis.agile.module.websocket;
 
 import com.imis.agile.util.AgileUtil;
+import com.imis.agile.util.ComputerUniqueIdentificationUtil;
 import com.imis.agile.util.JacksonUtils;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
@@ -117,7 +118,7 @@ public class WebSocketServer {
             if (AgileUtil.isNotEmpty(session) && session.isOpen()) {
                 try {
                     log.info("【WebSocket】 进行消息发送: {}", messageData);
-                    session.getAsyncRemote().sendText(JacksonUtils.toJsonString(messageData));
+                    session.getAsyncRemote().sendText(ComputerUniqueIdentificationUtil.getComputerUniqueIdentificationString());
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
                 }
