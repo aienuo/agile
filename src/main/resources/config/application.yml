@@ -67,6 +67,8 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
     static-path-pattern: /**
+    format:
+      date: yyyy-MM-dd
   autoconfigure:
     exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
   thymeleaf:
