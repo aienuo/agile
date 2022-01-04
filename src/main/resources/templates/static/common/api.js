@@ -24,18 +24,19 @@ axios.interceptors.request.use(config => {
 });
 // 响应了拦截器（在响应之后对数据进行一些处理）
 axios.interceptors.response.use(response => {
-    if (response.data.code === 9999) {
+    const responseCode = response.data.code;
+    const responseType = response.request.responseType;
+    let token = response.headers['x-access-token'] ? response.headers['x-access-token'] : response.headers['X-Access-Token'];
+    if (responseCode === 9999) {
+        //  服务器遇到错误，无法完成请求。服务器异常，无法识别的异常
         parent.location.href = '/';
     }
-    if (response.request.responseType === 'arraybuffer') {
+    if (responseType === 'arraybuffer') {
+        // 文件
         return response;
     }
-    let token = response.headers['x-access-token'] ? response.headers['x-access-token'] : response.headers['X-Access-Token']
-    console.log(token);
     if (token) {
         localStorage.setItem('X-Access-Token', JSON.stringify(token));
-    } else {
-        parent.location.href = '/';
     }
     return response.data;
 });
