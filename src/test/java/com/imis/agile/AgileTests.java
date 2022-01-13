@@ -58,6 +58,11 @@ class AgileTests {
     }
 
     @Test
+    void getAge() {
+        System.out.println(IdCardUtil.getAge("110101201803075152"));
+    }
+
+    @Test
     void doTestForComputerUniqueIdentificationUtil() {
         System.out.println("当前计算机操作系统名称：" + ComputerUniqueIdentificationUtil.getOsName());
         System.out.println("当前计算机的 CPU 序列号：" + ComputerUniqueIdentificationUtil.getCpuIdentification());
