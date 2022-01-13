@@ -17,7 +17,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author ZZDZ
+ * 双向加密
+ *
+ * @author XinLau
  */
 @Slf4j
 public class PasswordUtil {

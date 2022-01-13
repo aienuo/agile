@@ -3,8 +3,10 @@ package com.imis.agile;
 import com.imis.agile.util.ComputerUniqueIdentificationUtil;
 import com.imis.agile.util.IdCardUtil;
 import com.imis.agile.util.PasswordUtil;
+import com.imis.agile.util.UnitConversion;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -70,6 +72,11 @@ class AgileTests {
         System.out.println("当前计算机主板序列号：" + ComputerUniqueIdentificationUtil.getMainBoardSerialNumber());
         System.out.println("当前计算机唯一标识：" + ComputerUniqueIdentificationUtil.getComputerUniqueIdentification());
         System.out.println("当前计算机唯一标识：" + ComputerUniqueIdentificationUtil.getComputerUniqueIdentificationString());
+    }
+
+    @Test
+    void doTestForUnitConversion() {
+        System.out.println(UnitConversion.conversion(new BigDecimal(1), UnitConversion.UnitsEnum.EG_KG, UnitConversion.UnitsEnum.LG_M));
     }
 
 }

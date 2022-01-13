@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
  * A001
  * A001A002
  *
- * @Author XinLau
+ * @author XinLau
  */
 public class SerialCodeUtil {
     /**
