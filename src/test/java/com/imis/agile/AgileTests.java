@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 工具测试
@@ -76,7 +78,22 @@ class AgileTests {
 
     @Test
     void doTestForUnitConversion() {
-        System.out.println(UnitConversion.conversion(new BigDecimal(1), UnitConversion.UnitsEnum.EG_KG, UnitConversion.UnitsEnum.LG_M));
+        System.out.println(UnitConversion.conversion(new BigDecimal(1), UnitConversion.UnitsEnum.TS_MACH, UnitConversion.UnitsEnum.TS_KM, 8));
+        List<Map<String, String>> list = UnitConversion.getCategoryList();
+        Map<String, List<Map<String, String>>> listMap = UnitConversion.getUnitListMap();
+        list.forEach(
+                stringStringMap -> {
+                    System.out.println(stringStringMap.get("code") + "--" + stringStringMap.get("name"));
+                    List<Map<String, String>> mapList = listMap.get(stringStringMap.get("code"));
+                    mapList.forEach(
+                            stringStringMap1 -> {
+                                System.out.println(stringStringMap1.get("code") + "---" + stringStringMap1.get("name"));
+                            }
+                    );
+                }
+        );
+
+
     }
 
 }

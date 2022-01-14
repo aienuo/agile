@@ -18,7 +18,7 @@ import java.util.Map;
 public class UnitConversion {
 
     /**
-     * 默认保留两位小数,四舍五入
+     * 四舍五入
      *
      * @param value    - 原始数值
      * @param original - 原始单位
@@ -26,23 +26,11 @@ public class UnitConversion {
      * @return BigDecimal - 转换后的值
      */
     public static BigDecimal conversion(BigDecimal value, String original, String need) {
-        return conversion(value, original, need, 2);
+        return conversion(value, getUnitEnum(original), getUnitEnum(need));
     }
 
     /**
-     * 默认保留两位小数,四舍五入
-     *
-     * @param value    - 原始数值
-     * @param original - 原始单位
-     * @param need     - 转换的单位
-     * @return BigDecimal - 转换后的值
-     */
-    public static BigDecimal conversion(final BigDecimal value, final UnitsEnum original, final UnitsEnum need) {
-        return conversion(value, original, need, 2);
-    }
-
-    /**
-     * 转换主方法，指定小数点位数
+     * 指定小数点位数，四舍五入
      *
      * @param value    - 原始数值
      * @param original - 原始单位
@@ -55,7 +43,24 @@ public class UnitConversion {
     }
 
     /**
-     * 转换主方法
+     * 使用默认为数（2 或 need 的小数点位数）四舍五入
+     *
+     * @param value    - 原始数值
+     * @param original - 原始单位
+     * @param need     - 转换的单位
+     * @return BigDecimal - 转换后的值
+     */
+    public static BigDecimal conversion(final BigDecimal value, final UnitsEnum original, final UnitsEnum need) {
+        String needString = need.rate.toString();
+        int scale = 2;
+        if (needString.indexOf('.') > 0) {
+            scale = needString.substring(needString.indexOf('.')).length() - 1;
+        }
+        return conversion(value, original, need, scale);
+    }
+
+    /**
+     * 转换主方法，指定小数点位数，四舍五入
      *
      * @param value    - 原始数值
      * @param original - 原始单位
@@ -99,24 +104,20 @@ public class UnitConversion {
      */
     public static Map<String, List<Map<String, String>>> getUnitListMap() {
         Map<String, List<Map<String, String>>> listMap = new HashMap<>(UnitsEnum.CategoryEnum.values().length);
-        List<Map<String, String>> lengthList = new ArrayList<>();
-        List<Map<String, String>> weightList = new ArrayList<>();
         for (UnitsEnum unit : UnitsEnum.values()) {
-            if (UnitsEnum.CategoryEnum.LENGTH.equals(unit.category)) {
+            if (unit.category != null) {
+                String categoryName = unit.category.name;
                 Map<String, String> lengthMap = new HashMap<>(2);
                 lengthMap.put("code", unit.getUnits());
                 lengthMap.put("name", unit.getDescription());
-                lengthList.add(lengthMap);
-            }
-            if (UnitsEnum.CategoryEnum.WEIGHT.equals(unit.category)) {
-                Map<String, String> weightMap = new HashMap<>(2);
-                weightMap.put("code", unit.getUnits());
-                weightMap.put("name", unit.getDescription());
-                weightList.add(weightMap);
+                List<Map<String, String>> list = listMap.get(categoryName);
+                if (list == null || list.isEmpty()) {
+                    list = new ArrayList<>();
+                }
+                list.add(lengthMap);
+                listMap.put(categoryName, list);
             }
         }
-        listMap.put(UnitsEnum.CategoryEnum.LENGTH.name, lengthList);
-        listMap.put(UnitsEnum.CategoryEnum.WEIGHT.name, weightList);
         return listMap;
     }
 
@@ -152,11 +153,13 @@ public class UnitConversion {
         LG_MM(CategoryEnum.LENGTH, "mm", new String[]{"mm", "毫米"}, new BigDecimal("1000"), "毫米"),
         LG_UM(CategoryEnum.LENGTH, "um", new String[]{"um", "微米"}, new BigDecimal("1000000"), "微米"),
         LG_NM(CategoryEnum.LENGTH, "nm", new String[]{"nm", "纳米"}, new BigDecimal("1000000000"), "纳米"),
-        LG_INCH(CategoryEnum.LENGTH, "inch", new String[]{"in", "inch", "英寸"}, new BigDecimal("39.3700787"), "英寸"),
-        LG_FOOT(CategoryEnum.LENGTH, "foot", new String[]{"ft", "foot", "英尺"}, new BigDecimal("3.2808399"), "英尺"),
+        LG_INCH(CategoryEnum.LENGTH, "in", new String[]{"in", "inch", "英寸"}, new BigDecimal("39.3700787"), "英寸"),
+        LG_FOOT(CategoryEnum.LENGTH, "ft", new String[]{"ft", "foot", "英尺"}, new BigDecimal("3.2808399"), "英尺"),
+        LG_MILES(CategoryEnum.LENGTH, "mi", new String[]{"mi", "miles", "英里"}, new BigDecimal("0.00062137"), "英里"),
+        LG_NAUTICAL_MILE(CategoryEnum.LENGTH, "nmile", new String[]{"nmile", "nauticalmile", "海里"}, new BigDecimal("0.00053996"), "海里"),
 
         /**
-         * 重量计量单位
+         * 质量计量单位
          */
         EG_T(CategoryEnum.WEIGHT, "t", new String[]{"t", "吨"}, new BigDecimal("0.001"), "吨"),
         EG_KG(CategoryEnum.WEIGHT, "kg", new String[]{"kg", "千克"}, new BigDecimal("1"), "千克"),
@@ -166,6 +169,21 @@ public class UnitConversion {
         EG_LB(CategoryEnum.WEIGHT, "lb", new String[]{"lb", "lbs", "磅"}, new BigDecimal("2.2046226"), "磅"),
         EG_OZ(CategoryEnum.WEIGHT, "oz", new String[]{"oz", "盎司"}, new BigDecimal("35.2739619"), "盎司"),
         EG_CT(CategoryEnum.WEIGHT, "ct", new String[]{"ct", "克拉"}, new BigDecimal("5000"), "克拉"),
+
+        /**
+         * 温度计量单位
+         */
+        TG_DEGREE_CELSIUS(CategoryEnum.TEMPERATURE, "°C", new String[]{"°C", "degreecelsius", "摄氏度"}, new BigDecimal("1"), "摄氏度"),
+        TG_FAHRENHEIT_SCALE(CategoryEnum.TEMPERATURE, "°F", new String[]{"°F", "fahrenheitscale", "华氏度"}, new BigDecimal("33.8"), "华氏度"),
+
+        /**
+         * 速度计量单位
+         */
+        TS_KM(CategoryEnum.SPEED, "km/h", new String[]{"km/h", "公里/小时"}, new BigDecimal("1"), "公里/小时"),
+        TS_MILES(CategoryEnum.SPEED, "mi/h", new String[]{"mi/h", "英里/小时"}, new BigDecimal("0.62137119"), "英里/小时"),
+        TS_NAUTICAL_MILE(CategoryEnum.SPEED, "nmile/h", new String[]{"nmile/h", "海里/小时"}, new BigDecimal("0.5399568"), "海里/小时"),
+        TS_KNOT(CategoryEnum.SPEED, "knot", new String[]{"knot", "节"}, new BigDecimal("0.5399568"), "节"),
+        TS_MACH(CategoryEnum.SPEED, "mach", new String[]{"mach", "machnumber", "马赫"}, new BigDecimal("0.00080985"), "马赫"),
 
         /**
          * 未知
@@ -204,10 +222,19 @@ public class UnitConversion {
              */
             LENGTH("Length", UnitsEnum.LG_M, "长度"),
             /**
-             * 重量
+             * 质量
              */
-            WEIGHT("Weight", UnitsEnum.EG_KG, "重量");
+            WEIGHT("Weight", UnitsEnum.EG_KG, "质量"),
+            /**
+             * 温度
+             */
+            TEMPERATURE("Temperature", UnitsEnum.TG_DEGREE_CELSIUS, "温度"),
+            /**
+             * 速度
+             */
+            SPEED("Speed", UnitsEnum.TG_DEGREE_CELSIUS, "速度"),
 
+            ;
             /**
              * 类别名称
              */
