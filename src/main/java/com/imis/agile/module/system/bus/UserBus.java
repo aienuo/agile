@@ -266,7 +266,7 @@ public class UserBus extends BaseBus {
         }
         // 4、创建用户组织机构关联
         List<Long> organizationList = update.getOrganizationList();
-        if (AgileUtil.isNotEmpty(roleList)) {
+        if (AgileUtil.isNotEmpty(organizationList)) {
             List<UserOrganization> userOrganizationList = UserConverter.INSTANCE.getUserOrganizationEntity(user.getId(), organizationList);
             boolean saveUserOrganization = this.userOrganizationService.saveBatch(userOrganizationList);
             ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_13.assertIsTrue(saveUserOrganization);

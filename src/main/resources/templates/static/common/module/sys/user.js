@@ -2,15 +2,8 @@ new Vue({
     el: '#user',
     data() {
         // 此处即表单发送之前验证
-        let validateNewPassword = (rule, value, callback) => {
-            if (value === this.passwordForm.oldPassword) {
-                callback(new Error('新密码不能与原密码相同！'));
-            } else {
-                callback();
-            }
-        };
         let validateConfirmPassword = (rule, value, callback) => {
-            if (value !== this.passwordForm.newPassword) {
+            if (value !== this.passwordResetForm.newPassword) {
                 callback(new Error('两次输入的密码不一致！'));
             } else {
                 callback();
@@ -87,6 +80,7 @@ new Vue({
                 ],
                 password: [
                     {required: true, message: '请输入登录密码', trigger: 'blur'},
+                    {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
                 ],
                 identityNumber: [
                     {required: true, message: '请输入身份证号', trigger: 'blur'},
@@ -99,23 +93,13 @@ new Vue({
                 phone: [
                     {required: true, message: '请输入手机号码', trigger: 'blur'},
                     {type: 'string', message: '手机号码格式不正确', pattern: /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-7|9])|(?:5[0-3|5-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1|8|9]))\d{8}$/, trigger: ['blur', 'change']}
-                ],
-                newPassword: [
-                    {required: true, message: '请输入登录密码', trigger: 'blur'},
-                    {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
-                ],
-                confirmPassword: [
-                    {required: true, message: '请输入登录密码', trigger: 'blur'},
-                    {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'},
-                    {validator: validateConfirmPassword, trigger: ['blur', 'change']}
-                ],
+                ]
             },
             // 密码校验规则
             passwordFormRules: {
                 newPassword: [
                     {required: true, message: '请输入登录密码', trigger: 'blur'},
-                    {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'},
-                    {validator: validateNewPassword, trigger: ['blur', 'change']}
+                    {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
                 ],
                 confirmPassword: [
                     {required: true, message: '请输入登录密码', trigger: 'blur'},
