@@ -1,12 +1,17 @@
-![IDEA](src/main/resources/templates/static/common/images/jetbrains.png)
+<p align="center">
+	<img alt="logo" src="src/main/resources/templates/static/common/images/jetbrains.png">
+</p>
+<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">Agile</h1>
+<h4 align="center">基于SpringBoot + Vue前后端不分离面向企业级Java Web应用的框架</h4>
+<p align="center">
+	<a href="https://gitee.com/xinlau/agile/stargazers"><img src="https://gitee.com/xinlau/agile/badge/star.svg?theme=dark"></a>
+	<a href="https://gitee.com/xinlau/agile/members"><img src="https://gitee.com/xinlau/agile/badge/fork.svg?theme=dark"></a>
+	<a href="https://gitee.com/xinlau/agile"><img src="https://img.shields.io/badge/Agile-v1.0-brightgreen.svg"></a>
+</p>
 
-# Agile
-
-中文 | [English](README.en.md)
-
-#### 介绍
-
-面向企业Web应用的Java框架
+<h3 align="center" style="margin: 30px 0 30px; font-weight: bold;">
+中文 | <a href="README.en.md">English</a>
+</h3>
 
 #### 未完成
 

@@ -1,12 +1,17 @@
-![IDEA](src/main/resources/templates/static/common/images/jetbrains.png)
+<p align="center">
+	<img alt="logo" src="src/main/resources/templates/static/common/images/jetbrains.png">
+</p>
+<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">Agile</h1>
+<h4 align="center">Based on SpringBoot + Vue, the front-end and back-end are not separated, and the framework for enterprise-level Java Web applications is not separated.</h4>
+<p align="center">
+	<a href="https://gitee.com/y_project/agile/stargazers"><img src="https://gitee.com/xinlau/agile/badge/star.svg?theme=dark"></a>
+	<a href="https://gitee.com/y_project/agile/members"><img src="https://gitee.com/xinlau/agile/badge/fork.svg?theme=dark"></a>
+	<a href="https://gitee.com/y_project/agile"><img src="https://img.shields.io/badge/Agile-v1.0-brightgreen.svg"></a>
+</p>
 
-# Agile
-
-[中文](README.md) | English
-
-#### Description
-
-Java Framework For Enterprise Web Applications
+<h3 align="center" style="margin: 30px 0 30px; font-weight: bold;">
+<a href="README.md">中文</a> | English
+</h3>
 
 #### TODO
 
