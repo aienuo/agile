@@ -12,6 +12,8 @@ new Vue({
             updateDialog: false,
             // 字典类型（0-String，1-Number）
             dictTypeItem: [],
+            // 冻结状态（0-正常，1-冻结）
+            dictStatusItem: [],
             queryForm: {
                 dictName: '',
                 dictCode: ''
@@ -331,5 +333,6 @@ new Vue({
     created() {
         this.submitQueryForm();
         this.dictTypeItem = dictItem("dictType");
+        this.dictStatusItem = dictItem("status");
     }
 });
