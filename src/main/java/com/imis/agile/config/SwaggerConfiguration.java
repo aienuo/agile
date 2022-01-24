@@ -170,7 +170,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 .maxAge(168000)
                 // 允许头部设置
                 .allowedHeaders("*")
-                // 是否发送cookie
+                // 是否允许证书（Cookies）
                 .allowCredentials(true);
     }
 
