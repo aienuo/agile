@@ -9,10 +9,10 @@
 <div id="organization">
     <template>
         <div style="margin-bottom:18px;">
-            <el-button type="warning" icon="el-icon-edit" v-if="button.edit && !updateBachButton" @click="editNode">编辑</el-button>
+            <el-button type="warning" icon="el-icon-edit" v-if="buttonPermissions('/sys/organization/edit') && !updateBachButton" @click="editNode">编辑</el-button>
             <el-button type="primary" icon="el-icon-search" @click="submitQueryForm">查询</el-button>
-            <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="button.insert" @click="openInsertDialog">新增</el-button>
-            <el-button type="danger" icon="el-icon-success" v-if="button.updateBach && updateBachButton" @click="updateBach">保存</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="buttonPermissions('/sys/organization/add')" @click="openInsertDialog">新增</el-button>
+            <el-button type="danger" icon="el-icon-success" v-if="buttonPermissions('/sys/organization/updateBach') && updateBachButton" @click="updateBach">保存</el-button>
         </div>
 
         <div>
@@ -25,8 +25,8 @@
                     <span class="custom-tree-node" slot-scope="{ node, data }">
                         <span>{{ node.label }}</span>
                         <span>
-                            <el-button icon="el-icon-circle-plus" type="text" v-if="button.insert && !data.disabled" @click="() => openInsertDialog(node, data)"></el-button>
-                            <el-button icon="el-icon-remove" type="text" v-if="button.delete" @click="() => openRemoveMessageBox(node, data)"></el-button>
+                            <el-button icon="el-icon-circle-plus" type="text" v-if="buttonPermissions('/sys/organization/add') && !data.disabled" @click="() => openInsertDialog(node, data)"></el-button>
+                            <el-button icon="el-icon-remove" type="text" v-if="buttonPermissions('/sys/organization/delete')" @click="() => openRemoveMessageBox(node, data)"></el-button>
                         </span>
                     </span>
                 </el-tree>
@@ -83,14 +83,14 @@
                         </el-col>
                     </el-row>
                 </el-form>
-                <div slot="footer" class="dialog-footer" style="text-align: right">
+                <div slot="footer" class="dialog-footer" style="text-align: right" v-if="buttonPermissions('/sys/organization/update')">
                     <el-button icon="el-icon-circle-close" @click="clean">取 消</el-button>
                     <el-button icon="el-icon-circle-check" v-if="updateForm.id" type="primary" @click="update">确 定</el-button>
                 </div>
             </div>
         </div>
 
-        <el-dialog title="新增" width="90%" :visible.sync="insertDialog" :modal="false" :close-on-click-modal="false">
+        <el-dialog title="新增" width="90%" :visible.sync="insertDialog" :modal="false" :close-on-click-modal="false" v-if="buttonPermissions('/sys/organization/add')">
             <el-form :model="insertForm" ref="insertForm" :rules="rules" label-width="100px">
                 <el-row>
                     <el-col :span="10">
@@ -149,6 +149,7 @@
 <script type="text/javascript" src="/static/common/vue/vue.min.js"></script>
 <script type="text/javascript" src="/static/common/element/index.js"></script>
 <script type="text/javascript" src="/static/common/util/axios.min.js"></script>
+<script type="text/javascript" src="/static/common/util/permissions.js"></script>
 <script type="text/javascript" src="/static/common/api.js"></script>
 <script type="text/javascript" src="/static/common/module/sys/organization.js"></script>
 </html>

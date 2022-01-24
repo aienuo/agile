@@ -9,7 +9,7 @@
 <div id="menu">
     <template>
         <div style="margin-bottom:18px;">
-            <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="button.insert" @click="openInsertDialog">新增</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="buttonPermissions('/sys/menu/add')" @click="openInsertDialog">新增</el-button>
             <el-button type="primary" icon="el-icon-search" @click="submitQueryForm">刷新</el-button>
         </div>
 
@@ -34,14 +34,14 @@
             <el-table-column prop="sortNo" label="排序" width="50" align="center"></el-table-column>
             <el-table-column label="操作" width="250" align="center" fixed="right">
                 <template slot-scope="scope">
-                    <el-button type="primary" size="mini" v-if="scope.row.menuType != 2 && button.insert" @click="openInsertDialog(scope.row)">新增下级</el-button>
-                    <el-button type="success" size="mini" v-if="button.update" @click="openUpdateDialog(scope.row)">修改</el-button>
-                    <el-button type="danger" size="mini" v-if="button.delete" @click="openRemoveMessageBox(scope.row)">删除</el-button>
+                    <el-button type="primary" size="mini" v-if="scope.row.menuType != 2 && buttonPermissions('/sys/menu/add')" @click="openInsertDialog(scope.row)">新增下级</el-button>
+                    <el-button type="success" size="mini" v-if="buttonPermissions('/sys/menu/update')" @click="openUpdateDialog(scope.row)">修改</el-button>
+                    <el-button type="danger" size="mini" v-if="buttonPermissions('/sys/menu/delete')" @click="openRemoveMessageBox(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
 
-        <el-dialog title="新增" width="90%" :visible.sync="insertDialog" :modal="false" :close-on-click-modal="false">
+        <el-dialog title="新增" width="90%" :visible.sync="insertDialog" :modal="false" :close-on-click-modal="false" v-if="buttonPermissions('/sys/menu/add')">
             <el-form :model="insertForm" ref="insertForm" :rules="rules" label-width="100px">
                 <el-row>
                     <el-col :span="7">
@@ -137,7 +137,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="修改" width="90%" :visible.sync="updateDialog" :modal="false" :close-on-click-modal="false">
+        <el-dialog title="修改" width="90%" :visible.sync="updateDialog" :modal="false" :close-on-click-modal="false" v-if="buttonPermissions('/sys/menu/update')">
             <el-form :model="updateForm" ref="updateForm" :rules="rules" label-width="100px">
                 <el-row>
                     <el-col :span="7">
@@ -238,6 +238,7 @@
 <script type="text/javascript" src="/static/common/vue/vue.min.js"></script>
 <script type="text/javascript" src="/static/common/element/index.js"></script>
 <script type="text/javascript" src="/static/common/util/axios.min.js"></script>
+<script type="text/javascript" src="/static/common/util/permissions.js"></script>
 
 <script type="text/javascript" src="https://unpkg.com/e-icon-picker@latest"></script>
 <link rel="stylesheet" href="https://unpkg.com/e-icon-picker@latest/lib/index.css"/>

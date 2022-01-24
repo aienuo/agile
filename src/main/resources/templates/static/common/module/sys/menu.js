@@ -7,11 +7,6 @@ new Vue({
             tableData: [],
             insertDialog: false,
             updateDialog: false,
-            button: {
-                insert: false,
-                update: false,
-                delete: false
-            },
             // 菜单类型（0-一级菜单，1-子菜单，2-按钮权限）
             menuTypeItem: [],
             // 冻结状态(0-正常，1-冻结）
@@ -92,13 +87,6 @@ new Vue({
         formatMenuType: function (row, column, cellValue, index) {
             return this.menuTypeItem.find(item => item.value == row.menuType).name
         },
-        // 判断按钮权限
-        buttonPermissions(){
-            let buttons = JSON.parse(localStorage.getItem("X-Data-Buttons-List"));
-            this.button.insert = buttons.indexOf("/sys/menu/add") > -1;
-            this.button.update = buttons.indexOf("/sys/menu/update") > -1;
-            this.button.delete = buttons.indexOf("/sys/menu/delete") > -1;
-        },
         // 查询表单提交
         submitQueryForm() {
             axios.get('/sys/menu/tree')
@@ -107,7 +95,6 @@ new Vue({
                         this.tableData = res.data;
                     }
                 });
-            this.buttonPermissions();
         },
         // 查询树机构
         queryMenuTree() {

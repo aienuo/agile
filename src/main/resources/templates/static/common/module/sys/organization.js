@@ -18,13 +18,6 @@ new Vue({
             // 组织机构下的用户
             organizationUser: [],
             filterText: '',
-            button: {
-                edit: false,
-                updateBach: false,
-                insert: false,
-                update: false,
-                delete: false
-            },
             insertForm: {
                 parentId: '',
                 organizationName: '',
@@ -61,15 +54,6 @@ new Vue({
         }
     },
     methods: {
-        // 判断按钮
-        buttonPermissions() {
-            let buttons = JSON.parse(localStorage.getItem("X-Data-Buttons-List"));
-            this.button.edit = buttons.indexOf("/sys/organization/edit") > -1;
-            this.button.updateBach = buttons.indexOf("/sys/organization/updateBach") > -1;
-            this.button.insert = buttons.indexOf("/sys/organization/add") > -1;
-            this.button.update = buttons.indexOf("/sys/organization/update") > -1;
-            this.button.delete = buttons.indexOf("/sys/organization/delete") > -1;
-        },
         // 查询表单提交
         submitQueryForm() {
             axios.get('/sys/organization/tree')
@@ -80,7 +64,6 @@ new Vue({
                         this.updateBachButton = false;
                     }
                 });
-            this.buttonPermissions();
             this.editNodeForm = [];
         },
         // 过滤

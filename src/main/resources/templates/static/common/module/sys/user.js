@@ -126,16 +126,6 @@ new Vue({
         formatSex: function (row, column, cellValue, index) {
             return this.sexItem.find(item => item.value == row.sex).name
         },
-        // 判断按钮权限
-        buttonPermissions() {
-            let buttons = JSON.parse(localStorage.getItem("X-Data-Buttons-List"));
-            this.button.insert = buttons.indexOf("/sys/user/add") > -1;
-            this.button.freeze = buttons.indexOf("/sys/user/freeze") > -1;
-            this.button.unFreeze = buttons.indexOf("/sys/user/unFreeze") > -1;
-            this.button.reset = buttons.indexOf("/sys/user/reset") > -1;
-            this.button.update = buttons.indexOf("/sys/user/update") > -1;
-            this.button.remove = buttons.indexOf("/sys/user/remove") > -1;
-        },
         // 查询表单提交
         submitQueryForm() {
             let params = {
@@ -155,7 +145,6 @@ new Vue({
                         this.total = res.data.total;
                     }
                 });
-            this.buttonPermissions();
         },
         // 查询表单清空
         clearQueryForm() {

@@ -143,7 +143,6 @@ const home = new Vue({
         },
         // 开启 Table
         addTab(table) {
-            console.log(table);
             let isExist = false;
             let tabs = this.editableTabs;
             tabs.forEach((tab, index) => {

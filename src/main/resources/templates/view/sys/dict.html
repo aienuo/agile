@@ -15,8 +15,8 @@
             <el-button icon="el-icon-refresh-right" @click="clearQueryForm">重置</el-button>
         </div>
         <div style="margin-bottom:20px;">
-            <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="button.insert" @click="openInsertDialog">新增</el-button>
-            <el-button type="danger" icon="el-icon-circle-close" v-if="button.delete" @click="openDeleteDialog">删除</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="buttonPermissions('/sys/dict/add')" @click="openInsertDialog">新增</el-button>
+            <el-button type="danger" icon="el-icon-circle-close" v-if="buttonPermissions('/sys/dict/delete')" @click="openDeleteDialog">删除</el-button>
         </div>
 
         <el-table :data="tableData" :row-style="{height:'40px'}" :cell-style="{padding:'0px'}" :header-cell-style="{'text-align':'center'}" style="margin-bottom:10px;font-size: 14px"
@@ -35,7 +35,7 @@
             <el-table-column prop="description" label="描述"></el-table-column>
             <el-table-column label="操作" width="220" align="center" fixed="right">
                 <template slot-scope="scope">
-                    <el-button type="success" icon="el-icon-edit" size="mini" v-if="button.update" @click="openUpdateDialog(scope.row)">修改</el-button>
+                    <el-button type="success" icon="el-icon-edit" size="mini" v-if="buttonPermissions('/sys/dict/update')" @click="openUpdateDialog(scope.row)">修改</el-button>
                     <el-button type="primary" icon="el-icon-setting" size="mini" @click="openConfigurationDrawer(scope.row)">字典配置</el-button>
                 </template>
             </el-table-column>
@@ -45,7 +45,7 @@
                         @size-change="handleSizeChange" @current-change="handleCurrentChange">
         </el-pagination>
 
-        <el-dialog title="新增" width="70%" :visible.sync="insertDialog" :modal="false" :close-on-click-modal="false">
+        <el-dialog title="新增" width="70%" :visible.sync="insertDialog" :modal="false" :close-on-click-modal="false" v-if="buttonPermissions('/sys/dict/add/')">
             <el-form :model="insertForm" ref="insertForm" :rules="rules" label-width="100px">
                 <el-row>
                     <el-col :span="10">
@@ -87,7 +87,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="修改" width="70%" :visible.sync="updateDialog" :modal="false" :close-on-click-modal="false">
+        <el-dialog title="修改" width="70%" :visible.sync="updateDialog" :modal="false" :close-on-click-modal="false" v-if="buttonPermissions('/sys/dict/update')">
             <el-form :model="updateForm" ref="updateForm" :rules="rules" label-width="100px">
                 <el-row>
                     <el-col :span="10">
@@ -143,7 +143,7 @@
                     <el-button icon="el-icon-refresh-right" @click="clearItemQueryForm">重置</el-button>
                 </div>
                 <div style="margin-bottom:20px;">
-                    <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="button.insertItem" @click="openInsertItemDialog">新增</el-button>
+                    <el-button type="primary" icon="el-icon-circle-plus-outline" v-if="buttonPermissions('/sys/dict/item/add')" @click="openInsertItemDialog">新增</el-button>
                 </div>
 
                 <el-table :data="dictItemData" :row-style="{height:'40px'}" :cell-style="{padding:'0px'}" :header-cell-style="{'text-align':'center'}" style="margin-bottom:10px;font-size: 14px"
@@ -159,16 +159,16 @@
                     <el-table-column prop="sortNo" label="排序" align="center"></el-table-column>
                     <el-table-column label="操作" width="200" align="center" fixed="right">
                         <template slot-scope="scope">
-                            <el-button type="primary" icon="el-icon-plus" size="mini" v-if="button.insertItem" @click="openInsertItemDialog(scope.row)"></el-button>
-                            <el-button type="success" icon="el-icon-edit" size="mini" v-if="button.updateItem" @click="openUpdateItemDialog(scope.row)"></el-button>
-                            <el-button type="danger" icon="el-icon-delete" size="mini" v-if="button.deleteItem" @click="openDeleteItemDialog(scope.row)"></el-button>
+                            <el-button type="primary" icon="el-icon-plus" size="mini" v-if="buttonPermissions('/sys/dict/item/add')" @click="openInsertItemDialog(scope.row)"></el-button>
+                            <el-button type="success" icon="el-icon-edit" size="mini" v-if="buttonPermissions('/sys/dict/item/update')" @click="openUpdateItemDialog(scope.row)"></el-button>
+                            <el-button type="danger" icon="el-icon-delete" size="mini" v-if="buttonPermissions('/sys/dict/item/delete')" @click="openDeleteItemDialog(scope.row)"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
             </div>
         </el-drawer>
 
-        <el-dialog title="新增" width="70%" :visible.sync="insertItemDialog" :close-on-click-modal="false">
+        <el-dialog title="新增" width="70%" :visible.sync="insertItemDialog" :close-on-click-modal="false" v-if="buttonPermissions('/sys/dict/item/add')">
             <el-form :model="insertItemForm" ref="insertItemForm" :rules="rules" label-width="100px">
                 <el-row>
                     <el-col :span="20">
@@ -223,7 +223,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="修改" width="70%" :visible.sync="updateItemDialog" :close-on-click-modal="false">
+        <el-dialog title="修改" width="70%" :visible.sync="updateItemDialog" :close-on-click-modal="false" v-if="buttonPermissions('/sys/dict/item/update')">
             <el-form :model="updateItemForm" ref="updateItemForm" :rules="rules" label-width="100px">
                 <el-row>
                     <el-col :span="20">
@@ -284,6 +284,7 @@
 <script type="text/javascript" src="/static/common/vue/vue.min.js"></script>
 <script type="text/javascript" src="/static/common/element/index.js"></script>
 <script type="text/javascript" src="/static/common/util/axios.min.js"></script>
+<script type="text/javascript" src="/static/common/util/permissions.js"></script>
 <script type="text/javascript" src="/static/common/api.js"></script>
 <script type="text/javascript" src="/static/common/module/sys/dict.js"></script>
 </html>
