@@ -18,7 +18,7 @@
         <div>
             <div style="float: left; width: 50%;">
                 <el-input size="small" prefix-icon="el-icon-search" placeholder="输入组织机构名称进行过滤" v-model="filterText" v-if="!updateBachButton" style="width: 60%;"></el-input>
-                <el-tree class="filter-tree" :data="tableData" node-key="id" show-checkbox default-expand-all highlight-current :draggable="draggable" :filter-node-method="filterNode" :allow-drop="allowDrop" :allow-drag="allowDrag" ref="tree"
+                <el-tree class="filter-tree" :data="tableData" node-key="id" show-checkbox check-strictly default-expand-all highlight-current :draggable="draggable" :filter-node-method="filterNode" :allow-drop="allowDrop" :allow-drag="allowDrag" ref="tree"
                          @check="queryDetailsById"
                          @node-click="queryDetailsById"
                          @node-drop="handleDrop">

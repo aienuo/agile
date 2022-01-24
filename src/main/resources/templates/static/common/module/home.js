@@ -275,7 +275,6 @@ const home = new Vue({
             this.$message.error("WebSocket 发生了错误事件");
         },
         getMessage: function (messageEvent) {
-            console.log(messageEvent.data);
             const data = JSON.parse(messageEvent.data);
             console.log(data);
             this.$notify({

@@ -147,12 +147,9 @@ new Vue({
         handleDrop(draggingNode, dropNode, type, event) {
             // 被拖拽的节点数据
             const draggingNodeData = draggingNode.data;
-            // console.log('被拖拽的节点数据: ', draggingNodeData);
             // 结束拖拽时最后进入的节点数据
             const dropNodeData = dropNode.data;
-            // console.log('结束拖拽时最后产生Type关系的节点数据: ', dropNodeData);
             // 放置在目标节点的 类型
-            // console.log('放置在目标节点的 类型: ', type);
             // 'inner' 插入至目标节点
             if (type === 'inner') {
                 let parameter = {

@@ -331,6 +331,5 @@ new Vue({
     created() {
         this.submitQueryForm();
         this.dictTypeItem = dictItem("dictType");
-        console.log(dictItem("dictType"))
     }
 });
