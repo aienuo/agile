@@ -330,7 +330,7 @@ new Vue({
     },
     created() {
         this.submitQueryForm();
-        let dictList = JSON.parse(localStorage.getItem("X-Data-Dict-List"));
-        this.dictTypeItem = dictList.find(dict => dict.dictCode === "dictType").itemList;
+        this.dictTypeItem = dictItem("dictType");
+        console.log(dictItem("dictType"))
     }
 });

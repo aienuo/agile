@@ -381,7 +381,6 @@ new Vue({
     },
     created() {
         this.submitQueryForm();
-        let dictList = JSON.parse(localStorage.getItem("X-Data-Dict-List"));
-        this.sexItem = dictList.find(dict => dict.dictCode === "sex").itemList;
+        this.sexItem = dictItem("sex");
     }
 });

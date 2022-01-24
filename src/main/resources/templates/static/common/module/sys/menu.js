@@ -223,10 +223,9 @@ new Vue({
     },
     created() {
         this.submitQueryForm();
-        let dictList = JSON.parse(localStorage.getItem("X-Data-Dict-List"));
-        this.menuTypeItem = dictList.find(dict => dict.dictCode === "menuType").itemList;
-        this.statusItem = dictList.find(dict => dict.dictCode === "status").itemList;
-        this.buttonTypeItem = dictList.find(dict => dict.dictCode === "buttonType").itemList;
-        this.buttonSizeItem = dictList.find(dict => dict.dictCode === "buttonSize").itemList;
+        this.menuTypeItem = dictItem("menuType");
+        this.statusItem = dictItem("status");
+        this.buttonTypeItem = dictItem("buttonType");
+        this.buttonSizeItem = dictItem("buttonSize");
     }
 });
