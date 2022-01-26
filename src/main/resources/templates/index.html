@@ -98,7 +98,7 @@
                             password: this.loginForm.password
                         }).then((res) => {
                             if (res.code === 6666) {
-                                localStorage.setItem('X-Data-User', JSON.stringify(res.data.user));
+                                sessionStorage.setItem('X-Data-User', JSON.stringify(res.data.user));
                                 if (this.loginForm.remember) {
                                     const account = this.loginForm.username + "_" + Base64.encode(this.loginForm.password);
                                     this.$cookies.set("AGILE.COOKIE.ACCOUNT", Base64.encode(account), 60 * 60 * 24 * 30);

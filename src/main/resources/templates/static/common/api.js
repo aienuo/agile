@@ -10,7 +10,7 @@ axios.interceptors.request.use(config => {
     if (config.responseType === 'blob') {
         config.timeout = 1000 * 60 * 5
     }
-    let token = localStorage.getItem("X-Access-Token");
+    let token = sessionStorage.getItem("X-Access-Token");
     if (token) {
         const headerToken = JSON.parse(token);
         config.headers.token = headerToken;
@@ -31,12 +31,17 @@ axios.interceptors.response.use(response => {
         //  服务器遇到错误，无法完成请求。服务器异常，无法识别的异常
         parent.location.href = '/';
     }
+    if (responseCode === 9998) {
+        //  Token 过期，清除所有缓存
+        sessionStorage.clear();
+        parent.location.href = '/';
+    }
     if (responseType === 'arraybuffer') {
         // 文件
         return response;
     }
     if (token) {
-        localStorage.setItem('X-Access-Token', JSON.stringify(token));
+        sessionStorage.setItem('X-Access-Token', JSON.stringify(token));
     }
     return response.data;
 });

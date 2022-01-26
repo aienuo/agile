@@ -118,7 +118,7 @@ const home = new Vue({
                     modal: 'false',
                     type: 'warning'
                 }).then(() => {
-                    localStorage.clear();
+                    sessionStorage.clear();
                     parent.location.href = '/';
                     this.$message({
                         type: 'success',
@@ -136,7 +136,7 @@ const home = new Vue({
                 });
             } else if (cmd === 'userCenter') {
                 this.userCenterDialog = true;
-                const user = JSON.parse(localStorage.getItem("X-Data-User"));
+                const user = JSON.parse(sessionStorage.getItem("X-Data-User"));
                 this.passwordForm.username = user.username;
                 this.updateForm = user;
             }
@@ -162,7 +162,7 @@ const home = new Vue({
             });
             this.editableTabsValue = table.url;
         },
-        // 关闭Table
+        // 关闭 Table
         removeTab(tabName) {
             let tabs = this.editableTabs;
             let activeName = this.editableTabsValue;
@@ -204,7 +204,7 @@ const home = new Vue({
                     axios.put('/update', JSON.parse(JSON.stringify(updateParam)))
                         .then((res) => {
                             if (res.code === 6666) {
-                                const user = JSON.parse(localStorage.getItem("X-Data-User"));
+                                const user = JSON.parse(sessionStorage.getItem("X-Data-User"));
                                 user.realname = updateParam.realname;
                                 user.identityNumber = updateParam.identityNumber;
                                 user.email = updateParam.email;
@@ -213,7 +213,7 @@ const home = new Vue({
                                 user.birthday = updateParam.birthday;
                                 user.sex = updateParam.sex;
                                 user.age = updateParam.age;
-                                localStorage.setItem('X-Data-User', JSON.stringify(user));
+                                sessionStorage.setItem('X-Data-User', JSON.stringify(user));
                                 this.$message({
                                     type: 'success',
                                     message: '修改成功'
@@ -309,29 +309,29 @@ const home = new Vue({
         this.socket.onclose = this.close
     },
     created() {
-        if (localStorage.getItem("X-Access-Token")) {
-            this.user = JSON.parse(localStorage.getItem("X-Data-User"));
+        if (sessionStorage.getItem("X-Access-Token")) {
+            this.user = JSON.parse(sessionStorage.getItem("X-Data-User"));
             this.avatar = this.user.avatar;
             this.activePath = window.sessionStorage.getItem('activePath');
             axios.get('/info/' + this.user.username)
                 .then((res) => {
                     if (res.code === 6666) {
                         this.roleList = res.data.roleList;
-                        localStorage.setItem('X-Data-Role-List', JSON.stringify(this.roleList));
+                        sessionStorage.setItem('X-Data-Role-List', JSON.stringify(this.roleList));
                         res.data.buttonList.forEach(button => {
                             this.buttonList.push(button.url)
                         });
-                        localStorage.setItem('X-Data-Buttons-List', JSON.stringify(this.buttonList));
+                        sessionStorage.setItem('X-Data-Buttons-List', JSON.stringify(this.buttonList));
                         this.menuTreeList = res.data.menuTreeList;
-                        localStorage.setItem('X-Data-Menu-Tree', JSON.stringify(this.menuTreeList));
-                        localStorage.setItem('X-Data-Dict-List', JSON.stringify(res.data.dictList));
+                        sessionStorage.setItem('X-Data-Menu-Tree', JSON.stringify(this.menuTreeList));
+                        sessionStorage.setItem('X-Data-Dict-List', JSON.stringify(res.data.dictList));
                         this.sexItem = res.data.dictList.find(dict => dict.dictCode === "sex").itemList;
                     } else {
                         this.$message.error(res.message);
                     }
                 });
         } else {
-            localStorage.clear();
+            sessionStorage.clear();
             parent.location.href = '/';
         }
     }
