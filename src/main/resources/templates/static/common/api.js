@@ -2,7 +2,7 @@
 axios.defaults.baseURl = "/"
 // 跨域传递 Cookie 设置
 axios.defaults.withCredentials = true
-// 默认请求域名配置 5秒：
+// 默认请求超时配置 5秒：
 axios.defaults.timeout = 1000 * 5
 // 请求拦截器（在请求之前进行一些配置，设置全局参数）
 axios.interceptors.request.use(config => {

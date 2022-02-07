@@ -33,6 +33,8 @@ public class IPV4Util {
             "HTTP_FORWARDED_FOR", "HTTP_FORWARDED", "HTTP_VIA", "REMOTE_ADDR", "X-Real-IP"};
 
     /**
+     * 判断 IP 地址不存在问题
+     *
      * @param checkIp - 被测试IP
      * @return Boolean - false - 标识IP存在问题
      */
