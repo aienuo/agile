@@ -72,13 +72,6 @@ public interface UserConverter {
             @Mapping(target = "salt", ignore = true),
             @Mapping(target = "status", ignore = true),
             @Mapping(target = "delFlag", ignore = true),
-            @Mapping(target = "realname", source = "update.realname"),
-            @Mapping(target = "avatar", source = "update.avatar"),
-            @Mapping(target = "identityNumber", source = "update.identityNumber"),
-            @Mapping(target = "birthday", source = "update.birthday"),
-            @Mapping(target = "sex", source = "update.sex"),
-            @Mapping(target = "email", source = "update.email"),
-            @Mapping(target = "phone", source = "update.phone"),
     })
     void getUpdateEntity(@MappingTarget final User user, final UserUpdateDTO update);
 
@@ -100,13 +93,6 @@ public interface UserConverter {
             @Mapping(target = "salt", ignore = true),
             @Mapping(target = "status", ignore = true),
             @Mapping(target = "delFlag", ignore = true),
-            @Mapping(target = "realname", source = "update.realname"),
-            @Mapping(target = "avatar", source = "update.avatar"),
-            @Mapping(target = "identityNumber", source = "update.identityNumber"),
-            @Mapping(target = "birthday", source = "update.birthday"),
-            @Mapping(target = "sex", source = "update.sex"),
-            @Mapping(target = "email", source = "update.email"),
-            @Mapping(target = "phone", source = "update.phone"),
     })
     void getUserUpdateEntity(@MappingTarget final User user, final com.imis.agile.module.api.model.dto.UserUpdateDTO update);
 

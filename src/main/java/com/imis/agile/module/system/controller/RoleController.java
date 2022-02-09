@@ -71,7 +71,7 @@ public class RoleController extends BaseController<RoleBus> {
 
     @DeleteMapping(value = "delete")
     @ApiOperation(value = "删除接口", notes = "多条删除")
-    @ApiImplicitParam(name = "idList", value = "用户标识", dataType = "Long", dataTypeClass = Long.class, required = true)
+    @ApiImplicitParam(name = "idList", value = "角色标识", dataType = "Long", dataTypeClass = Long.class, required = true)
     @ApiOperationSupport(order = 5, author = "XinLau")
     public BaseResponse deleteByIdList(@RequestParam(name = "idList", required = true) List<Long> idList) {
         return service.deleteByIdList(idList);

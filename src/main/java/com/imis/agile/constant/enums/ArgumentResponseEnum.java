@@ -166,6 +166,7 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
 
     FILE_ADD_ERR(200990101, "%s 上传失败"),
     FILE_ADD_ERR_PATH_NO_EXIST(200990102, "上传失败，路径不存在，路径创建时失败"),
+    FILE_ADD_ERR_FILE_SAVE_FAILED(200990103, "上传失败，文件保存失败"),
     FILE_DOWNLOAD_ERR_1(200990201, "文件下载失败，文件不存在"),
     FILE_DOWNLOAD_ERR_2(200990202, "文件下载失败 %s"),
 

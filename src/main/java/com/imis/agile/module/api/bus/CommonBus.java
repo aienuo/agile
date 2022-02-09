@@ -11,21 +11,15 @@ import com.imis.agile.module.system.model.converter.FileConverter;
 import com.imis.agile.module.system.service.IFileService;
 import com.imis.agile.response.CommonResponse;
 import com.imis.agile.util.AgileUtil;
+import com.imis.agile.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -61,77 +55,6 @@ public class CommonBus extends BaseBus {
      */
     @Value(value = "${imis-boot.uploadType}")
     private String uploadType;
-
-    /**
-     * 文件字节本地保存
-     *
-     * @param filePath      - 文件路径
-     * @param fileName      - 文件名称
-     * @param multipartFile - 文件
-     * @author XinLau
-     * @creed The only constant is change ! ! !
-     * @since 2020/7/27 13:54
-     */
-    private void doFileUploadForLocal(final String filePath, final String fileName, final MultipartFile multipartFile) {
-        try {
-            byte[] multipartFileBytes = multipartFile.getBytes();
-            File file = new File(filePath);
-            if (!file.exists()) {
-                // 创建文件根目录
-                boolean mkdirs = file.mkdirs();
-                ArgumentResponseEnum.FILE_ADD_ERR_PATH_NO_EXIST.assertIsTrue(mkdirs);
-            }
-            String savePath = file.getPath() + File.separator + fileName;
-            File saveFile = new File(savePath);
-            FileCopyUtils.copy(multipartFileBytes, saveFile);
-        } catch (IOException e) {
-            ArgumentResponseEnum.FILE_ADD_ERR.assertFail(e);
-        }
-    }
-
-    /**
-     * 跨服务器单文件下载
-     *
-     * @param filePath - 文件路径
-     * @param fileName - 文件名称
-     * @author XinLau
-     * @creed The only constant is change ! ! !
-     * @since 2020/7/27 13:54
-     */
-    private void doFileDownloadByFileUrl(final String filePath, final String fileName) {
-        // 1.获取并设置 HttpServletResponse 强制下载不打开
-        HttpServletResponse httpServletResponse = getHttpServletResponse();
-        httpServletResponse.setContentType("application/force-download");
-        httpServletResponse.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        httpServletResponse.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
-        try {
-            // 2.根据文件地址创建URL
-            URL url = new URL(filePath);
-            // 3.获取此路径的连接
-            URLConnection urlConnection = url.openConnection();
-            // 4.获取文件大小，并设置给Response
-            Long fileLength = urlConnection.getContentLengthLong();
-            httpServletResponse.setHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(fileLength));
-            // 5.设置缓冲区大小
-            byte[] buffer = new byte[1024];
-            // 6.初始化缓冲输入流；  获取Response输出流；   初始化缓冲输出流
-            try (BufferedInputStream bufferedInputStream = new BufferedInputStream(urlConnection.getInputStream());
-                 OutputStream httpServletResponseOutputStream = httpServletResponse.getOutputStream();
-                 BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(httpServletResponseOutputStream)
-            ) {
-                int i = bufferedInputStream.read(buffer);
-                //  7.每次读取缓存大小的流，写到输出流
-                while (i != -1) {
-                    bufferedOutputStream.write(buffer, 0, i);
-                    i = bufferedInputStream.read(buffer);
-                }
-                //  8.将所有的读取的流返回给客户端
-                httpServletResponse.flushBuffer();
-            }
-        } catch (IOException e) {
-            ArgumentResponseEnum.FILE_DOWNLOAD_ERR_2.assertFail(e);
-        }
-    }
 
     /**
      * 多文件上传
@@ -195,7 +118,7 @@ public class CommonBus extends BaseBus {
                         file.setFileUrl(localUrl + uploadPath + StringPool.SLASH + newName);
                         // 文件本地保存（uploadPath跟jar包同级目录，自动拼接 “./”）
                         String filePath = StringPool.DOT + StringPool.SLASH + uploadPath;
-                        this.doFileUploadForLocal(filePath, newName, multipartFile);
+                        FileUtil.doFileUploadForLocal(filePath, newName, multipartFile);
                     } else {
                         // TODO：自己整合其他
                         ArgumentResponseEnum.FILE_ADD_ERR.assertFailWithMessage("自己整合其他非 本地保存文件 的方式");
@@ -227,7 +150,10 @@ public class CommonBus extends BaseBus {
         com.imis.agile.module.system.model.entity.File sysFile = this.fileService.getById(fileId);
         ArgumentResponseEnum.FILE_DOWNLOAD_ERR_1.assertNotNull(sysFile);
         // 3.文件下载
-        this.doFileDownloadByFileUrl(sysFile.getFileUrl(), sysFile.getFileName());
+        String fileUrl = sysFile.getFileUrl();
+        if (fileUrl.startsWith("http")) {
+            FileUtil.doFileDownloadByFileUrl(fileUrl, sysFile.getFileName(), getHttpServletResponse());
+        }
         return new BaseResponse();
     }
 
