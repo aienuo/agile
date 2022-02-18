@@ -28,7 +28,7 @@ public class PagingQueryDictDTO extends BasePageDTO implements Serializable {
      * ID
      */
     @ApiModelProperty(value = "字典 - 项ID")
-    private String id;
+    private Long id;
 
     /**
      * 字典名称

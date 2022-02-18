@@ -45,7 +45,7 @@
                         @size-change="handleSizeChange" @current-change="handleCurrentChange">
         </el-pagination>
 
-        <el-dialog title="新增" width="70%" :visible.sync="insertDialog" :modal="false" :close-on-click-modal="false" v-if="buttonPermissions('/sys/dict/add/')">
+        <el-dialog title="新增" width="70%" :visible.sync="insertDialog" :modal="false" :close-on-click-modal="false" v-if="buttonPermissions('/sys/dict/add')">
             <el-form :model="insertForm" ref="insertForm" :rules="rules" label-width="100px">
                 <el-row>
                     <el-col :span="10">
