@@ -2,7 +2,7 @@
 axios.defaults.baseURl = "/"
 // 跨域传递 Cookie 设置
 axios.defaults.withCredentials = true
-// 默认请求超时配置 5秒：
+// 默认请求域名配置 5秒：
 axios.defaults.timeout = 1000 * 5
 // 请求拦截器（在请求之前进行一些配置，设置全局参数）
 axios.interceptors.request.use(config => {
@@ -36,10 +36,35 @@ axios.interceptors.response.use(response => {
         sessionStorage.clear();
         parent.location.href = '/';
     }
-    if (responseType === 'arraybuffer') {
-        // 文件
-        return response;
+    // 文件
+    if (responseType === 'arraybuffer' || responseType === 'blob') {
+        // 内容类型
+        const contentType = response.headers['content-type'] ? response.headers['content-type'] : response.headers['Content-Type'];
+        // 内容处置
+        const contentDisposition = response.headers['content-disposition'] ? response.headers['content-disposition'] : response.headers['Content-Disposition'];
+        // 文件名
+        let filename = new Date().getTime();
+        if (contentDisposition){
+            const name = contentDisposition.split(";")[1];
+            if (name){
+                filename = filename + name.replace("filename=", "");
+            }
+        }
+        let downloadElement = document.createElement('a');
+        // 将二进制的数据转为 Blob 对象 并 创建下载的链接
+        let href = window.URL.createObjectURL(new Blob([response.data], {type: contentType}));
+        downloadElement.href = href;
+        // 下载后文件名
+        downloadElement.download = decodeURI(filename);
+        document.body.appendChild(downloadElement);
+        // 点击下载
+        downloadElement.click();
+        // 下载完成移除元素
+        document.body.removeChild(downloadElement);
+        // 释放掉blob对象
+        window.URL.revokeObjectURL(href)
     }
+    // 设置 Token
     if (token) {
         sessionStorage.setItem('X-Access-Token', JSON.stringify(token));
     }
