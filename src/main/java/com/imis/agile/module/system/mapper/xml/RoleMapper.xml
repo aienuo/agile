@@ -74,21 +74,17 @@
             <if test="param.roleName != null and param.roleName != ''">
                 AND role_name LIKE CONCAT('%', #{param.roleName}, '%')
             </if>
-            <!-- 超级查询参数 这个参数方便自定义SQL条件查询（要考虑SQL注入，查询条件与数据权限冲突） -->
-            <if test="param.superQueryParams != null and param.superQueryParams != ''">
-                AND #{param.superQueryParams}
-            </if>
             <!-- 创建人 -->
             <if test="param.createBy != null and param.createBy != ''">
                 AND create_by = #{param.createBy}
             </if>
             <!-- 创建时间-起 -->
             <if test="param.createTimeStart != null">
-                AND create_time <![CDATA[<=]]> #{param.createTimeStart}
+                AND create_time <![CDATA[>=]]> #{param.createTimeStart}
             </if>
             <!-- 创建时间-止 -->
             <if test="param.createTimeEnd != null ">
-                AND create_time <![CDATA[>=]]> #{param.createTimeEnd}
+                AND create_time <![CDATA[<=]]> #{param.createTimeEnd}
             </if>
             <!-- 更新人 -->
             <if test="param.updateBy != null and param.updateBy != ''">
@@ -96,11 +92,15 @@
             </if>
             <!-- 更新时间-起 -->
             <if test="param.updateTimeStart != null">
-                AND update_time <![CDATA[<=]]> #{param.updateTimeStart}
+                AND update_time <![CDATA[>=]]> #{param.updateTimeStart}
             </if>
             <!-- 更新时间-止 -->
             <if test="param.updateTimeEnd != null ">
-                AND update_time <![CDATA[>=]]> #{param.updateTimeEnd}
+                AND update_time <![CDATA[<=]]> #{param.updateTimeEnd}
+            </if>
+            <!-- 超级查询参数 这个参数方便自定义SQL条件查询（要考虑SQL注入，查询条件与数据权限冲突） -->
+            <if test="param.superQueryParams != null and param.superQueryParams != ''">
+                AND #{param.superQueryParams}
             </if>
         </where>
     </select>
