@@ -1,14 +1,22 @@
 package com.imis.agile;
 
+import com.imis.agile.constant.CommonConstant;
 import com.imis.agile.util.ComputerUniqueIdentificationUtil;
 import com.imis.agile.util.IdCardUtil;
 import com.imis.agile.util.PasswordUtil;
 import com.imis.agile.util.UnitConversion;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -94,6 +102,101 @@ class AgileTests {
         );
 
 
+    }
+
+    @Test
+    void doTestForCityData() {
+
+
+        AdministrativeArea administrativeArea = new AdministrativeArea()
+                .setLevel(0)
+                .setCode("000000000000")
+                .setName("中华人民共和国")
+                .setChildHref("http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2020/index.html")
+                .setChildName(CommonConstant.ADMINISTRATIVE_AREA_LIVE_NAME[0]);
+
+
+        structureAdministrativeArea(administrativeArea);
+
+        System.out.println(administrativeArea.toString());
+    }
+
+    /**
+     * 构建行政区数据
+     *
+     * @param area - AdministrativeArea
+     */
+    private void structureAdministrativeArea(AdministrativeArea area) {
+        try {
+            String classname = area.getChildName();
+            // Jsoup 解析 HTML
+            Document document = Jsoup.connect(area.getChildHref()).get();
+            // 像 js 一样，通过 class 获取列表下的 省会列表
+            Element provinceTable = document.getElementsByClass(classname + "table").first();
+            if (provinceTable != null) {
+                // System.out.println(provinceTable);
+                // 像 js 一样，通过 class 获取列表下的 tr
+                Elements provinceTrList = provinceTable.getElementsByClass(classname + "tr");
+                List<AdministrativeArea> administrativeAreaList = new ArrayList<>();
+                // 循环处理每篇博客
+                for (Element provinceTr : provinceTrList) {
+                    // 像 js 一样，通过 tagName 获取列表下的 td
+                    Elements provinceTdList = provinceTr.getElementsByTag("td");
+                    // 行政区划
+                    AdministrativeArea administrativeArea = new AdministrativeArea().setLevel(area.getLevel() + 1);
+                    for (int i = 0; i < provinceTdList.size(); i++) {
+                        Element provinceTd = provinceTdList.get(i);
+                        // 像 js 一样，通过 tagName 获取列表下的 a
+                        Elements provinceAList = provinceTd.getElementsByTag("a");
+                        if (provinceAList != null && provinceAList.size() > 0) {
+                            // 有 a 标签 说明就还有下一级
+                            if (0 == i) {
+                                String code = provinceTd.text();
+                                // System.out.print("编码: " + code);
+                                administrativeArea.setCode(code);
+                            }
+                            if (1 == i) {
+                                String name = provinceTd.text();
+                                // System.out.print(" - 名称: " + name);
+                                administrativeArea.setName(name);
+                                String aHref = provinceAList.first().attr("href");
+                                // System.out.println(" - 地址:" + aHref);
+                                String currentHref = area.getChildHref();
+                                administrativeArea.setChildHref(currentHref.substring(0, currentHref.lastIndexOf('.')) + aHref);
+                            }
+                            administrativeArea.setChildName(CommonConstant.ADMINISTRATIVE_AREA_LIVE_NAME[administrativeArea.getLevel()]);
+                            // this.structureAdministrativeArea(area);
+                        } else {
+                            // 最后一级
+                            if (0 == i) {
+                                String code = provinceTd.text();
+                                // System.out.print("编码: " + code);
+                                administrativeArea.setCode(code);
+                            }
+                            if (1 == i) {
+                                String classification = provinceTd.text();
+                                // System.out.print(" - 城乡分类代码:: " + classification);
+                                administrativeArea.setClassification(classification);
+                            }
+                            if (2 == i) {
+                                String name = provinceTd.text();
+                                // System.out.println(" - 名称: " + name);
+                                administrativeArea.setName(name);
+                            }
+                        }
+                    }
+                    administrativeAreaList.add(administrativeArea);
+                }
+                area.setChild(administrativeAreaList);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testMessageFormat(){
+        System.out.println(MessageFormat.format("{1} 上传失败：{0}", "ABCD", "EFGH"));
     }
 
 }

@@ -164,11 +164,11 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
     ORGANIZATION_VALID_ERROR_DELETE_03(200060303, "组织机构删除失败，部分组织机构已分配给用户使用"),
 
 
-    FILE_ADD_ERR(200990101, "%s 上传失败"),
+    FILE_ADD_ERR(200990101, "{0} 上传失败"),
     FILE_ADD_ERR_PATH_NO_EXIST(200990102, "上传失败，路径不存在，路径创建时失败"),
     FILE_ADD_ERR_FILE_SAVE_FAILED(200990103, "上传失败，文件保存失败"),
     FILE_DOWNLOAD_ERR_1(200990201, "文件下载失败，文件不存在"),
-    FILE_DOWNLOAD_ERR_2(200990202, "文件下载失败 %s"),
+    FILE_DOWNLOAD_ERR_2(200990202, "文件下载失败 {0}"),
 
     ;
 
