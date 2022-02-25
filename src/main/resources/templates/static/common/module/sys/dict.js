@@ -67,7 +67,7 @@ new Vue({
                 ],
                 dictCode: [
                     {required: true, message: '请输入字典编码', trigger: 'blur'},
-                    {min: 2, max: 10, message: '长度在 2 到 100 个字符', trigger: 'blur'}
+                    {min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur'}
                 ],
                 name: [
                     {required: true, message: '请输入字典项名', trigger: 'blur'},
