@@ -155,9 +155,9 @@ new Vue({
             if (res.code === 6666) {
                 let data = res.data;
                 const url = data[data.length - 1].fileUrl;
-                if ("updateForm" === idx){
+                if ("updateForm" === idx) {
                     this.updateForm.avatar = url;
-                }else {
+                } else {
                     this.insertForm.avatar = url;
                 }
             }
@@ -309,7 +309,7 @@ new Vue({
                 });
         },
         // 打印
-        print(){
+        print() {
             this.$message.error("未开发的功能");
         },
         // 开启更新表单
@@ -353,6 +353,9 @@ new Vue({
         openResetDialog(row) {
             // 标识当前行的唯一键的名称
             this.resetDialog = true;
+            if (this.$refs.passwordResetForm !== undefined) {
+                this.$refs.passwordResetForm.resetFields();
+            }
             this.passwordResetForm.userId = row.id;
         },
         // 密码重置
