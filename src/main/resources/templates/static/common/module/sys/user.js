@@ -10,24 +10,13 @@ new Vue({
             }
         };
         return {
+            // 分页查询参数
             currentPage: 1,
             pageSize: 10,
             total: 0,
+            // 排序字段
             sortFieldList: [],
-            multipleSelection: [],
-            tableData: [],
-            insertDialog: false,
-            updateDialog: false,
-            detailDialog: false,
-            resetDialog: false,
-            button: {
-                insert: false,
-                freeze: false,
-                unFreeze: false,
-                reset: false,
-                update: false,
-                remove: false,
-            },
+            // 查询参数
             queryForm: {
                 realname: '',
                 username: '',
@@ -35,10 +24,23 @@ new Vue({
                 email: '',
                 phone: '',
             },
+            // 分页查询返回值
+            tableData: [],
+            // 多选
+            multipleSelection: [],
+            insertDialog: false,
+            updateDialog: false,
+            detailDialog: false,
+            resetDialog: false,
+            // 性别字典
             sexItem: [],
+            // 角色字典
             roleList: [],
+            // 组织机构树
             organizationTreeList: [],
+            // 头像
             avatar: '',
+            // 头像上传 接口 URL
             actionUrl: '/sys/common/upload',
             insertForm: {
                 realname: '',
