@@ -78,7 +78,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-tree :data="menuData" show-checkbox node-key="id" default-expand-all :default-checked-keys="updateForm.menuList" ref="updateTree" :props="defaultProps"></el-tree>
+                <el-tree :data="menuData" show-checkbox check-strictly node-key="id" default-expand-all :default-checked-keys="updateForm.menuList" ref="updateTree" :props="defaultProps"></el-tree>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button icon="el-icon-circle-close" @click="updateDialog = false">取 消</el-button>
