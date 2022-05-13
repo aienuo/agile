@@ -35,6 +35,9 @@ const home = new Vue({
             }
         };
         return {
+            defaultHeight: {
+                height: ""
+            },
             homeName: "主页哟",
             isCollapse: false,
             activePath: '',
@@ -105,6 +108,10 @@ const home = new Vue({
         this.initWebSocket();
     },
     methods: {
+        // 定义方法，获取高度减去头尾
+        getHeight() {
+            this.defaultHeight.height = window.innerHeight - 240 + "px";
+        },
         // 点击按钮，切换菜单的折叠与展开
         toggleCollapse() {
             this.isCollapse = !this.isCollapse
@@ -309,6 +316,9 @@ const home = new Vue({
         this.socket.onclose = this.close
     },
     created() {
+        // 页面创建时执行一次getHeight进行赋值，顺道绑定resize事件
+        window.addEventListener("resize", this.getHeight);
+        this.getHeight();
         if (sessionStorage.getItem("X-Access-Token")) {
             this.user = JSON.parse(sessionStorage.getItem("X-Data-User"));
             this.avatar = this.user.avatar;

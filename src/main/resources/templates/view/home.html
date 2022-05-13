@@ -39,8 +39,8 @@
                 <el-container>
                     <el-main>
                         <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
-                            <el-tab-pane :key="item.name" v-for="(item) in editableTabs" :label="item.title" :name="item.name">
-                                <iframe :src="item.content" style="height: 715px;width: 100%;border: none"></iframe>
+                            <el-tab-pane :key="item.name" v-for="(item) in editableTabs" :label="item.title" :name="item.name" :style="defaultHeight">
+                                <iframe :src="item.content" style="height: 100%;width: 100%;border: none"></iframe>
                             </el-tab-pane>
                         </el-tabs>
                         <button @click="send">发消息</button>
