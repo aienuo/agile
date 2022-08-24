@@ -101,4 +101,19 @@ public class DictItemServiceImpl extends ServiceImpl<DictItemMapper, DictItem> i
         return this.baseMapper.queryTableColumnItemListByTableName(tableName);
     }
 
+    /**
+     * 字典 - 值 查询
+     *
+     * @param dictCode - 字典 Code
+     * @return List<DictItemVO>
+     * @author XinLau
+     * @creed The only constant is change ! ! !
+     * @since 2020/3/5 17:25
+     */
+    @Override
+    @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
+    public List<DictItemVO> queryDictItemListByDictCode(final String dictCode) {
+        return this.baseMapper.queryDictItemListByDictCode(dictCode);
+    }
+
 }
