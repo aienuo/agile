@@ -62,4 +62,15 @@ public interface DictItemMapper extends BaseMapper<DictItem> {
      */
     List<ItemVO> queryTableColumnItemListByTableName(@Param("tableName") final String tableName);
 
+    /**
+     * 字典 - 值 查询
+     *
+     * @param dictCode - 字典 Code
+     * @return List<DictItemVO>
+     * @author XinLau
+     * @creed The only constant is change ! ! !
+     * @since 2020/3/5 17:25
+     */
+    List<DictItemVO> queryDictItemListByDictCode(@Param("dictCode") final String dictCode);
+
 }

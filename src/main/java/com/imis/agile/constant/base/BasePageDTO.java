@@ -16,6 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -105,9 +106,44 @@ public class BasePageDTO implements Serializable {
     private List<OrderItem> sortFieldList;
 
     /**
+     * 自定义查询条件（key -  条件字段名， value - 条件值）
+     */
+    @ApiModelProperty(value = "自定义查询条件（key -  条件字段名， value - 条件值）")
+    private Map<String, Object> condition;
+
+    /**
      * 超级查询参数 这个参数方便自定义SQL条件查询（要考虑SQL注入，查询条件与数据权限冲突）
      */
     @ApiModelProperty(value = "超级查询参数", hidden = true)
     private String superQueryParams;
+
+    /**
+     * 获取 自定义差查询条件的 值
+     *
+     * @param key - 条件字段名
+     * @return Object - 条件值
+     */
+    public Object get(String key){
+        return this.condition.get(key);
+    }
+
+    /**
+     * 设置 自定义差查询条件
+     *
+     * @param key -  条件字段名
+     * @param value - 条件值
+     */
+    public void set(String key, Object value){
+        this.condition.put(key, value);
+    }
+
+    /**
+     * 删除 自定义差查询条件
+     *
+     * @param key -  条件字段名
+     */
+    public void remove(String key){
+        this.condition.remove(key);
+    }
 
 }

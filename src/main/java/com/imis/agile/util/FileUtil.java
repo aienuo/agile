@@ -1,5 +1,6 @@
 package com.imis.agile.util;
 
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.imis.agile.constant.enums.ArgumentResponseEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -35,7 +36,7 @@ public class FileUtil {
         try {
             byte[] multipartFileBytes = multipartFile.getBytes();
             String savePath = filePath + File.separator + fileName;
-            writeBytes(multipartFileBytes, savePath);
+            writeBytes(multipartFileBytes, filePath, savePath);
         } catch (IOException e) {
             ArgumentResponseEnum.FILE_ADD_ERR.assertFail(e);
         }
@@ -47,15 +48,16 @@ public class FileUtil {
      * @param filedByteData - 文件数据
      * @param savePath      - 保存路径
      */
-    public static void writeBytes(final byte[] filedByteData, final String savePath) {
+    public static void writeBytes(final byte[] filedByteData, final String filePath, final String savePath) {
         try {
-            File saveFile = new File(savePath);
-            if (!saveFile.exists()) {
+            // 文件保存文件夹
+            File fileSaveFolder = new File(filePath);
+            if (!fileSaveFolder.exists()) {
                 // 创建文件根目录
-                boolean mkdirs = saveFile.mkdirs();
+                boolean mkdirs = fileSaveFolder.mkdirs();
                 ArgumentResponseEnum.FILE_ADD_ERR_PATH_NO_EXIST.assertIsTrue(mkdirs);
             }
-            FileCopyUtils.copy(filedByteData, saveFile);
+            FileCopyUtils.copy(filedByteData, new File(savePath));
         } catch (IOException e) {
             ArgumentResponseEnum.FILE_ADD_ERR_FILE_SAVE_FAILED.assertFail(e);
         }
@@ -75,6 +77,7 @@ public class FileUtil {
         httpServletResponse.setContentType("application/force-download");
         httpServletResponse.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
         httpServletResponse.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
+        httpServletResponse.setCharacterEncoding(StringPool.UTF_8);
         try {
             // 2.根据文件地址创建URL
             URL url = new URL(filePath);

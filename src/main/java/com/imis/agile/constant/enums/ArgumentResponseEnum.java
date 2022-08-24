@@ -102,6 +102,14 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
     USER_VALID_ERROR_DELETE_01(200030301, "用户删除失败，请确认信息后重新删除"),
     USER_VALID_ERROR_DELETE_02(200030302, "用户删除失败，用户信息不存在"),
     USER_VALID_ERROR_DELETE_03(200030303, "用户删除失败，部分用户不存在"),
+    /**
+     * 200 03 04 00 - 用户管理 - 导入
+     */
+    USER_VALID_ERROR_IMPORT_01(200030401, "用户信息导入失败，请确认信息后重新导入"),
+    USER_VALID_ERROR_IMPORT_02(200030402, "用户信息导入失败，{0} 的登录账号存在问题" ),
+    USER_VALID_ERROR_IMPORT_03(200030403, "用户信息导入失败，{0} 的身份证号码存在问题" ),
+    USER_VALID_ERROR_IMPORT_04(200030404, "用户信息导入失败，{0} 的信息不存在，无法更新" ),
+    USER_VALID_ERROR_IMPORT_05(200030405, "用户信息导入失败，{0} 的信息存在重复" ),
 
     /**
      * 200 04 01 00 - 角色管理 - 添加
@@ -169,6 +177,9 @@ public enum ArgumentResponseEnum implements CommonExceptionAssert {
     FILE_ADD_ERR_FILE_SAVE_FAILED(200990103, "上传失败，文件保存失败"),
     FILE_DOWNLOAD_ERR_1(200990201, "文件下载失败，文件不存在"),
     FILE_DOWNLOAD_ERR_2(200990202, "文件下载失败 {0}"),
+    EXCEL_IMPORT_ERR_0(200990301, "Excel 导入失败，{0}"),
+    EXCEL_IMPORT_ERR_1(200990301, "Excel 导入失败，Sheet 文件 不存在"),
+    EXCEL_IMPORT_ERR_2(200990302, "Excel 导入失败，无效的字段的声明类型"),
 
     ;
 

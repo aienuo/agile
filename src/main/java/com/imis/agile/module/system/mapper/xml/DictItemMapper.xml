@@ -99,4 +99,15 @@
             table_schema = 'agile' AND table_name = #{tableName}
     </select>
 
+    <!-- 字典 - 值 - 数据查询 - 查询返回值 2020年10月10日 10:24:00 -->
+    <select id="queryDictItemListByDictCode" resultMap="listQuery">
+        SELECT
+            di.id, di.dict_id, di.parent_id, di.name, di.value, di.disabled, di.sort_no, di.description
+        FROM
+            <include refid="sys_dict_item_table_name"/> AS di
+            LEFT JOIN <include refid="com.imis.agile.module.system.mapper.DictMapper.sys_dict_table_name"/> d ON di.dict_id = d.id
+        WHERE d.dict_code = #{dictCode}
+        ORDER BY sort_no
+    </select>
+
 </mapper>

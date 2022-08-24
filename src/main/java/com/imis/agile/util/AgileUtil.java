@@ -110,6 +110,34 @@ public class AgileUtil {
     }
 
     /**
+     * 从字符串的末尾删除任何一组字符。<br>
+     * <li>null输入字符串返回null 。 空字符串 ("") 输入返回空字符串。</li>
+     * <li>如果 stripChars 为null ，则按照Character.isWhitespace(char)的定义去除空格</li>
+     *
+     * @param string     - 将要被截取的字符串
+     * @param stripChars - 需要删除的一组字符
+     * @return String - 删除字符后的字符串
+     */
+    public static String stripEnd(final String string, final String stripChars) {
+        int end = string == null ? 0 : string.length();
+        if (end == 0) {
+            return string;
+        }
+        if (stripChars == null) {
+            while (end != 0 && Character.isWhitespace(string.charAt(end - 1))) {
+                end--;
+            }
+        } else if (stripChars.isEmpty()) {
+            return string;
+        } else {
+            while (end != 0 && stripChars.indexOf(string.charAt(end - 1)) != -1) {
+                end--;
+            }
+        }
+        return string.substring(0, end);
+    }
+
+    /**
      * 删除 HTML 标签
      *
      * @param htmlStr - HTML
