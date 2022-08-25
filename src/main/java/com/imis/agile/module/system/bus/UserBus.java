@@ -7,10 +7,7 @@ import com.imis.agile.constant.base.BaseBus;
 import com.imis.agile.constant.base.BaseResponse;
 import com.imis.agile.constant.enums.ArgumentResponseEnum;
 import com.imis.agile.module.system.model.converter.UserConverter;
-import com.imis.agile.module.system.model.dto.PagingQueryUserDTO;
-import com.imis.agile.module.system.model.dto.ResetPasswordDTO;
-import com.imis.agile.module.system.model.dto.UserAddDTO;
-import com.imis.agile.module.system.model.dto.UserUpdateDTO;
+import com.imis.agile.module.system.model.dto.*;
 import com.imis.agile.module.system.model.entity.User;
 import com.imis.agile.module.system.model.entity.UserOrganization;
 import com.imis.agile.module.system.model.entity.UserRole;
@@ -23,11 +20,15 @@ import com.imis.agile.response.CommonResponse;
 import com.imis.agile.util.AgileUtil;
 import com.imis.agile.util.IdCardUtil;
 import com.imis.agile.util.PasswordUtil;
+import com.imis.agile.util.excel.ExcelUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -317,6 +318,84 @@ public class UserBus extends BaseBus {
         boolean save = this.userService.updateBatchById(userList);
         ArgumentResponseEnum.USER_VALID_ERROR_DELETE_01.assertIsTrue(save);
         return new CommonResponse<>();
+    }
+
+    /**
+     * 导出导入Excel模版
+     *
+     * @author XinLau
+     * @creed The only constant is change ! ! !
+     * @since 2020/3/5 17:25
+     */
+    public void getImportTemplate() {
+        ExcelUtil<UserExcelDTO> util = new ExcelUtil<>(UserExcelDTO.class);
+        util.exportExcelTemplate(getHttpServletResponse(), "用户数据");
+    }
+
+    /**
+     * 导入信息
+     *
+     * @param multipartFile - 文件
+     * @param update        - 是否更新
+     * @author XinLau
+     * @creed The only constant is change ! ! !
+     * @since 2020/3/5 17:25
+     */
+    public void export(final MultipartFile multipartFile, final Boolean update) {
+        ExcelUtil<UserExcelDTO> util = new ExcelUtil<>(UserExcelDTO.class);
+        if (multipartFile == null || multipartFile.isEmpty()) {
+            ArgumentResponseEnum.EXCEL_IMPORT_ERR_0.assertFail("文件不存在");
+        }
+        try {
+            List<UserExcelDTO> userImportList = util.importExcel(multipartFile.getInputStream());
+            if (AgileUtil.isNotEmpty(userImportList)) {
+                List<User> userAddList = new ArrayList<>();
+                List<User> userUpdateList = new ArrayList<>();
+                userImportList.forEach(
+                        userImport -> {
+                            // 登录账号
+                            String userName = userImport.getUsername();
+                            ArgumentResponseEnum.USER_VALID_ERROR_IMPORT_02.assertIsTrueWithMessage(AgileUtil.isNotEmpty(userName), userImport.getRealname());
+                            // 身份证件号码
+                            String identityNumber = userImport.getIdentityNumber();
+                            // 验证身份证件号码格式是否正确
+                            ArgumentResponseEnum.USER_VALID_ERROR_IMPORT_03.assertIsTrueWithMessage(IdCardUtil.isIdCard(identityNumber), userImport.getRealname());
+                            // 验证 用户帐号\身份证号码 是否存在重复
+                            User user = this.userService.getOne(Wrappers.<User>lambdaQuery()
+                                            .eq(User::getUsername, userName)
+                                            .or().eq(User::getIdentityNumber, identityNumber)
+                                            .or(AgileUtil.isNotEmpty(userImport.getPhone())).eq(User::getPhone, userImport.getPhone())
+                                            .or(AgileUtil.isNotEmpty(userImport.getEmail())).eq(User::getEmail, userImport.getEmail())
+                                    , Boolean.FALSE);
+                            if (update) {
+                                if (AgileUtil.isEmpty(user)) {
+                                    ArgumentResponseEnum.USER_VALID_ERROR_IMPORT_04.assertIsTrue(AgileUtil.isEmpty(user), userImport.getRealname());
+                                }
+                                UserConverter.INSTANCE.getImportEntity(user, userImport);
+                                userUpdateList.add(user);
+                            } else {
+                                if (AgileUtil.isNotEmpty(user)) {
+                                    ArgumentResponseEnum.USER_VALID_ERROR_IMPORT_05.assertIsTrue(AgileUtil.isEmpty(user), userImport.getRealname());
+                                }
+                                userAddList.add(UserConverter.INSTANCE.getImportEntity(userImport));
+                            }
+                        }
+                );
+                if (AgileUtil.isNotEmpty(userAddList)) {
+                    // 添加
+                    boolean save = this.userService.saveBatch(userAddList);
+                    ArgumentResponseEnum.USER_VALID_ERROR_IMPORT_01.assertIsTrue(save);
+                }
+                if (AgileUtil.isNotEmpty(userUpdateList)) {
+                    // 更新
+                    boolean updateUser = this.userService.updateBatchById(userUpdateList);
+                    ArgumentResponseEnum.USER_VALID_ERROR_IMPORT_01.assertIsTrue(updateUser);
+                }
+            }
+        } catch (IOException e) {
+            log.error("从给定的 MultipartFile 中获取 InputStream 失败：{}", e.getMessage());
+            ArgumentResponseEnum.EXCEL_IMPORT_ERR_0.assertFail(e.getMessage());
+        }
     }
 
 }
