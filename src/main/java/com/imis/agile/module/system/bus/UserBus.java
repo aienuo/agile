@@ -88,9 +88,6 @@ public class UserBus extends BaseBus {
             user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, add.getEmail()), Boolean.FALSE);
             ArgumentResponseEnum.USER_VALID_ERROR_ADD_04.assertIsNull(user);
         }
-        // 根据身份证件号码 获取 出生日期、性别
-        add.setBirthday(IdCardUtil.getBirthByIdCard(identityNumber));
-        add.setSex(IdCardUtil.getSex(identityNumber));
         return UserConverter.INSTANCE.getAddEntity(add);
     }
 
@@ -114,9 +111,6 @@ public class UserBus extends BaseBus {
             // 验证 身份证号码 是否存在重复
             User userByIdentityNumber = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getIdentityNumber, identityNumber), Boolean.FALSE);
             ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_03.assertIsNull(userByIdentityNumber);
-            // 根据身份证件号码 获取 出生日期、性别
-            update.setBirthday(IdCardUtil.getBirthByIdCard(identityNumber));
-            update.setSex(IdCardUtil.getSex(identityNumber));
         }
         if (AgileUtil.isNotEmpty(update.getPhone()) && !user.getPhone().equals(update.getPhone())) {
             // 验证 手机号码 是否存在重复

@@ -26,7 +26,6 @@
         <result column="email" property="email" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="phone" property="phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="birthday" property="birthday" javaType="java.time.LocalDate" jdbcType="TIMESTAMP"/>
-        <result column="sex" property="sex" javaType="java.lang.Integer" jdbcType="INTEGER"/>
         <result column="status" property="status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -40,7 +39,6 @@
         <result column="email" property="email" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="phone" property="phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="birthday" property="birthday" javaType="java.time.LocalDate" jdbcType="TIMESTAMP"/>
-        <result column="sex" property="sex" javaType="java.lang.Integer" jdbcType="INTEGER"/>
         <collection property="roleList" ofType="java.lang.String" javaType="java.util.List" column="{userId=id}" select="com.imis.agile.module.system.mapper.UserRoleMapper.queryRoleIdListByUserId"/>
         <collection property="organizationList" ofType="java.lang.String" javaType="java.util.List" column="{userId=id}" select="com.imis.agile.module.system.mapper.UserOrganizationMapper.queryOrganizationIdListByUserId"/>
     </resultMap>
@@ -48,7 +46,7 @@
     <!-- 2021年7月20日 14:36:07 分页查询 del_flag = 0 -->
     <select id="pagingQueryListByParameter" resultMap="pageQuery">
         SELECT
-            id, username, avatar, realname, identity_number, email, phone, birthday, sex, status
+            id, username, avatar, realname, identity_number, email, phone, birthday, status
         FROM
             <include refid="sys_user_table_name"/>
         <where>
@@ -121,7 +119,7 @@
     <!-- 2021年7月20日 14:36:07 ID查询 del_flag = 0 -->
     <select id="queryById" resultMap="queryDataById">
         SELECT
-            id, username, avatar, realname, identity_number, email, phone, birthday, sex
+            id, username, avatar, realname, identity_number, email, phone, birthday
         FROM
             <include refid="sys_user_table_name"/>
         WHERE

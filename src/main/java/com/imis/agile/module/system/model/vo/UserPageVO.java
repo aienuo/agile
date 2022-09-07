@@ -10,8 +10,10 @@ import com.imis.agile.constant.CommonConstant;
 import com.imis.agile.util.IdCardUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -91,12 +93,14 @@ public class UserPageVO implements Serializable {
      * 年龄
      */
     @ApiModelProperty(value = "年龄")
+    @Setter(AccessLevel.NONE)
     private Integer age;
 
     /**
      * 性别(2-默认未知，1-男，0-女)
      */
     @ApiModelProperty(value = "性别(2-默认未知，1-男，0-女)")
+    @Setter(AccessLevel.NONE)
     private Integer sex;
 
     /**
@@ -105,9 +109,10 @@ public class UserPageVO implements Serializable {
     @ApiModelProperty(value = "冻结状态(0-正常，1-冻结）")
     private Integer status;
 
-    public Integer getAge() {
-        this.age = IdCardUtil.getAge(this.identityNumber);
-        return this.age;
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+        this.age = IdCardUtil.getAge(identityNumber);
+        this.sex = IdCardUtil.getSex(identityNumber);
     }
 
 }

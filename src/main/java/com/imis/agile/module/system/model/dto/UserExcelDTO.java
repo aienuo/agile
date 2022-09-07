@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.imis.agile.annotation.Excel;
 import com.imis.agile.util.IdCardUtil;
 import io.swagger.annotations.ApiModel;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -70,30 +72,24 @@ public class UserExcelDTO implements Serializable {
     @Excel(name = "出生日期", type = Excel.Type.EXPORT)
     private LocalDate birthday;
 
-    public LocalDate getBirthday() {
-        this.birthday = IdCardUtil.getBirthByIdCard(this.identityNumber);
-        return this.birthday;
-    }
-
     /**
      * 年龄
      */
     @Excel(name = "年龄", type = Excel.Type.EXPORT)
+    @Setter(AccessLevel.NONE)
     private Integer age;
-
-    public Integer getAge() {
-        this.age = IdCardUtil.getAge(this.identityNumber);
-        return this.age;
-    }
 
     /**
      * 性别(2-默认未知，1-男，0-女)
      */
-    @Excel(name = "性别",dictCode = "sex", type = Excel.Type.EXPORT)
+    @Excel(name = "性别", dictCode = "sex", type = Excel.Type.EXPORT)
+    @Setter(AccessLevel.NONE)
     private Integer sex;
 
-    public Integer getSex() {
-        this.sex = IdCardUtil.getSex(this.identityNumber);
-        return this.sex;
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+        this.age = IdCardUtil.getAge(identityNumber);
+        this.sex = IdCardUtil.getSex(identityNumber);
     }
+
 }

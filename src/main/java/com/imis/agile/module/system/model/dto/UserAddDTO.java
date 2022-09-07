@@ -9,7 +9,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -56,17 +55,6 @@ public class UserAddDTO implements Serializable {
     @NotBlank
     @Pattern(regexp = "(^\\d{8}(0\\d|10|11|12)([0-2]\\d|30|31)\\d{3}$)|(^\\d{6}(18|19|20)\\d{2}(0\\d|10|11|12)([0-2]\\d|30|31)\\d{3}(\\d|X|x)$)")
     private String identityNumber;
-
-    /**
-     * 出生日期
-     */
-    @ApiModelProperty(hidden = true)
-    private LocalDate birthday;
-    /**
-     * 性别(2-默认未知，1-男，0-女)
-     */
-    @ApiModelProperty(hidden = true)
-    private Integer sex;
 
     /**
      * 电子邮箱

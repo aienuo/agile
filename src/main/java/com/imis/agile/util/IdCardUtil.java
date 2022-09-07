@@ -185,7 +185,7 @@ public class IdCardUtil {
      * 解析身份证号码获取性别
      *
      * @param idCardNumber 身份证号码
-     * @return Integer 1 - 男；0 - 女
+     * @return Integer 0-女；1-男；2-未知
      */
     public static Integer getSex(final String idCardNumber) {
         if (idCardNumber != null && idCardNumber.length() > 0) {

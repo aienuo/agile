@@ -114,9 +114,6 @@ public class LoginBus extends BaseBus {
             // 验证 身份证号码 是否存在重复
             User userByIdentityNumber = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getIdentityNumber, identityNumber), Boolean.FALSE);
             ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_03.assertIsNull(userByIdentityNumber);
-            // 根据身份证件号码 获取 出生日期、性别
-            update.setBirthday(IdCardUtil.getBirthByIdCard(identityNumber));
-            update.setSex(IdCardUtil.getSex(identityNumber));
         }
         if (AgileUtil.isNotEmpty(update.getPhone()) && !user.getPhone().equals(update.getPhone())) {
             // 验证 手机号码 是否存在重复
