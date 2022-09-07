@@ -44,10 +44,14 @@
                 AND id = #{param.id}
             </if>
             <if test="param.dictName != null and param.dictName != '' ">
-                AND dict_name LIKE CONCAT('%', #{param.dictName}, '%')
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="nameLike" value="'%' + param.dictName + '%'" />
+                AND dict_name LIKE #{nameLike}
             </if>
             <if test="param.dictCode != null and param.dictCode != '' ">
-                AND dict_code LIKE CONCAT('%', #{param.dictCode}, '%')
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="codeLike" value="'%' + param.dictCode + '%'" />
+                AND dict_code LIKE #{codeLike}
             </if>
             <!-- 创建人 -->
             <if test="param.createBy != null and param.createBy != ''">

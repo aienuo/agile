@@ -54,19 +54,29 @@
         <where>
             del_flag = 0
             <if test="param.username != null and param.username != '' ">
-                AND username LIKE CONCAT('%', #{param.username}, '%')
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="usernameLike" value="'%' + param.username + '%'" />
+                AND username LIKE #{usernameLike}
             </if>
             <if test="param.realname != null and param.realname != '' ">
-                AND realname LIKE CONCAT('%', #{param.realname}, '%')
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="realnameLike" value="'%' + param.realname + '%'" />
+                AND realname LIKE #{realnameLike}
             </if>
             <if test="param.identityNumber != null and param.identityNumber != '' ">
-                AND sys_user.identity_number LIKE CONCAT('%', #{param.identityNumber}, '%')
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="identityNumberLike" value="'%' + param.identityNumber + '%'" />
+                AND identity_number LIKE #{identityNumberLike}
             </if>
             <if test="param.email != null and param.email != '' ">
-                AND email LIKE CONCAT('%', #{param.email}, '%')
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="emailLike" value="'%' + param.email + '%'" />
+                AND email LIKE #{emailLike}
             </if>
             <if test="param.phone != null and param.phone != '' ">
-                AND phone LIKE CONCAT('%', #{param.phone}, '%')
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="phoneLike" value="'%' + param.phone + '%'" />
+                AND phone LIKE #{phoneLike}
             </if>
             <if test="param.birthday != null ">
                 AND birthday <![CDATA[<=]]> DATE(#{param.birthday})
