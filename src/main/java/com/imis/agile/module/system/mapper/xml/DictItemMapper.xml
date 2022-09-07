@@ -51,7 +51,9 @@
                 AND dict_id = #{param.dictId}
             </if>
             <if test="param.name != null and param.name != '' ">
-                AND name LIKE CONCAT('%', #{param.name}, '%')
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="nameLike" value="'%' + param.name + '%'" />
+                AND name LIKE #{nameLike}
             </if>
             <if test="param.disabled != null and param.disabled != '' ">
                 AND disabled = #{param.disabled}
