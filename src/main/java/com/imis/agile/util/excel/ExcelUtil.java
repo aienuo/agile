@@ -26,7 +26,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -34,6 +33,8 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -511,7 +512,7 @@ public class ExcelUtil<T> {
      *
      * @param itemValue - 字典-项 值
      * @param dictCode  - 字典编码
-     * @param separator 分隔符
+     * @param separator - 分隔符
      * @return String - 字典项文本
      */
     private String convertDictByExpression(final String itemValue, final String dictCode, final String separator) {
@@ -573,7 +574,7 @@ public class ExcelUtil<T> {
                 inputStream = urlConnection.getInputStream();
             } else {
                 // 本机地址
-                inputStream = new FileInputStream(fileUrl);
+                inputStream = Files.newInputStream(Paths.get(fileUrl));
             }
             return IOUtils.toByteArray(inputStream);
         } catch (Exception e) {
