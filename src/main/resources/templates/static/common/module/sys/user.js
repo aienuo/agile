@@ -40,8 +40,11 @@ new Vue({
             organizationTreeList: [],
             // 头像
             avatar: '',
-            // 头像上传 接口 URL
-            actionUrl: '/sys/common/upload',
+            uploadForm:{
+                // 头像上传 接口 URL
+                actionUrl: '/sys/common/upload',
+                headers: {"X-Access-Token": "X-Access-Token"},
+            },
             insertForm: {
                 realname: '',
                 username: '',
@@ -69,6 +72,19 @@ new Vue({
                 userId: '',
                 newPassword: '',
                 confirmPassword: '',
+            },
+            // 导入 Excel 参数
+            importExcel: {
+                // 是否显示弹出层
+                open: false,
+                // 弹出层标题
+                title: "",
+                // 是否禁用上传
+                isUploading: false,
+                // 是否更新已经存在的数据
+                update: 0,
+                // 上传的地址
+                url: "/sys/user/import",
             },
             // 校验规则
             rules: {
@@ -297,6 +313,56 @@ new Vue({
                     });
             }).catch(() => {
             });
+        },
+        // 开启 Excel 导入表单
+        openImportDialog() {
+            this.importExcel.title = "用户信息导入";
+            this.importExcel.open = true;
+            let token = sessionStorage.getItem("X-Access-Token");
+            if (token) {
+                this.uploadForm.headers["X-Access-Token"] = JSON.parse(token);
+            } else {
+                this.importExcel.open = false;
+            }
+        },
+        // 开始 Excel 导入模版下载
+        openTemplateDownload() {
+            axios({
+                method: 'get',
+                url: '/sys/user/export/template',
+                responseType: 'blob',
+            }).then((res) => {
+                if (res.code) {
+                    if (res.code !== 6666) {
+                        this.$message.error(res.message);
+                    }
+                }
+            });
+        },
+        // Excel 导入中
+        importProgress(event, file, fileList) {
+            this.importExcel.isUploading = true;
+        },
+        // Excel 导入成功
+        importSuccess(response, file, fileList) {
+            this.importExcel.open = false;
+            this.importExcel.isUploading = false;
+            this.$refs.upload.clearFiles();
+            if (response) {
+                if (response.code !== 6666) {
+                    this.$message.error(response.message);
+                }
+            } else {
+                this.$message({
+                    message: "Excel 导入成功",
+                    type: 'success',
+                });
+            }
+            this.submitQueryForm();
+        },
+        // 提交 Excel 导入
+        submitImportExcel() {
+            this.$refs.upload.submit();
         },
         // 开启详情表单
         openDetailDialog(row) {

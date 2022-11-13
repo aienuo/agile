@@ -19,6 +19,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -99,6 +100,20 @@ public class UserController extends BaseController<UserBus> {
     @ApiOperationSupport(order = 8, author = "XinLau")
     public BaseResponse removeByIdList(@RequestParam(name = "idList", required = true) List<Long> idList) {
         return service.removeByIdList(idList);
+    }
+
+    @GetMapping(path = "export/template")
+    @ApiOperation(value = "导出模版", notes = "导出导入Excel模版")
+    @ApiOperationSupport(order = 9, author = "XinLau")
+    public void getImportTemplate() {
+        service.getImportTemplate();
+    }
+
+    @PostMapping(path = "import")
+    @ApiOperation(value = "导入信息", notes = "导入信息")
+    @ApiOperationSupport(order = 10, author = "XinLau")
+    public void export(MultipartFile file, Boolean update) {
+        service.export(file, update);
     }
 
 }

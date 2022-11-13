@@ -22,6 +22,7 @@
             <el-button type="danger" icon="el-icon-video-pause" v-if="buttonPermissions('/sys/user/freeze')" @click="openFreezeDialog">冻结</el-button>
             <el-button type="danger" icon="el-icon-video-play" v-if="buttonPermissions('/sys/user/unFreeze')" @click="openUnFreezeDialog">解冻</el-button>
             <el-button type="danger" icon="el-icon-remove-outline" v-if="buttonPermissions('/sys/user/remove')" @click="openRemoveMessageBox">删除</el-button>
+            <el-button type="warning" icon="el-icon-upload" v-if="buttonPermissions('/sys/user/import')" @click="openImportDialog">导入</el-button>
         </div>
 
         <el-table :data="tableData" :row-style="{height:'40px'}" :cell-style="{padding:'0px'}" :header-cell-style="{'text-align':'center'}" style="margin-bottom:10px;font-size: 14px"
@@ -99,7 +100,7 @@
                 <el-row>
                     <el-col :span="7">
                         <el-form-item label="头像" prop="avatar">
-                            <el-upload class="avatar-uploader" :action="actionUrl" :show-file-list="false"
+                            <el-upload class="avatar-uploader" :action="uploadForm.actionUrl" :show-file-list="false"
                                        :on-success="handleAvatarSuccess.bind(this,'insertForm')"
                                        :before-upload="beforeAvatarUpload">
                                 <el-avatar v-if="insertForm.avatar" :src="insertForm.avatar" class="avatar"></el-avatar>
@@ -421,7 +422,7 @@
                 <el-row>
                     <el-col :span="7">
                         <el-form-item label="头像" prop="avatar">
-                            <el-upload class="avatar-uploader" :action="actionUrl" :show-file-list="false"
+                            <el-upload class="avatar-uploader" :action="uploadForm.actionUrl" :show-file-list="false"
                                        :on-success="handleAvatarSuccess.bind(this,'updateForm')"
                                        :before-upload="beforeAvatarUpload">
                                 <el-avatar v-if="updateForm.avatar" :src="updateForm.avatar" class="avatar"></el-avatar>
@@ -471,6 +472,28 @@
             <div slot="footer" class="dialog-footer">
                 <el-button icon="el-icon-circle-close" @click="resetDialog = false">取 消</el-button>
                 <el-button icon="el-icon-circle-check" type="primary" @click="reset">确 定</el-button>
+            </div>
+        </el-dialog>
+
+        <!-- 导入对话框 -->
+        <el-dialog :title="importExcel.title" width="400px" :visible.sync="importExcel.open" append-to-body>
+            <el-upload :action="importExcel.url + '?update=' + importExcel.update" :headers="uploadForm.headers" :multiple="false" :drag="true" accept=".xlsx, .xls"
+                       :on-success="importSuccess" :on-progress="importProgress" :auto-upload="false" :disabled="importExcel.isUploading" ref="upload" :limit="1">
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div class="el-upload__tip text-center" slot="tip">
+                    <div class="el-upload__tip" slot="tip">
+                        <el-checkbox v-model="importExcel.update">是否更新已经存在的数据</el-checkbox>
+                    </div>
+                    <div>
+                        <el-link type="danger" :underline="false" icon="el-icon-warning-outline">仅允许导入xls、xlsx格式文件。</el-link>
+                        <el-link type="primary" :underline="false" @click="openTemplateDownload">下载模板</el-link>
+                    </div>
+                </div>
+            </el-upload>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="importExcel.open = false">取 消</el-button>
+                <el-button type="primary" @click="submitImportExcel">确 定</el-button>
             </div>
         </el-dialog>
 
