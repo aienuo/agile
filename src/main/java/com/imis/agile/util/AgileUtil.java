@@ -176,14 +176,7 @@ public class AgileUtil {
 	 * @return binaryString - 二进制
 	 */
 	public static String decimalToBinary(Integer decimal){
-		StringBuilder binaryString = new StringBuilder();
-		while (decimal > 0){
-			// 除2取余数作为二进制数
-			int remainder = decimal % 2;
-			binaryString.insert(0, remainder);
-			decimal = decimal / 2;
-		}
-		return binaryString.toString();
+        return Integer.toBinaryString(decimal);
 	}
 
 	/**
@@ -193,14 +186,7 @@ public class AgileUtil {
 	 * @return decimal - 十进制
 	 */
 	public static Integer binaryToDecimal(String binaryString){
-		int decimal = 0;
-		int len = binaryString.length();
-		for (int i = 1; i <= len; i++){
-			// 第i位的数字
-			int dt = Integer.parseInt(binaryString.substring(i-1,i));
-			decimal += (int)Math.pow(2, len - i) * dt;
-		}
-		return decimal;
+		return Integer.parseInt(binaryString,2);
 	}
 
 }
