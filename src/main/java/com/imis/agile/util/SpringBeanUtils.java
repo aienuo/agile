@@ -57,7 +57,7 @@ public final class SpringBeanUtils implements BeanFactoryPostProcessor {
      * @param beanName - Bean 的名字
      * @return boolean - true表示包含
      */
-    public static boolean containsBean(final String beanName) {
+    public static Boolean containsBean(final String beanName) {
         return beanFactory.containsBean(beanName);
     }
 
@@ -68,7 +68,7 @@ public final class SpringBeanUtils implements BeanFactoryPostProcessor {
      * @return boolean
      * @throws NoSuchBeanDefinitionException - 没有这样 Bean 的异常
      */
-    public static boolean isSingleton(String beanName) throws NoSuchBeanDefinitionException {
+    public static Boolean isSingleton(String beanName) throws NoSuchBeanDefinitionException {
         return beanFactory.isSingleton(beanName);
     }
 
