@@ -169,4 +169,38 @@ public class AgileUtil {
         return htmlStr.trim();
     }
 
+     /**
+     * 十进制转化为二进制
+     *
+     * @param decimal - 十进制
+     * @return binaryString - 二进制
+     */
+    public static String decimalToBinary(Integer decimal){
+        String binaryString = "";
+        while (decimal > 0){
+            // 除2取余数作为二进制数
+            int remainder = decimal % 2;
+            binaryString = remainder + binaryString;
+            decimal = decimal / 2;
+        }
+        return binaryString;
+    }
+
+    /**
+     * 二进制转换为十进制
+     *
+     * @param binaryString - 二进制
+     * @return decimal - 十进制
+     */
+    public static Integer biannaryToDecimal(String binaryString){
+        Integer decimal = 0;
+        int len = binaryString.length();
+        for (int i = 1; i <= len; i++){
+            // 第i位的数字
+            int dt = Integer.parseInt(binaryString.substring(i-1,i));
+            decimal += (int)Math.pow(2, len - i) * dt;
+        }
+        return decimal;
+    }
+
 }
