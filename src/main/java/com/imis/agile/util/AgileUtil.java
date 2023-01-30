@@ -186,7 +186,7 @@ public class AgileUtil {
 	 * @return decimal - 十进制
 	 */
 	public static Integer binaryToDecimal(String binaryString){
-		return Integer.parseInt(binaryString,2);
+		return Integer.parseInt(binaryString, Character.MIN_RADIX);
 	}
 
 }
