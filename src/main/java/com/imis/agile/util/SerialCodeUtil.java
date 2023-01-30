@@ -150,13 +150,12 @@ public class SerialCodeUtil {
      * @creed The only constant is change ! ! !
      * @since 2020/6/6 14:56
      */
-    public static synchronized String getNextSerialCode(String parentCode, final String localCode) {
+    public static synchronized String getNextSerialCode(final String parentCode, final String localCode) {
         if (localCode == null || StringPool.EMPTY.equals(localCode.trim()) || StringPool.NULL.equals(localCode.trim())) {
-            parentCode = parentCode + LETTER_A + getNextStrNum(0);
+            return parentCode + LETTER_A + getNextStrNum(0);
         } else {
             return getNextSerialCode(localCode);
         }
-        return parentCode;
     }
 
     /**
