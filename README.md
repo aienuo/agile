@@ -41,7 +41,6 @@
 | 序号  | 名字        | 描述            |
 |:---:|:----------|:--------------|
 |  1  | IDEA      | IntelliJ IDEA |
-|  2  | Notepad++ | Notepad++     | 
 
 ##### 后端
 
@@ -71,7 +70,6 @@
 |  1  | IDEA                  | IntelliJ IDEA         | 
 |  2  | Navicat               | Navicat Premium 15    |  
 |  3  | Redis Desktop Manager | Redis Desktop Manager | 
-|  4  | Notepad++             | Notepad++             |
 
 ###### 开发插件
 

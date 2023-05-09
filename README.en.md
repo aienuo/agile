@@ -38,7 +38,6 @@
 | Serial Number | Name      | Describe      |
 |:-------------:|:----------|:--------------|
 |       1       | IDEA      | IntelliJ IDEA |
-|       2       | Notepad++ | Notepad++     | 
 
 ##### Back End
 
@@ -67,8 +66,7 @@
 |:-------------:|:-----------------------|:----------------------|
 |       1       | IDEA                   | IntelliJ IDEA         | 
 |       2       | Navicat                | Navicat Premium 15    |  
-|       3       | Redis Desktop Manager  | Redis Desktop Manager | 
-|       4       | Notepad++              | Notepad++             | 
+|       3       | Redis Desktop Manager  | Redis Desktop Manager |
 
 ###### Development Plug-in
 
