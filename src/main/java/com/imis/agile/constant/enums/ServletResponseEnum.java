@@ -1,9 +1,8 @@
 package com.imis.agile.constant.enums;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * <p>

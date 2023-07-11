@@ -1,11 +1,10 @@
 package com.imis.agile.util;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Cookie工具类

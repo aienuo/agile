@@ -6,7 +6,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * 自定义导出Excel数据注解
@@ -54,9 +54,9 @@ public @interface Excel {
     int scale() default -1;
 
     /**
-     * BigDecimal 舍入规则 默认:BigDecimal.ROUND_HALF_EVEN
+     * BigDecimal 舍入规则 默认:RoundingMode.UNNECESSARY
      */
-    int roundingMode() default BigDecimal.ROUND_HALF_EVEN;
+    RoundingMode roundingMode() default RoundingMode.UNNECESSARY;
 
     /**
      * 导出类型（0：数字；1：字符串；2：图片）

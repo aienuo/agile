@@ -2,7 +2,7 @@
 	<img alt="logo" src="src/main/resources/templates/static/common/images/jetbrains.png">
 </p>
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">Agile</h1>
-<h4 align="center">Based on SpringBoot + Vue, the front-end and back-end are not separated, and the framework for enterprise-level Java Web applications is not separated.</h4>
+<h4 align="center">Based on SpringBoot3 + Vue2, the front-end and back-end are not separated, and the framework for enterprise-level Java Web applications is not separated.</h4>
 <p align="center">
 	<a href="https://gitee.com/y_project/agile/stargazers"><img src="https://gitee.com/xinlau/agile/badge/star.svg?theme=dark"></a>
 	<a href="https://gitee.com/y_project/agile/members"><img src="https://gitee.com/xinlau/agile/badge/fork.svg?theme=dark"></a>
@@ -45,8 +45,8 @@
 
 | Serial Number | Name                                   | Describe                                    |
 |:-------------:|:---------------------------------------|:--------------------------------------------|
-|       1       | JDK1.8                                 | JAVA Version                                |
-|       2       | spring-boot-starter-parent 2.5.7       | Spring-Boot                                 |
+|       1       | JDK17                                  | JAVA Version                                |
+|       2       | spring-boot-starter-parent 3.1.1       | Spring-Boot                                 |
 |       3       | mybatis-plus-boot-starter              | MP database interactive components          |
 |       4       | dynamic-datasource-spring-boot-starter | MP dynamic data source component            |
 |       5       | druid-spring-boot-starter              | Database connection pool monitoring plug-in |

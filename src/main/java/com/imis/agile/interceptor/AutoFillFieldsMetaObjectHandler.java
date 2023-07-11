@@ -6,13 +6,12 @@ import com.imis.agile.constant.CommonConstant;
 import com.imis.agile.constant.enums.CommonResponseEnum;
 import com.imis.agile.util.AgileUtil;
 import com.imis.agile.util.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>

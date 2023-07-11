@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -24,6 +25,7 @@ import java.io.Serializable;
 @TableName("sys_dict_item")
 public class DictItem extends BaseEntity implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

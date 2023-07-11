@@ -1,6 +1,5 @@
 package com.imis.agile;
 
-import com.imis.agile.constant.CommonConstant;
 import com.imis.agile.util.ComputerUniqueIdentificationUtil;
 import com.imis.agile.util.IdCardUtil;
 import com.imis.agile.util.PasswordUtil;
@@ -100,9 +99,12 @@ class AgileTests {
                     );
                 }
         );
-
-
     }
+
+    /**
+     * 行政区划每一级别的名称
+     */
+    String[] ADMINISTRATIVE_AREA_LIVE_NAME = {"province", "city", "county", "town", "village"};
 
     @Test
     void doTestForCityData() {
@@ -113,12 +115,12 @@ class AgileTests {
                 .setCode("000000000000")
                 .setName("中华人民共和国")
                 .setChildHref("http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2020/index.html")
-                .setChildName(CommonConstant.ADMINISTRATIVE_AREA_LIVE_NAME[0]);
+                .setChildName(ADMINISTRATIVE_AREA_LIVE_NAME[0]);
 
 
         structureAdministrativeArea(administrativeArea);
 
-        System.out.println(administrativeArea.toString());
+        System.out.println(administrativeArea);
     }
 
     /**
@@ -164,7 +166,7 @@ class AgileTests {
                                 String currentHref = area.getChildHref();
                                 administrativeArea.setChildHref(currentHref.substring(0, currentHref.lastIndexOf('.')) + aHref);
                             }
-                            administrativeArea.setChildName(CommonConstant.ADMINISTRATIVE_AREA_LIVE_NAME[administrativeArea.getLevel()]);
+                            administrativeArea.setChildName(ADMINISTRATIVE_AREA_LIVE_NAME[administrativeArea.getLevel()]);
                             // this.structureAdministrativeArea(area);
                         } else {
                             // 最后一级

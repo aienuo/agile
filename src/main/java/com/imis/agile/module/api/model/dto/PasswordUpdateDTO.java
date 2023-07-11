@@ -1,10 +1,10 @@
 package com.imis.agile.module.api.model.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -18,27 +18,28 @@ import java.io.Serializable;
  * @since 2020年03月26日 14:23
  */
 @Data
-@ApiModel(value = "自助密码修改对象", description = "自助密码修改对象")
+@Schema(title = "自助密码修改对象", description = "自助密码修改对象")
 public class PasswordUpdateDTO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "登录账号", required = true)
+    @Schema(title = "登录账号", description = "登录账号", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     private String username;
 
-    @ApiModelProperty(value = "旧密码", required = true)
+    @Schema(title = "旧密码", description = "旧密码", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     private String oldPassword;
 
-    @ApiModelProperty(value = "新密码", required = true)
+    @Schema(title = "新密码", description = "新密码", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     private String newPassword;
 
-    @ApiModelProperty(value = "验证码")
+    @Schema(title = "验证码", description = "验证码")
     private String captcha;
 
-    @ApiModelProperty(value = "验证码标识")
+    @Schema(title = "验证码标识", description = "验证码标识")
     private String verificationCodeIdentification;
 
 }

@@ -3,13 +3,14 @@ package com.imis.agile.module.system.model.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.imis.agile.annotation.Excel;
 import com.imis.agile.util.IdCardUtil;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -25,9 +26,10 @@ import java.time.LocalDate;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ApiModel(value = "系统用户 - Excel对象", description = "系统用户 - Excel对象")
+@Schema(title = "系统用户 - Excel对象", description = "系统用户 - Excel对象")
 public class UserExcelDTO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

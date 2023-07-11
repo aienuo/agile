@@ -2,7 +2,7 @@
 	<img alt="logo" src="src/main/resources/templates/static/common/images/jetbrains.png">
 </p>
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">Agile</h1>
-<h4 align="center">基于SpringBoot + Vue前后端不分离面向企业级Java Web应用的框架</h4>
+<h4 align="center">基于SpringBoot3 + Vue2 前后端不分离面向企业级Java Web应用的框架</h4>
 <p align="center">
 	<a href="https://gitee.com/xinlau/agile/stargazers"><img src="https://gitee.com/xinlau/agile/badge/star.svg?theme=dark"></a>
 	<a href="https://gitee.com/xinlau/agile/members"><img src="https://gitee.com/xinlau/agile/badge/fork.svg?theme=dark"></a>
@@ -48,8 +48,8 @@
 
 | 序号  | 名字                                     | 描述            |
 |:---:|:---------------------------------------|:--------------|
-|  1  | JDK1.8                                 | JAVA版本        |
-|  2  | spring-boot-starter-parent 2.5.7       | Spring-Boot   |
+|  1  | JDK17                                  | JAVA版本        |
+|  2  | spring-boot-starter-parent 3.1.1       | Spring-Boot   |
 |  3  | mybatis-plus-boot-starter              | MP数据库交互组件     |
 |  4  | dynamic-datasource-spring-boot-starter | MP动态数据源组件     |
 |  5  | druid-spring-boot-starter              | 数据库连接池 监控 插件  |

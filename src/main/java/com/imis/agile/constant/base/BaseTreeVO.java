@@ -1,10 +1,10 @@
 package com.imis.agile.constant.base;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -19,28 +19,29 @@ import java.util.List;
  * @since 2021年07月23日 09:04
  */
 @Data
-@ApiModel(value = "Tree 对象", description = "Tree 对象")
+@Schema(title = "Tree 对象", description = "Tree 对象")
 @EqualsAndHashCode(callSuper = false)
 public class BaseTreeVO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * ID
      */
-    @ApiModelProperty(value = "ID")
+    @Schema(title = "ID")
     private String id;
 
     /**
      * 父级ID
      */
-    @ApiModelProperty(value = "父级ID")
+    @Schema(title = "父级ID")
     private String parentId;
 
     /**
      * 子级列表
      */
-    @ApiModelProperty(value = "子级列表")
+    @Schema(title = "子级列表")
     private List<BaseTreeVO> children;
 
 

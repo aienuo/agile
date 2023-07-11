@@ -7,9 +7,10 @@ import com.imis.agile.constant.base.BaseResponse;
 import com.imis.agile.module.api.bus.CommonBus;
 import com.imis.agile.module.api.model.vo.FileVO;
 import com.imis.agile.response.CommonResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -30,21 +31,21 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequestMapping(path = "/sys/common")
-@Api(tags = {"常用接口"})
+@Tag(name = "常用接口")
 @ApiSort(2)
 public class CommonController extends BaseController<CommonBus> {
 
     @ResponseBody
     @PostMapping(path = "/upload")
-    @ApiOperation(value = "文件上传接口", notes = "使用Spring文件上传")
+    @Operation(summary = "文件上传接口", description = "使用Spring文件上传")
     @ApiOperationSupport(order = 1, author = "XinLau")
     public CommonResponse<List<FileVO>> doFileUpload(MultipartHttpServletRequest multipartHttpServletRequest) {
         return service.doFileUpload(multipartHttpServletRequest);
     }
 
     @GetMapping(path = "/download")
-    @ApiOperation(value = "文件下载接口", notes = "跨服务器文件下载")
-    @ApiImplicitParam(name = "fileId", value = "文件编号", dataType = "Long", dataTypeClass = Long.class, required = true)
+    @Operation(summary = "文件下载接口", description = "跨服务器文件下载")
+    @Parameter(name = "fileId", description = "文件编号", required = true, in = ParameterIn.PATH)
     @ApiOperationSupport(order = 2, author = "XinLau")
     public BaseResponse doFileDownload(@RequestParam(name = "fileId", required = true) Long fileId) {
         return service.doFileDownload(fileId);

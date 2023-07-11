@@ -9,12 +9,13 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.imis.agile.constant.CommonConstant;
 import com.imis.agile.constant.DataBaseConstant;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -31,24 +32,25 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 public abstract class BaseEntity<T extends Model<T>> extends Model<T> implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * ID
      */
     @TableId(value = DataBaseConstant.P_KEY_FIELD, type = IdType.ASSIGN_ID)
-    @ApiModelProperty(value = "ID")
+    @Schema(description = "ID")
     private Long id;
     /**
      * 创建人
      */
-    @ApiModelProperty(value = "创建人")
+    @Schema(description = "创建人")
     @TableField(value = DataBaseConstant.CREATE_BY_FIELD, fill = FieldFill.INSERT)
     private String createBy;
     /**
      * 创建时间
      */
-    @ApiModelProperty(value = "创建时间")
+    @Schema(description = "创建时间")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(timezone = "GMT+8", pattern = CommonConstant.NORM_DATETIME_PATTERN)
@@ -58,14 +60,14 @@ public abstract class BaseEntity<T extends Model<T>> extends Model<T> implements
     /**
      * 更新人
      */
-    @ApiModelProperty(value = "更新人")
+    @Schema(description = "更新人")
     @TableField(value = DataBaseConstant.UPDATE_BY_FIELD, fill = FieldFill.UPDATE)
     private String updateBy;
     /**
      * 更新时间（乐观锁）
      */
     @Version
-    @ApiModelProperty(value = "更新时间（乐观锁）")
+    @Schema(description = "更新时间（乐观锁）")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(timezone = "GMT+8", pattern = CommonConstant.NORM_DATETIME_PATTERN)

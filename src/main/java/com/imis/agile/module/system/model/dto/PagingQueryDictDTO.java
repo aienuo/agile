@@ -1,11 +1,11 @@
 package com.imis.agile.module.system.model.dto;
 
 import com.imis.agile.constant.base.BasePageDTO;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -19,27 +19,29 @@ import java.io.Serializable;
  * @since 2020年03月11日 09:18
  */
 @Data
-@ApiModel(value = "字典 - 项 - 分页查询参数", description = "字典 - 项 - 分页查询参数")
+@Schema(title = "字典 - 项 - 分页查询参数", description = "字典 - 项 - 分页查询参数")
 @EqualsAndHashCode(callSuper = false)
 public class PagingQueryDictDTO extends BasePageDTO implements Serializable {
+
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * ID
      */
-    @ApiModelProperty(value = "字典 - 项ID")
+    @Schema(title = "字典 - 项ID", description = "字典 - 项ID")
     private Long id;
 
     /**
      * 字典名称
      */
-    @ApiModelProperty(value = "字典名称")
+    @Schema(title = "字典名称", description = "字典名称")
     private String dictName;
 
     /**
      * 字典编码
      */
-    @ApiModelProperty(value = "字典编码")
+    @Schema(title = "字典编码", description = "字典编码")
     private String dictCode;
 
 }

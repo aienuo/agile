@@ -3,13 +3,13 @@ package com.imis.agile.module.websocket;
 import com.imis.agile.util.AgileUtil;
 import com.imis.agile.util.ComputerUniqueIdentificationUtil;
 import com.imis.agile.util.JacksonUtils;
+import jakarta.websocket.*;
+import jakarta.websocket.server.PathParam;
+import jakarta.websocket.server.ServerEndpoint;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import javax.websocket.*;
-import javax.websocket.server.PathParam;
-import javax.websocket.server.ServerEndpoint;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

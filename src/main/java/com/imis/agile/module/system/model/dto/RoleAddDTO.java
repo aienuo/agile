@@ -1,11 +1,11 @@
 package com.imis.agile.module.system.model.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotBlank;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -20,33 +20,36 @@ import java.util.List;
  * @since 2020年03月11日 09:18
  */
 @Data
-@ApiModel(value = "系统角色 - 角色添加参数", description = "系统角色 - 角色添加参数")
+@Schema(title = "系统角色 - 角色添加参数", description = "系统角色 - 角色添加参数")
 @EqualsAndHashCode(callSuper = false)
 public class RoleAddDTO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * 角色名称
      */
-    @ApiModelProperty(value = "角色名称", required = true)
+    @Schema(title = "角色名称", description = "角色名称", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     private String roleName;
+
     /**
      * 角色编号
      */
-    @ApiModelProperty(hidden = true)
+    @Schema(hidden = true)
     private String roleCode;
+
     /**
      * 角色描述
      */
-    @ApiModelProperty(value = "角色描述")
+    @Schema(title = "角色描述", description = "角色描述")
     private String description;
 
     /**
      * 角色菜单权限关联
      */
-    @ApiModelProperty(value = "角色菜单权限关联")
+    @Schema(title = "角色菜单权限关联", description = "角色菜单权限关联")
     private List<Long> menuList;
 
 }

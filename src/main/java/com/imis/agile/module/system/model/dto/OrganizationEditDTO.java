@@ -1,11 +1,11 @@
 package com.imis.agile.module.system.model.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotNull;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -19,29 +19,30 @@ import java.io.Serializable;
  * @since 2021年08月24日 15:03
  */
 @Data
-@ApiModel(value = "组织机构 - 节点编辑参数", description = "组织机构 - 节点编辑参数")
+@Schema(title = "组织机构 - 节点编辑参数", description = "组织机构 - 节点编辑参数")
 @EqualsAndHashCode(callSuper = false)
 public class OrganizationEditDTO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * 组织机构编号
      */
-    @ApiModelProperty(value = "组织机构编号", required = true)
+    @Schema(title = "组织机构编号", description = "组织机构编号", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     private Long id;
 
     /**s
      * 父记录id
      */
-    @ApiModelProperty(value = "父记录Id")
+    @Schema(title = "父记录Id", description = "父记录Id")
     private Long parentId;
 
     /**
      * 排序号
      */
-    @ApiModelProperty(value = "排序号排序号", required = true)
+    @Schema(title = "排序号排序号", description = "排序号排序号", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     private Double sortNo;
 

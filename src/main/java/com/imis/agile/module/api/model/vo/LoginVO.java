@@ -1,12 +1,12 @@
 package com.imis.agile.module.api.model.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -23,21 +23,22 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ApiModel(value = "登录用户返回值", description = "登录用户返回值")
+@Schema(title = "登录用户返回值", description = "登录用户返回值")
 public class LoginVO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * Token
      */
-    @ApiModelProperty(value = "Token")
+    @Schema(title = "Token", description = "Token")
     private String token;
 
     /**
      * 系统用户
      */
-    @ApiModelProperty(value = "系统用户")
+    @Schema(title = "系统用户", description = "系统用户")
     private UserVO user;
 
 }

@@ -1,11 +1,12 @@
 package com.imis.agile.constant.base;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 
 /**
  * <p>
@@ -22,14 +23,14 @@ public abstract class BaseBus {
      * 获取 HttpServletRequest
      */
     public static HttpServletRequest getHttpServletRequest() {
-        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
     }
 
     /**
      * 获取 HttpServletResponse
      */
     public static HttpServletResponse getHttpServletResponse() {
-        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getResponse();
     }
 
 }

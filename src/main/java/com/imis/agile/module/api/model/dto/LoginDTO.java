@@ -1,12 +1,12 @@
 package com.imis.agile.module.api.model.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotBlank;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -16,25 +16,26 @@ import java.io.Serializable;
  * @since 2020-03-17
  */
 @Data
-@ApiModel(value = "登录对象", description = "登录对象")
+@Schema(title = "登录对象", description = "登录对象")
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class LoginDTO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "账号", required = true)
+    @Schema(title = "账号", description = "账号", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     private String username;
 
-    @ApiModelProperty(value = "密码", required = true)
+    @Schema(title = "密码", description = "密码", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     private String password;
 
-    @ApiModelProperty(value = "验证码")
+    @Schema(title = "验证码", description = "验证码")
     private String captcha;
 
-    @ApiModelProperty(value = "验证码标识")
+    @Schema(title = "验证码标识", description = "验证码标识")
     private String verificationCodeIdentification;
 
 }

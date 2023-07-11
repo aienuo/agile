@@ -4,11 +4,12 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.imis.agile.constant.IResponseEnum;
 import com.imis.agile.constant.enums.CommonResponseEnum;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -27,17 +28,18 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BaseResponse implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * 返回码
      */
-    @ApiModelProperty(value = "返回码")
+    @Schema(title = "返回码")
     protected int code;
     /**
      * 返回消息
      */
-    @ApiModelProperty(value = "返回消息")
+    @Schema(title = "返回消息")
     protected String message;
 
     public BaseResponse() {

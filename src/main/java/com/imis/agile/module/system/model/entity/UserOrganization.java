@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -23,6 +24,7 @@ import java.io.Serializable;
 @TableName("sys_user_organization")
 public class UserOrganization extends BaseEntity implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

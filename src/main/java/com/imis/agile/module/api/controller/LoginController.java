@@ -11,12 +11,12 @@ import com.imis.agile.module.api.model.dto.UserUpdateDTO;
 import com.imis.agile.module.api.model.vo.LoginVO;
 import com.imis.agile.module.api.model.vo.QueryVO;
 import com.imis.agile.response.CommonResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 /**
  * <p>
@@ -29,12 +29,12 @@ import javax.validation.Valid;
  * @since 2020年04月15日 11:54
  */
 @RestController
-@Api(tags = {"登录模块"})
+@Tag(name = "登录模块")
 @ApiSort(1)
 public class LoginController extends BaseController<LoginBus> {
 
     @PostMapping(path = "/login")
-    @ApiOperation(value = "用户登录接口", notes = "登录")
+    @Operation(summary = "用户登录接口", description = "登录")
     @ApiOperationSupport(order = 1, author = "XinLau")
     public CommonResponse<LoginVO> login(@RequestBody @Valid LoginDTO login) {
         return service.login(login);
@@ -42,22 +42,22 @@ public class LoginController extends BaseController<LoginBus> {
 
 
     @GetMapping(path = "/info/{username}")
-    @ApiOperation(value = "基础信息", notes = "基础信息")
-    @ApiImplicitParam(name = "username", value = "用户标识", dataType = "String", dataTypeClass = String.class, required = true)
+    @Operation(summary = "基础信息", description = "基础信息")
+    @Parameter(name = "username", description = "用户标识", required = true, in = ParameterIn.PATH)
     @ApiOperationSupport(order = 2, author = "XinLau")
     public CommonResponse<QueryVO> queryByUserName(@PathVariable(name = "username", required = true) String username) {
         return service.queryByUserName(username);
     }
 
     @PutMapping(path = "/update")
-    @ApiOperation(value = "更新基本信息", notes = "更新基本信息")
+    @Operation(summary = "更新基本信息", description = "更新基本信息")
     @ApiOperationSupport(order = 3, author = "XinLau")
     public BaseResponse update(@RequestBody @Valid UserUpdateDTO update) {
         return service.update(update);
     }
 
     @PutMapping(path = "/password")
-    @ApiOperation(value = "修改密码接口", notes = "用户自助修改密码")
+    @Operation(summary = "修改密码接口", description = "用户自助修改密码")
     @ApiOperationSupport(order = 4, author = "XinLau")
     public BaseResponse password(@RequestBody @Valid PasswordUpdateDTO update) {
         return service.password(update);

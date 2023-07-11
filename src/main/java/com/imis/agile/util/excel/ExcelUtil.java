@@ -11,6 +11,7 @@ import com.imis.agile.util.AgileUtil;
 import com.imis.agile.util.FileUtil;
 import com.imis.agile.util.JacksonUtils;
 import com.imis.agile.util.SpringBeanUtils;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.*;
@@ -25,10 +26,10 @@ import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTMarker;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -925,8 +926,7 @@ public class ExcelUtil<T> {
         if (!pictures.isEmpty()) {
             for (HSSFShape shape : hssfShapeList) {
                 HSSFClientAnchor anchor = (HSSFClientAnchor) shape.getAnchor();
-                if (shape instanceof HSSFPicture) {
-                    HSSFPicture picture = (HSSFPicture) shape;
+                if (shape instanceof HSSFPicture picture) {
                     int pictureIndex = picture.getPictureIndex() - 1;
                     HSSFPictureData pictureData = pictures.get(pictureIndex);
                     String pictureIndexString = anchor.getRow1() + StringPool.UNDERSCORE + String.valueOf(anchor.getCol1());
@@ -947,12 +947,10 @@ public class ExcelUtil<T> {
         // 索引 图片
         Map<String, PictureData> sheetIndexPictureMap = new HashMap<>(16);
         for (POIXMLDocumentPart documentPart : sheet.getRelations()) {
-            if (documentPart instanceof XSSFDrawing) {
-                XSSFDrawing drawing = (XSSFDrawing) documentPart;
+            if (documentPart instanceof XSSFDrawing drawing) {
                 List<XSSFShape> shapes = drawing.getShapes();
                 for (XSSFShape shape : shapes) {
-                    if (shape instanceof XSSFPicture) {
-                        XSSFPicture picture = (XSSFPicture) shape;
+                    if (shape instanceof XSSFPicture picture) {
                         XSSFClientAnchor anchor = picture.getPreferredSize();
                         CTMarker ctMarker = anchor.getFrom();
                         String pictureIndex = ctMarker.getRow() + StringPool.UNDERSCORE + ctMarker.getCol();
@@ -1108,15 +1106,10 @@ public class ExcelUtil<T> {
                 return DateUtil.getLocalDateTime(Double.parseDouble(stringValue.trim()));
             }
         } else if (Boolean.TYPE == fieldType || Boolean.class == fieldType) {
-            switch (stringValue.trim().toLowerCase()) {
-                case "true":
-                case "yes":
-                case "ok":
-                case "1":
-                    return Boolean.TRUE;
-                default:
-                    return Boolean.FALSE;
-            }
+            return switch (stringValue.trim().toLowerCase()) {
+                case "true", "yes", "ok", "1" -> Boolean.TRUE;
+                default -> Boolean.FALSE;
+            };
         }
         return fieldValue;
     }
@@ -1195,7 +1188,7 @@ public class ExcelUtil<T> {
      */
     private String dataFormatHandlerAdapter(Object value, final Excel excelAnnotation) {
         try {
-            Object instance = excelAnnotation.handler().newInstance();
+            Object instance = excelAnnotation.handler().getDeclaredConstructor().newInstance();
             Method formatMethod = excelAnnotation.handler().getMethod("format", Object.class, String[].class);
             value = formatMethod.invoke(instance, value, excelAnnotation.args());
         } catch (Exception e) {
@@ -1328,8 +1321,8 @@ public class ExcelUtil<T> {
                 for (Map.Entry<Integer, Object[]> entry : fieldsMap.entrySet()) {
                     // 4.4.2如果不存在实例则新建实例
                     try {
-                        entity = (entity == null ? this.clazz.newInstance() : entity);
-                    } catch (InstantiationException | IllegalAccessException e) {
+                        entity = (entity == null ? this.clazz.getDeclaredConstructor().newInstance() : entity);
+                    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                         log.error("创建由此Class对象表示的类的新实例失败：{}", e.getMessage());
                         ArgumentResponseEnum.EXCEL_IMPORT_ERR_0.assertFail(e.getMessage());
                     }

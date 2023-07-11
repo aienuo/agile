@@ -15,6 +15,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -32,6 +33,7 @@ import java.time.LocalDate;
 @TableName("sys_user")
 public class User extends BaseEntity implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

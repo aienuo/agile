@@ -13,13 +13,13 @@ import com.imis.agile.module.system.model.vo.OrganizationInfoVO;
 import com.imis.agile.module.system.model.vo.OrganizationTreeInfoVO;
 import com.imis.agile.module.system.model.vo.OrganizationUserVO;
 import com.imis.agile.response.CommonResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -35,57 +35,57 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping(path = "/sys/organization/")
-@Api(tags = {"组织机构"})
+@Tag(name = "组织机构")
 @ApiSort(5)
 public class OrganizationController extends BaseController<OrganizationBus> {
 
     @GetMapping(path = "tree")
-    @ApiOperation(value = "树查询", notes = "树查询")
+    @Operation(summary = "树查询", description = "树查询")
     @ApiOperationSupport(order = 1, author = "XinLau")
     public CommonResponse<List<OrganizationTreeInfoVO>> queryOrganizationTreeList() {
         return service.queryOrganizationTreeList();
     }
 
     @PostMapping(path = "add")
-    @ApiOperation(value = "添加接口", notes = "单条添加")
+    @Operation(summary = "添加接口", description = "单条添加")
     @ApiOperationSupport(order = 2, author = "XinLau")
     public BaseResponse add(@RequestBody @Valid OrganizationAddDTO add) {
         return service.add(add);
     }
 
     @GetMapping(path = "query/{id}")
-    @ApiOperation(value = "查看接口", notes = "单条查看")
-    @ApiImplicitParam(name = DataBaseConstant.P_KEY, value = "组织机构标识", dataType = "Long", dataTypeClass = Long.class, required = true)
+    @Operation(summary = "查看接口", description = "单条查看")
+    @Parameter(name = DataBaseConstant.P_KEY, description = "组织机构标识", required = true)
     @ApiOperationSupport(order = 3, author = "XinLau")
     public CommonResponse<OrganizationInfoVO> queryById(@PathVariable(name = DataBaseConstant.P_KEY, required = true) Long id) {
         return service.queryById(id);
     }
 
     @PutMapping(path = "update")
-    @ApiOperation(value = "更新接口", notes = "单条更新")
+    @Operation(summary = "更新接口", description = "单条更新")
     @ApiOperationSupport(order = 4, author = "XinLau")
     public BaseResponse updateById(@RequestBody @Valid OrganizationUpdateDTO update) {
         return service.updateById(update);
     }
 
     @DeleteMapping(value = "delete")
-    @ApiOperation(value = "删除接口", notes = "多条删除")
-    @ApiImplicitParam(name = "idList", value = "组织机构标识", dataType = "Long", dataTypeClass = Long.class, required = true)
+    @Operation(summary = "删除接口", description = "多条删除")
+    @Parameter(name = "idList", description = "组织机构标识", required = true)
     @ApiOperationSupport(order = 5, author = "XinLau")
     public BaseResponse deleteByIdList(@RequestParam(name = "idList", required = true) List<Long> idList) {
         return service.deleteByIdList(idList);
     }
 
     @PutMapping(path = "edit")
-    @ApiOperation(value = "编辑接口", notes = "编辑树节点")
+    @Operation(summary = "编辑接口", description = "编辑树节点")
     @ApiOperationSupport(order = 6, author = "XinLau")
     public BaseResponse editTreeNode(@RequestBody @Valid List<OrganizationEditDTO> editList) {
         return service.editTreeNode(editList);
     }
 
     @GetMapping(path = "user/{id}")
-    @ApiOperation(value = "组织机构下的用户", notes = "列表查看")
-    @ApiImplicitParam(name = DataBaseConstant.P_KEY, value = "组织机构标识", dataType = "Long", dataTypeClass = Long.class, required = true)
+    @Operation(summary = "组织机构下的用户", description = "列表查看")
+    @Parameter(name = DataBaseConstant.P_KEY, description = "组织机构标识", required = true)
     @ApiOperationSupport(order = 7, author = "XinLau")
     public CommonResponse<List<OrganizationUserVO>> queryOrganizationUserByOrganizationId(@PathVariable(name = DataBaseConstant.P_KEY, required = true) Long id) {
         return service.queryOrganizationUserByOrganizationId(id);

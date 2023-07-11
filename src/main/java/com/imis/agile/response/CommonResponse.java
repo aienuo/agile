@@ -2,11 +2,12 @@ package com.imis.agile.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.imis.agile.constant.base.BaseResponse;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -25,12 +26,13 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommonResponse<T> extends BaseResponse implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * 数据列表
+     * 数据
      */
-    @ApiModelProperty(value = "数据列表")
+    @Schema(title = "数据", description = "数据")
     protected T data;
 
     public CommonResponse() {

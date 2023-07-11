@@ -1,14 +1,14 @@
 package com.imis.agile.module.system.model.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -20,42 +20,43 @@ import java.io.Serializable;
  * @since 2020-03-24
  */
 @Data
-@ApiModel(value = "字典 - 值 - 添加参数", description = "字典 - 值 - 添加参数")
+@Schema(title = "字典 - 值 - 添加参数", description = "字典 - 值 - 添加参数")
 @EqualsAndHashCode(callSuper = false)
 public class DictItemAddDTO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * 字典 - 项编号
      */
-    @ApiModelProperty(value = "字典 - 项编号", required = true)
+    @Schema(title = "字典 - 项编号", description = "字典 - 项编号", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     private Long dictId;
 
     /**
      * 父记录id
      */
-    @ApiModelProperty(value = "父记录id")
+    @Schema(title = "父记录id", description = "父记录id")
     private Long parentId;
 
     /**
      * 字典项文本
      */
-    @ApiModelProperty(value = "字典项文本", required = true)
+    @Schema(title = "字典项文本", description = "字典项文本", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     private String name;
 
     /**
      * 字典项值
      */
-    @ApiModelProperty(value = "字典项值")
+    @Schema(title = "字典项值", description = "字典项值")
     private String value;
 
     /**
      * 禁用状态(true1-禁用，false0-不禁用）
      */
-    @ApiModelProperty(value = "禁用状态(true1-禁用，false0-不禁用）", required = true)
+    @Schema(title = "禁用状态(true1-禁用，false0-不禁用）", description = "禁用状态(true1-禁用，false0-不禁用）", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     @Min(0)
     @Max(1)
@@ -64,14 +65,14 @@ public class DictItemAddDTO implements Serializable {
     /**
      * 排序
      */
-    @ApiModelProperty(value = "排序", required = true)
+    @Schema(title = "排序", description = "排序", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     private Double sortNo;
 
     /**
      * 描述
      */
-    @ApiModelProperty(value = "描述")
+    @Schema(title = "描述", description = "描述")
     private String description;
 
 }

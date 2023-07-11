@@ -1,14 +1,14 @@
 package com.imis.agile.module.system.model.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -20,37 +20,38 @@ import java.io.Serializable;
  * @since 2020-03-23
  */
 @Data
-@ApiModel(value = "字典 - 项 - 修改参数", description = "字典 - 项 - 修改参数")
+@Schema(title = "字典 - 项 - 修改参数", description = "字典 - 项 - 修改参数")
 @EqualsAndHashCode(callSuper = false)
 public class DictUpdateDTO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * 字典 - 项编号
      */
-    @ApiModelProperty(value = "字典 - 项编号", required = true)
+    @Schema(title = "字典 - 项编号", description = "字典 - 项编号", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     private Long id;
 
     /**
      * 字典名称
      */
-    @ApiModelProperty(value = "字典名称", required = true)
+    @Schema(title = "字典名称", description = "字典名称", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     private String dictName;
 
     /**
      * 字典编码
      */
-    @ApiModelProperty(value = "字典编码", required = true)
+    @Schema(title = "字典编码", description = "字典编码", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     private String dictCode;
 
     /**
      * 字典类型（0-String，1-Number）
      */
-    @ApiModelProperty(value = "字典类型（0-String，1-Number）", required = true)
+    @Schema(title = "字典类型（0-String，1-Number）", description = "字典类型（0-String，1-Number）", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     @Min(0)
     @Max(1)
@@ -59,7 +60,7 @@ public class DictUpdateDTO implements Serializable {
     /**
      * 冻结状态(0-正常，1-冻结）
      */
-    @ApiModelProperty(value = "冻结状态(0-正常，1-冻结）", required = true)
+    @Schema(title = "冻结状态(0-正常，1-冻结）", description = "冻结状态(0-正常，1-冻结）", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     @Min(0)
     @Max(1)
@@ -68,7 +69,7 @@ public class DictUpdateDTO implements Serializable {
     /**
      * 描述
      */
-    @ApiModelProperty(value = "描述")
+    @Schema(title = "描述", description = "描述")
     private String description;
 
 }

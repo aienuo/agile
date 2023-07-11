@@ -6,6 +6,9 @@ import com.imis.agile.constant.enums.CommonResponseEnum;
 import com.imis.agile.constant.enums.ServletResponseEnum;
 import com.imis.agile.exception.BaseException;
 import com.imis.agile.response.ErrorResponse;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
@@ -32,9 +35,6 @@ import org.springframework.web.context.request.async.AsyncRequestTimeoutExceptio
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolationException;
 import java.util.Objects;
 
 /**

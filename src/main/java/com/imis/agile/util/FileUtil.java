@@ -2,13 +2,13 @@ package com.imis.agile.util;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.imis.agile.constant.enums.ArgumentResponseEnum;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;

@@ -61,11 +61,6 @@ public interface CommonConstant {
     String CHINESE_DATE_TIME_PATTERN = CHINESE_DATE_PATTERN + StringPool.SPACE + CHINESE_TIME_PATTERN;
 
     /**
-     * 行政区划每一级别的名称
-     */
-    String[] ADMINISTRATIVE_AREA_LIVE_NAME = {"province", "city", "county", "town", "village"};
-
-    /**
      * 字典类型（0-String，1-Number）
      */
     Integer DICT_TYPE_0 = 0;

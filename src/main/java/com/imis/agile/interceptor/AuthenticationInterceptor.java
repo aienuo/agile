@@ -13,6 +13,8 @@ import com.imis.agile.module.system.service.IUserRoleService;
 import com.imis.agile.module.system.service.IUserService;
 import com.imis.agile.util.AgileUtil;
 import com.imis.agile.util.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +22,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 

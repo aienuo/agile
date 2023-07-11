@@ -5,26 +5,28 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.7</version>
-        <relativePath/>
+        <version>3.1.1</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
     <artifactId>agile</artifactId>
-    <version>1.0</version>
+    <version>1.0.0</version>
     <name>agile</name>
     <description>前后端不分离</description>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jwt.version>3.18.3</jwt.version>
-        <druid.version>1.2.8</druid.version>
-        <mybatis-plus.version>3.5.1</mybatis-plus.version>
-        <dynamic-datasource.version>3.5.0</dynamic-datasource.version>
-        <knife4j.version>2.0.9</knife4j.version>
-        <mapstruct.version>1.4.2.Final</mapstruct.version>
-        <poi.version>5.0.0</poi.version>
+        <druid.version>1.2.18</druid.version>
+        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+        <dynamic-datasource.version>4.0.0</dynamic-datasource.version>
+        <knife4j.version>4.1.0</knife4j.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <poi.version>5.2.3</poi.version>
         <dev-mode>false</dev-mode>
     </properties>
 
@@ -52,12 +54,13 @@
         <!-- Druid 连接池引入 -->
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
+            <artifactId>druid-spring-boot-3-starter</artifactId>
             <version>${druid.version}</version>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <!-- MyBatis-Plus 引入 -->
         <dependency>
@@ -68,13 +71,13 @@
         <!-- MyBatis-Plus data-source 引入 -->
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+            <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
             <version>${dynamic-datasource.version}</version>
         </dependency>
         <!-- Knife4j 引入 -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
             <version>${knife4j.version}</version>
         </dependency>
         <!-- Bean Validation校验数据 -->
@@ -160,16 +163,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.11.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>17</source>
+                    <target>17</target>
                     <encoding>UTF-8</encoding>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.16</version>
+                            <version>1.18.28</version>
                         </path>
                         <path>
                             <groupId>org.mapstruct</groupId>
@@ -183,7 +186,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <fork>${dev-mode}</fork>
                     <excludes>
                         <!-- 编译过程中不加入lombok -->
                         <exclude>
@@ -196,7 +198,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
                 <configuration>
                     <skipTests>true</skipTests>
                 </configuration>

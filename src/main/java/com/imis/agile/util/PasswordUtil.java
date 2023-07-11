@@ -200,7 +200,7 @@ public class PasswordUtil {
      */
     public static String bytesToHexString(final byte[] src) {
         StringBuilder stringBuilder = new StringBuilder();
-        if (src == null || src.length <= 0) {
+        if (src == null || src.length == 0) {
             return null;
         }
         for (byte b : src) {

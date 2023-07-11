@@ -31,7 +31,7 @@ knife4j:
     swaggerModelName: 前后端交互类
     enableFooter: false
     enableFooterCustom: true
-    footerCustomContent: Apache License 2.0 | Copyright  2021-[叁金Coding](https://lau.xin)
+    footerCustomContent: Apache License 2.0 | Copyright  2021-[叁金Coding](https://aienuo.com)
   basic:
     enable: true
     username: admin

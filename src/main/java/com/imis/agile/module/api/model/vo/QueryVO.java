@@ -1,12 +1,12 @@
 package com.imis.agile.module.api.model.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -24,33 +24,34 @@ import java.util.List;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ApiModel(value = "基础信息查询返回值", description = "基础信息返回值")
+@Schema(title = "基础信息查询返回值", description = "基础信息返回值")
 public class QueryVO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * 角色管理
      */
-    @ApiModelProperty(value = "角色管理")
+    @Schema(title = "角色管理", description = "角色管理")
     private List<RoleVO> roleList;
 
     /**
      * 菜单权限
      */
-    @ApiModelProperty(value = "菜单权限")
+    @Schema(title = "菜单权限", description = "菜单权限")
     private List<MenuTreeVO> menuTreeList;
 
     /**
      * 按钮权限
      */
-    @ApiModelProperty(value = "按钮权限")
+    @Schema(title = "按钮权限", description = "按钮权限")
     private List<ButtonVO> buttonList;
 
     /**
      * 字典
      */
-    @ApiModelProperty(value = "字典")
+    @Schema(title = "字典", description = "字典")
     private List<DictVO> dictList;
 
 }
