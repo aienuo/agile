@@ -1,5 +1,6 @@
 package com.imis.agile.util;
 
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -53,8 +54,8 @@ public class UnitConversion {
     public static BigDecimal conversion(final BigDecimal value, final UnitsEnum original, final UnitsEnum need) {
         String needString = need.rate.toString();
         int scale = 2;
-        if (needString.indexOf('.') > 0) {
-            scale = needString.substring(needString.indexOf('.')).length() - 1;
+        if (needString.indexOf(StringPool.DOT) > 0) {
+            scale = needString.substring(needString.indexOf(StringPool.DOT)).length() - 1;
         }
         return conversion(value, original, need, scale);
     }
