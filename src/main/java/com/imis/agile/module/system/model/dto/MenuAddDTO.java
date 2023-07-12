@@ -36,7 +36,7 @@ public class MenuAddDTO implements Serializable {
     /**
      * 是否叶子节点（0-不是，1-是）
      */
-    @Schema(title = "是否叶子节点（0-不是，1-是）", description = "是否叶子节点（0-不是，1-是）")
+    @Schema(title = "是否叶子节点（0-不是，1-是）", description = "是否叶子节点（0-不是，1-是）", allowableValues = "0，1")
     private Integer leafType;
 
     /**

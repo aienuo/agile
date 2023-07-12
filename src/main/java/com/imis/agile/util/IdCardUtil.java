@@ -101,13 +101,14 @@ public class IdCardUtil {
         if (idCardNumber == null || (idCardNumber.length() != ID_CARD_15 && idCardNumber.length() != ID_CARD_18)) {
             return false;
         }
+        // 统一将 最后一位 X 转成 大写
         final char[] cs = idCardNumber.toUpperCase().toCharArray();
         final int length = cs.length;
         // 校验位数
         int power = NUMBER_0;
         for (int i = NUMBER_0; i < length; i++) {
             if (i == length - 1 && cs[i] == 'X') {
-                // 最后一位可以 是X或x
+                // 最后一位可以 是 X 或 x
                 break;
             }
             if (cs[i] < '0' || cs[i] > '9') {

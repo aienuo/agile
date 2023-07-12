@@ -10,8 +10,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -109,14 +112,12 @@ class AgileTests {
     @Test
     void doTestForCityData() {
 
-
         AdministrativeArea administrativeArea = new AdministrativeArea()
                 .setLevel(0)
                 .setCode("000000000000")
                 .setName("中华人民共和国")
-                .setChildHref("http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2020/index.html")
+                .setChildHref("http://www.stats.gov.cn/sj/tjbz/tjyqhdmhcxhfdm/2022/index.html")
                 .setChildName(ADMINISTRATIVE_AREA_LIVE_NAME[0]);
-
 
         structureAdministrativeArea(administrativeArea);
 
@@ -132,64 +133,92 @@ class AgileTests {
         try {
             String classname = area.getChildName();
             // Jsoup 解析 HTML
+            // System.out.println(area.getChildHref());
             Document document = Jsoup.connect(area.getChildHref()).get();
-            // 像 js 一样，通过 class 获取列表下的 省会列表
+            // 像 js 一样，通过 class 获取列表下的 省会列表 table
             Element provinceTable = document.getElementsByClass(classname + "table").first();
             if (provinceTable != null) {
                 // System.out.println(provinceTable);
                 // 像 js 一样，通过 class 获取列表下的 tr
                 Elements provinceTrList = provinceTable.getElementsByClass(classname + "tr");
                 List<AdministrativeArea> administrativeAreaList = new ArrayList<>();
-                // 循环处理每篇博客
+                // 循环处理每一行的数据 tr
                 for (Element provinceTr : provinceTrList) {
                     // 像 js 一样，通过 tagName 获取列表下的 td
                     Elements provinceTdList = provinceTr.getElementsByTag("td");
-                    // 行政区划
-                    AdministrativeArea administrativeArea = new AdministrativeArea().setLevel(area.getLevel() + 1);
-                    for (int i = 0; i < provinceTdList.size(); i++) {
-                        Element provinceTd = provinceTdList.get(i);
-                        // 像 js 一样，通过 tagName 获取列表下的 a
-                        Elements provinceAList = provinceTd.getElementsByTag("a");
-                        if (provinceAList != null && provinceAList.size() > 0) {
-                            // 有 a 标签 说明就还有下一级
-                            if (0 == i) {
-                                String code = provinceTd.text();
-                                // System.out.print("编码: " + code);
-                                administrativeArea.setCode(code);
-                            }
-                            if (1 == i) {
-                                String name = provinceTd.text();
-                                // System.out.print(" - 名称: " + name);
-                                administrativeArea.setName(name);
-                                String aHref = provinceAList.first().attr("href");
+                    // System.out.println(provinceTdList);
+                    // 1 - 省级单位
+                    if (ADMINISTRATIVE_AREA_LIVE_NAME[0].equals(classname)) {
+                        for (Element provinceTd : provinceTdList) {
+                            // System.out.println(provinceTd);
+                            // 像 js 一样，通过 tagName 获取列表下的 a
+                            Elements provinceA = provinceTd.getElementsByTag("a");
+                            String name = provinceTd.text();
+                            String aHref = provinceA.first().attr("href");
+                            // 行政区划 级别
+                            AdministrativeArea administrativeArea = new AdministrativeArea().setLevel(area.getLevel() + 1);
+                            administrativeArea.setName(name);
+                            if (aHref != null && aHref.length() > 0) {
                                 // System.out.println(" - 地址:" + aHref);
-                                String currentHref = area.getChildHref();
-                                administrativeArea.setChildHref(currentHref.substring(0, currentHref.lastIndexOf('.')) + aHref);
-                            }
-                            administrativeArea.setChildName(ADMINISTRATIVE_AREA_LIVE_NAME[administrativeArea.getLevel()]);
-                            // this.structureAdministrativeArea(area);
-                        } else {
-                            // 最后一级
-                            if (0 == i) {
-                                String code = provinceTd.text();
-                                // System.out.print("编码: " + code);
+                                String currentCode = aHref.substring(0, aHref.indexOf('.'));
+                                String code = currentCode + area.getCode().substring(currentCode.length());
+                                // System.out.println(area.getCode());
+                                // System.out.println(code);
                                 administrativeArea.setCode(code);
                             }
-                            if (1 == i) {
-                                String classification = provinceTd.text();
-                                // System.out.print(" - 城乡分类代码:: " + classification);
-                                administrativeArea.setClassification(classification);
-                            }
-                            if (2 == i) {
-                                String name = provinceTd.text();
-                                // System.out.println(" - 名称: " + name);
-                                administrativeArea.setName(name);
+                            String currentHref = area.getChildHref();
+                            // 子级别 区划内容链接
+                            administrativeArea.setChildHref(currentHref.substring(0, currentHref.lastIndexOf('/') + 1) + aHref);
+                            // 字节别 名称
+                            administrativeArea.setChildName(ADMINISTRATIVE_AREA_LIVE_NAME[administrativeArea.getLevel()]);
+                            administrativeAreaList.add(administrativeArea);
+                            // 递归
+                            structureAdministrativeArea(administrativeArea);
+                        }
+                        // 2、 市级、区县、街道镇、居-村委会 单位
+                    } else {
+                        // 行政区划 级别
+                        AdministrativeArea administrativeArea = new AdministrativeArea().setLevel(area.getLevel() + 1);
+                        for (int i = 0; i < provinceTdList.size(); i++) {
+                            Element provinceTd = provinceTdList.get(i);
+                            // 像 js 一样，通过 tagName 获取列表下的 a
+                            Elements provinceA = provinceTd.getElementsByTag("a");
+                            if (provinceA != null && provinceA.size() > 0) {
+                                // 拥有下一级 从 a 标签 内获取内容
+                                String nameOrCode = provinceA.text();
+                                String aHref = provinceA.first().attr("href");
+                                if (i == 0) {
+                                    // 第一级 获取 code
+                                    administrativeArea.setCode(nameOrCode);
+                                } else {
+                                    administrativeArea.setName(nameOrCode);
+                                    String currentHref = area.getChildHref();
+                                    // 子级别 区划内容链接
+                                    administrativeArea.setChildHref(currentHref.substring(0, currentHref.lastIndexOf('/') + 1) + aHref);
+                                    // 子级别 名称
+                                    administrativeArea.setChildName(ADMINISTRATIVE_AREA_LIVE_NAME[administrativeArea.getLevel()]);
+                                    administrativeAreaList.add(administrativeArea);
+                                    // 递归
+                                    // structureAdministrativeArea(administrativeArea);
+                                }
+                            } else {
+                                String nameOrCode = provinceTd.text();
+                                if (0 == i) {
+                                    // 获取 code
+                                    administrativeArea.setCode(nameOrCode);
+                                } else if (1 == i) {
+                                    // 居-村委会 级别单位 有 城乡分类代码（3位）
+                                    administrativeArea.setClassification(nameOrCode);
+                                } else {
+                                    administrativeArea.setName(nameOrCode);
+                                }
                             }
                         }
                     }
-                    administrativeAreaList.add(administrativeArea);
                 }
                 area.setChild(administrativeAreaList);
+            } else {
+                System.out.println(document);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -197,20 +226,56 @@ class AgileTests {
     }
 
     @Test
-    void testMessageFormat(){
+    void testMessageFormat() {
         System.out.println(MessageFormat.format("{1} 上传失败：{0}", "ABCD", "EFGH"));
 
-        int[] arr = {1,5,6,0,7,4,9,3};
-        int[] index = {0,1,2,3,4,0,5,1,2,6,7}; // 这些是角标，按照角标数  从 上面的数组取值就是了
+        int[] arr = {1, 5, 6, 0, 7, 4, 9, 3};
+        int[] index = {0, 1, 2, 3, 4, 0, 5, 1, 2, 6, 7}; // 这些是角标，按照角标数  从 上面的数组取值就是了
 
         StringBuilder tel = new StringBuilder();
 
-        for (int i :index) {
+        for (int i : index) {
             tel.append(arr[i]);
         }
 
         System.out.println(tel);
 
+    }
+
+    static List<String> urlList = List.of(
+            "https://cn.bing.com/,2022年度全国统计用区划代码和城乡划分代码.html",
+            "http://www.stats.gov.cn/sj/tjbz/tjyqhdmhcxhfdm/2022/65.html,2022年度新疆维吾尔自治区统计用区划代码和城乡划分代码.html"
+    );
+
+
+    /**
+     * 测试 HTML 下载
+     */
+    @Test
+    void testHtmlDownload() {
+
+        for (String urlString : urlList) {
+            String[] urlName = urlString.split(",");
+            // 想要读取的 url 地址
+            try {
+                URL url = new URL(urlName[0]);
+                File fileDownloadPath = new File("D:/MyDownloda/new/" + urlName[1]);
+                // 打开url连接
+                URLConnection urlConnection = url.openConnection();
+                OutputStream outputStream = Files.newOutputStream(fileDownloadPath.toPath());
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                StringBuilder string = new StringBuilder();
+                String current;
+                while ((current = bufferedReader.readLine()) != null) {
+                    string.append(current);
+                }
+                outputStream.write(string.toString().getBytes());
+                outputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
     }
 
 }
