@@ -59,4 +59,16 @@ public class AdministrativeArea implements Serializable {
      */
     private List<AdministrativeArea> child;
 
+    @Override
+    public String toString() {
+        return "{" +
+                "\"name\":\"" + name + '\"' +
+                ", \"code\":\"" + code + '\"' +
+                ", \"level:" + level +
+                ", \"classification\":\"" + (classification == null ? "" : classification) + '\"' +
+                ", \"childHref\":\"" + childHref + '\"' +
+                ", \"childName\":\"" + childName + '\"' +
+                ", \"child\":" + child +
+                '}';
+    }
 }

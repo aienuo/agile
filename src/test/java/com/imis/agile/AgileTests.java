@@ -121,8 +121,38 @@ class AgileTests {
 
         structureAdministrativeArea(administrativeArea);
 
-        System.out.println(administrativeArea);
+        // System.out.println(administrativeArea);
+
+        writeFile(administrativeArea.toString(), "./json.json");
     }
+
+
+    /**
+     * 将 json 字符串 写入 指定文件中
+     *
+     * @param json - 数据
+     * @param filePath - 文件路径
+     */
+    private void writeFile(final String json, final String filePath) {
+
+        try {
+            File file = new File(filePath);
+            if(file.exists()) {
+                file.delete();
+            }
+            boolean create = file.createNewFile();
+            if (create) {
+                FileWriter fileWritter = new FileWriter(file, false);
+                BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+                bufferWritter.write(json);
+                bufferWritter.close();
+                System.out.println(file.getPath());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * 构建行政区数据
