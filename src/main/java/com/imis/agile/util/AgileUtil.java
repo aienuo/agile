@@ -144,7 +144,7 @@ public class AgileUtil {
      * @return String - 字符串
      */
     public static String delHtmlTag(String htmlStr) {
-        if (isEmpty(htmlStr)){
+        if (isEmpty(htmlStr)) {
             return htmlStr;
         }
         // 定义script的正则表达式
@@ -170,23 +170,50 @@ public class AgileUtil {
     }
 
     /**
-	 * 十进制转化为二进制
-	 *
-	 * @param decimal - 十进制
-	 * @return binaryString - 二进制
-	 */
-	public static String decimalToBinary(Integer decimal){
+     * 十进制转化为二进制
+     *
+     * @param decimal - 十进制
+     * @return binaryString - 二进制
+     */
+    public static String decimalToBinary(Integer decimal) {
         return Integer.toBinaryString(decimal);
-	}
+    }
 
-	/**
-	 * 二进制转换为十进制
-	 *
-	 * @param binaryString - 二进制
-	 * @return decimal - 十进制
-	 */
-	public static Integer binaryToDecimal(String binaryString){
-		return Integer.parseInt(binaryString, Character.MIN_RADIX);
-	}
+    /**
+     * 二进制转换为十进制
+     *
+     * @param binaryString - 二进制
+     * @return decimal - 十进制
+     */
+    public static Integer binaryToDecimal(String binaryString) {
+        return Integer.parseInt(binaryString, Character.MIN_RADIX);
+    }
+
+    /**
+     * 左、右位补零
+     *
+     * @param right          - 是否右位补零
+     * @param originalString - 原字符串
+     * @param stringLength   - 需要长度
+     * @return String - 补零后的字符串
+     */
+    public static String addZeroForNumber(Boolean right, String originalString, Integer stringLength) {
+        int originalStringLength = originalString.length();
+        if (originalStringLength < stringLength) {
+            while (originalStringLength < stringLength) {
+                StringBuffer stringBuffer = new StringBuffer();
+                if (right) {
+                    // 右位补零
+                    stringBuffer.append(originalString).append("0");
+                } else {
+                    // 左位补零
+                    stringBuffer.append("0").append(originalString);
+                }
+                originalString = stringBuffer.toString();
+                originalStringLength = originalString.length();
+            }
+        }
+        return originalString;
+    }
 
 }

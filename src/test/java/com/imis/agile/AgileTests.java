@@ -143,9 +143,9 @@ class AgileTests {
             boolean create = file.createNewFile();
             if (create) {
                 FileWriter fileWritter = new FileWriter(file, false);
-                BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-                bufferWritter.write(json);
-                bufferWritter.close();
+                BufferedWriter bufferWriter = new BufferedWriter(fileWritter);
+                bufferWriter.write(json);
+                bufferWriter.close();
                 System.out.println(file.getPath());
             }
         } catch (IOException e) {

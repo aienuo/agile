@@ -3,6 +3,8 @@ package com.imis.agile.exception;
 import com.imis.agile.constant.IResponseEnum;
 import lombok.Getter;
 
+import java.io.Serial;
+
 /**
  * <p>
  * BaseException<br>
@@ -17,7 +19,9 @@ import lombok.Getter;
 @SuppressWarnings("unused")
 public class BaseException extends RuntimeException {
 
+    @Serial
     private static final long serialVersionUID = -8281828804189395973L;
+
     /**
      * 返回码
      */

@@ -1,5 +1,7 @@
 package com.imis.agile.exception;
 
+import java.io.Serial;
+
 /**
  * <p>
  * WrapMessageException<br>
@@ -13,6 +15,7 @@ package com.imis.agile.exception;
  */
 public class WrapMessageException extends RuntimeException {
 
+    @Serial
     private static final long serialVersionUID = 1512408043688042448L;
 
     /**
