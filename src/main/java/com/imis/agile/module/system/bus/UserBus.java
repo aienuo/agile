@@ -74,19 +74,19 @@ public class UserBus extends BaseBus {
         // 身份证件号码
         String identityNumber = add.getIdentityNumber();
         // 验证身份证件号码格式是否正确
-        ArgumentResponseEnum.USER_VALID_ERROR_ADD_02.assertIsTrue(IdCardUtil.isIdCard(identityNumber));
+        ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertIsTrue(IdCardUtil.isIdCard(identityNumber), "用户", "请确认信息准确无误后重新添加");
         // 验证 用户帐号\身份证号码 是否存在重复
         User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, add.getUsername()).or().eq(User::getIdentityNumber, identityNumber), Boolean.FALSE);
-        ArgumentResponseEnum.USER_VALID_ERROR_ADD_02.assertIsNull(user);
+        ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertIsNull(user, "用户", "帐号&身份证号码存在重复");
         if (AgileUtil.isNotEmpty(add.getPhone())) {
             // 验证 手机号码 是否存在重复
             user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getPhone, add.getPhone()), Boolean.FALSE);
-            ArgumentResponseEnum.USER_VALID_ERROR_ADD_03.assertIsNull(user);
+            ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertIsNull(user, "用户", "手机号码存在重复");
         }
         if (AgileUtil.isNotEmpty(add.getEmail())) {
             // 验证 电子邮箱 是否存在重复
             user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, add.getEmail()), Boolean.FALSE);
-            ArgumentResponseEnum.USER_VALID_ERROR_ADD_04.assertIsNull(user);
+            ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertIsNull(user, "用户", "电子邮箱存在重复");
         }
         return UserConverter.INSTANCE.getAddEntity(add);
     }
@@ -102,25 +102,25 @@ public class UserBus extends BaseBus {
      */
     private User userUpdateVerification(final UserUpdateDTO update) {
         User user = this.userService.getById(update.getId());
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_02.assertNotNull(user);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotNull(user, "用户", "用户信息不存在");
         if (AgileUtil.isNotEmpty(update.getIdentityNumber()) && !user.getIdentityNumber().equals(update.getIdentityNumber())) {
             // 身份证件号码
             String identityNumber = update.getIdentityNumber();
             // 验证身份证件号码格式是否正确
-            ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_03.assertIsTrue(IdCardUtil.isIdCard(identityNumber));
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(IdCardUtil.isIdCard(identityNumber), "用户", "请确认信息准确无误后重新更新");
             // 验证 身份证号码 是否存在重复
             User userByIdentityNumber = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getIdentityNumber, identityNumber), Boolean.FALSE);
-            ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_03.assertIsNull(userByIdentityNumber);
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsNull(userByIdentityNumber, "用户", "身份证号码存在重复");
         }
         if (AgileUtil.isNotEmpty(update.getPhone()) && !user.getPhone().equals(update.getPhone())) {
             // 验证 手机号码 是否存在重复
             User userByPhone = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getPhone, update.getPhone()), Boolean.FALSE);
-            ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_04.assertIsNull(userByPhone);
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsNull(userByPhone, "用户", "手机号码存在重复");
         }
         if (AgileUtil.isNotEmpty(update.getEmail()) && !user.getEmail().equals(update.getEmail())) {
             // 验证 电子邮箱 是否存在重复
             User userByEmail = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, update.getEmail()), Boolean.FALSE);
-            ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_05.assertIsNull(userByEmail);
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsNull(userByEmail, "用户", "电子邮箱存在重复");
         }
         UserConverter.INSTANCE.getUpdateEntity(user, update);
         // 清除原来的 用户角色关联
@@ -159,20 +159,20 @@ public class UserBus extends BaseBus {
         User user = this.userAddVerification(add);
         // 2、创建新用户
         boolean save = this.userService.save(user);
-        ArgumentResponseEnum.USER_VALID_ERROR_ADD_01.assertIsTrue(save);
+        ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertIsTrue(save, "用户", "请确认信息准确无误后重新添加");
         // 3、创建用户角色关联
         List<Long> roleList = add.getRoleList();
         if (AgileUtil.isNotEmpty(roleList)) {
             List<UserRole> userRoleList = UserConverter.INSTANCE.getUserRoleEntity(user.getId(), roleList);
             boolean saveUserRole = this.userRoleService.saveBatch(userRoleList);
-            ArgumentResponseEnum.USER_VALID_ERROR_ADD_05.assertIsTrue(saveUserRole);
+            ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertIsTrue(saveUserRole, "用户", "用户与角色关联失败");
         }
         // 4、创建用户组织机构关联
         List<Long> organizationList = add.getOrganizationList();
         if (AgileUtil.isNotEmpty(organizationList)) {
             List<UserOrganization> userOrganizationList = UserConverter.INSTANCE.getUserOrganizationEntity(user.getId(), organizationList);
             boolean saveUserOrganization = this.userOrganizationService.saveBatch(userOrganizationList);
-            ArgumentResponseEnum.USER_VALID_ERROR_ADD_06.assertIsTrue(saveUserOrganization);
+            ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertIsTrue(saveUserOrganization, "用户", "用户与组织机构关联失败");
         }
         return new CommonResponse<>();
     }
@@ -188,14 +188,14 @@ public class UserBus extends BaseBus {
      */
     public BaseResponse freezeUserByIdList(final List<Long> idList) {
         List<User> userList = this.userService.listByIds(idList);
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_06.assertNotEmpty(userList);
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_07.assertIsTrue(idList.size() == userList.size());
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotEmpty(userList, "用户", "请确认信息准确无误后重新冻结");
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(idList.size() == userList.size(), "用户", "请确认信息准确无误后重新冻结");
         userList.forEach(
                 // 冻结状态(0-正常，1-冻结）
                 user -> user.setStatus(CommonConstant.USER_FREEZE_1)
         );
         boolean save = this.userService.updateBatchById(userList);
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_08.assertIsTrue(save);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(save, "用户", "请确认信息准确无误后重新冻结");
         return new CommonResponse<>();
     }
 
@@ -210,14 +210,14 @@ public class UserBus extends BaseBus {
      */
     public BaseResponse unFreezeUserByIdList(final List<Long> idList) {
         List<User> userList = this.userService.listByIds(idList);
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_09.assertNotEmpty(userList);
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_10.assertIsTrue(idList.size() == userList.size());
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotEmpty(userList, "用户", "请确认信息准确无误后重新解冻");
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(idList.size() == userList.size(), "用户", "请确认信息准确无误后重新解冻");
         userList.forEach(
                 // 冻结状态(0-正常，1-冻结）
                 user -> user.setStatus(CommonConstant.USER_FREEZE_0)
         );
         boolean save = this.userService.updateBatchById(userList);
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_11.assertIsTrue(save);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(save, "用户", "请确认信息准确无误后重新解冻");
         return new CommonResponse<>();
     }
 
@@ -251,20 +251,20 @@ public class UserBus extends BaseBus {
         User user = this.userUpdateVerification(update);
         // 2、更新用户
         boolean save = this.userService.updateById(user);
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_01.assertIsTrue(save);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(save, "用户", "请确认信息准确无误后重新更新");
         // 3、更新用户角色关联
         List<Long> roleList = update.getRoleList();
         if (AgileUtil.isNotEmpty(roleList)) {
             List<UserRole> userRoleList = UserConverter.INSTANCE.getUserRoleEntity(user.getId(), roleList);
             boolean saveUserRole = this.userRoleService.saveBatch(userRoleList);
-            ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_12.assertIsTrue(saveUserRole);
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(saveUserRole, "用户", "用户与角色关联失败");
         }
         // 4、创建用户组织机构关联
         List<Long> organizationList = update.getOrganizationList();
         if (AgileUtil.isNotEmpty(organizationList)) {
             List<UserOrganization> userOrganizationList = UserConverter.INSTANCE.getUserOrganizationEntity(user.getId(), organizationList);
             boolean saveUserOrganization = this.userOrganizationService.saveBatch(userOrganizationList);
-            ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_13.assertIsTrue(saveUserOrganization);
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(saveUserOrganization, "用户", "用户与组织机构关联失败");
         }
         return new CommonResponse<>();
     }
@@ -281,14 +281,14 @@ public class UserBus extends BaseBus {
     public BaseResponse resetPassword(final ResetPasswordDTO resetPassword) {
         // 1、验证用户存在
         User user = this.userService.getById(resetPassword.getUserId());
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_02.assertNotNull(user);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotNull(user, "用户", "请确认信息准确无误后重新重置密码");
         // 2、取盐
         user.setSalt(PasswordUtil.getStringSalt());
         // 3、构建密码
         user.setPassword(PasswordUtil.encrypt(user.getUsername(), resetPassword.getNewPassword(), user.getSalt()));
         // 4、更新用户
         boolean save = this.userService.updateById(user);
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_01.assertIsTrue(save);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(save, "用户", "请确认信息准确无误后重新重置密码");
         return new CommonResponse<>();
     }
 
@@ -303,14 +303,14 @@ public class UserBus extends BaseBus {
      */
     public BaseResponse removeByIdList(final List<Long> idList) {
         List<User> userList = this.userService.listByIds(idList);
-        ArgumentResponseEnum.USER_VALID_ERROR_DELETE_02.assertNotEmpty(userList);
-        ArgumentResponseEnum.USER_VALID_ERROR_DELETE_03.assertIsTrue(idList.size() == userList.size());
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotEmpty(userList, "用户", "请确认信息准确无误后重新移除");
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(idList.size() == userList.size(), "用户", "请确认信息准确无误后重新移除");
         userList.forEach(
                 // 删除状态（0-正常，1-已删除）
                 user -> user.setDelFlag(CommonConstant.DEL_FLAG_1)
         );
         boolean save = this.userService.updateBatchById(userList);
-        ArgumentResponseEnum.USER_VALID_ERROR_DELETE_01.assertIsTrue(save);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(save, "用户", "请确认信息准确无误后重新移除");
         return new CommonResponse<>();
     }
 
@@ -338,7 +338,7 @@ public class UserBus extends BaseBus {
     public void export(final MultipartFile multipartFile, final Boolean update) {
         ExcelUtil<UserExcelDTO> util = new ExcelUtil<>(UserExcelDTO.class);
         if (multipartFile == null || multipartFile.isEmpty()) {
-            ArgumentResponseEnum.EXCEL_IMPORT_ERR_0.assertFail("文件不存在");
+            ArgumentResponseEnum.IMPORT_PARAMETERS_VALID_ERROR.assertFail("用户", "", "导入文件不存在");
         }
         try {
             List<UserExcelDTO> userImportList = util.importExcel(multipartFile.getInputStream());
@@ -349,11 +349,11 @@ public class UserBus extends BaseBus {
                         userImport -> {
                             // 登录账号
                             String userName = userImport.getUsername();
-                            ArgumentResponseEnum.USER_VALID_ERROR_IMPORT_02.assertIsTrueWithMessage(AgileUtil.isNotEmpty(userName), userImport.getRealname());
+                            ArgumentResponseEnum.IMPORT_PARAMETERS_VALID_ERROR.assertNotEmpty(userName, "用户", "请确认信息准确无误后重新导入", userImport.getRealname());
                             // 身份证件号码
                             String identityNumber = userImport.getIdentityNumber();
                             // 验证身份证件号码格式是否正确
-                            ArgumentResponseEnum.USER_VALID_ERROR_IMPORT_03.assertIsTrueWithMessage(IdCardUtil.isIdCard(identityNumber), userImport.getRealname());
+                            ArgumentResponseEnum.IMPORT_PARAMETERS_VALID_ERROR.assertIsTrue(IdCardUtil.isIdCard(identityNumber), "用户", "请确认信息准确无误后重新导入", userImport.getRealname());
                             // 验证 用户帐号\身份证号码 是否存在重复
                             User user = this.userService.getOne(Wrappers.<User>lambdaQuery()
                                             .eq(User::getUsername, userName)
@@ -362,15 +362,12 @@ public class UserBus extends BaseBus {
                                             .or(AgileUtil.isNotEmpty(userImport.getEmail())).eq(User::getEmail, userImport.getEmail())
                                     , Boolean.FALSE);
                             if (update) {
-                                if (AgileUtil.isEmpty(user)) {
-                                    ArgumentResponseEnum.USER_VALID_ERROR_IMPORT_04.assertIsTrue(AgileUtil.isEmpty(user), userImport.getRealname());
-                                }
+                                ArgumentResponseEnum.IMPORT_PARAMETERS_VALID_ERROR.assertNotNull(user, "用户", "用户信息不存在", userImport.getRealname());
                                 UserConverter.INSTANCE.getImportEntity(user, userImport);
                                 userUpdateList.add(user);
                             } else {
-                                if (AgileUtil.isNotEmpty(user)) {
-                                    ArgumentResponseEnum.USER_VALID_ERROR_IMPORT_05.assertIsTrue(AgileUtil.isEmpty(user), userImport.getRealname());
-                                }
+                                // 不允许存在重复数据
+                                ArgumentResponseEnum.IMPORT_PARAMETERS_VALID_ERROR.assertIsNull(user, "用户", "用户信息存在重复", userImport.getRealname());
                                 userAddList.add(UserConverter.INSTANCE.getImportEntity(userImport));
                             }
                         }
@@ -378,17 +375,17 @@ public class UserBus extends BaseBus {
                 if (AgileUtil.isNotEmpty(userAddList)) {
                     // 添加
                     boolean save = this.userService.saveBatch(userAddList);
-                    ArgumentResponseEnum.USER_VALID_ERROR_IMPORT_01.assertIsTrue(save);
+                    ArgumentResponseEnum.IMPORT_PARAMETERS_VALID_ERROR.assertIsTrue(save, "用户", "添加", "请确认信息准确无误后重新导入");
                 }
                 if (AgileUtil.isNotEmpty(userUpdateList)) {
                     // 更新
                     boolean updateUser = this.userService.updateBatchById(userUpdateList);
-                    ArgumentResponseEnum.USER_VALID_ERROR_IMPORT_01.assertIsTrue(updateUser);
+                    ArgumentResponseEnum.IMPORT_PARAMETERS_VALID_ERROR.assertIsTrue(updateUser, "用户", "更新", "请确认信息准确无误后重新导入");
                 }
             }
         } catch (IOException e) {
             log.error("从给定的 MultipartFile 中获取 InputStream 失败：{}", e.getMessage());
-            ArgumentResponseEnum.EXCEL_IMPORT_ERR_0.assertFail(e.getMessage());
+            ArgumentResponseEnum.IMPORT_PARAMETERS_VALID_ERROR.assertFail("用户", e.getMessage());
         }
     }
 

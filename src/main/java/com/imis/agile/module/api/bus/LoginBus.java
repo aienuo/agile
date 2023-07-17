@@ -77,11 +77,11 @@ public class LoginBus extends BaseBus {
     private CommonResponse<LoginVO> buildingData(final User user, final String password) {
         HttpServletResponse httpServletResponse = getHttpServletResponse();
         // 验证密码
-        ArgumentResponseEnum.USER_VALID_ERROR_LOGIN_02.assertIsTrue(user.getPassword().equals(PasswordUtil.encrypt(user.getUsername(), password, user.getSalt())));
+        ArgumentResponseEnum.SELECT_PARAMETERS_VALID_ERROR.assertIsTrue(user.getPassword().equals(PasswordUtil.encrypt(user.getUsername(), password, user.getSalt())), "登录", "密码或账号不正确");
         // 删除状态（0-正常，1-已删除）
-        ArgumentResponseEnum.USER_VALID_ERROR_LOGIN_03.assertIsTrue(CommonConstant.DEL_FLAG_0.equals(user.getDelFlag()));
+        ArgumentResponseEnum.SELECT_PARAMETERS_VALID_ERROR.assertIsTrue(CommonConstant.DEL_FLAG_0.equals(user.getDelFlag()), "登录", "账号注销，请联系管理员");
         // 冻结状态(0-正常，1-冻结）
-        ArgumentResponseEnum.USER_VALID_ERROR_LOGIN_04.assertIsTrue(CommonConstant.USER_FREEZE_0.equals(user.getStatus()));
+        ArgumentResponseEnum.SELECT_PARAMETERS_VALID_ERROR.assertIsTrue(CommonConstant.USER_FREEZE_0.equals(user.getStatus()), "登录", "账号冻结，请联系管理员");
         LoginVO userLogin = new LoginVO();
         // Token
         userLogin.setToken(JwtUtil.sign(user.getUsername(), user.getPassword()));
@@ -105,25 +105,25 @@ public class LoginBus extends BaseBus {
      */
     private User userUpdateVerification(final UserUpdateDTO update) {
         User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, update.getUsername()), Boolean.FALSE);
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_02.assertNotNull(user);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotNull(user, "用户", "请确认信息准确无误后重新更新");
         if (AgileUtil.isNotEmpty(update.getIdentityNumber()) && !user.getIdentityNumber().equals(update.getIdentityNumber())) {
             // 身份证件号码
             String identityNumber = update.getIdentityNumber();
             // 验证身份证件号码格式是否正确
-            ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_03.assertIsTrue(IdCardUtil.isIdCard(identityNumber));
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(IdCardUtil.isIdCard(identityNumber), "用户", "请确认信息准确无误后重新更新");
             // 验证 身份证号码 是否存在重复
             User userByIdentityNumber = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getIdentityNumber, identityNumber), Boolean.FALSE);
-            ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_03.assertIsNull(userByIdentityNumber);
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsNull(userByIdentityNumber, "用户", "请确认信息准确无误后重新更新");
         }
         if (AgileUtil.isNotEmpty(update.getPhone()) && !user.getPhone().equals(update.getPhone())) {
             // 验证 手机号码 是否存在重复
             User userByPhone = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getPhone, update.getPhone()), Boolean.FALSE);
-            ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_04.assertIsNull(userByPhone);
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsNull(userByPhone, "用户", "请确认信息准确无误后重新更新");
         }
         if (AgileUtil.isNotEmpty(update.getEmail()) && !user.getEmail().equals(update.getEmail())) {
             // 验证 电子邮箱 是否存在重复
             User userByEmail = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getEmail, update.getEmail()), Boolean.FALSE);
-            ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_05.assertIsNull(userByEmail);
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsNull(userByEmail, "用户", "请确认信息准确无误后重新更新");
         }
         UserConverter.INSTANCE.getUserUpdateEntity(user, update);
         return user;
@@ -173,7 +173,7 @@ public class LoginBus extends BaseBus {
         // 用户名
         String username = login.getUsername();
         User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username), Boolean.FALSE);
-        ArgumentResponseEnum.USER_VALID_ERROR_LOGIN_01.assertNotNull(user);
+        ArgumentResponseEnum.SELECT_PARAMETERS_VALID_ERROR.assertNotNull(user, "登录", "用户不存在");
         // 构建登录返回值
         return buildingData(user, login.getPassword());
     }
@@ -223,7 +223,7 @@ public class LoginBus extends BaseBus {
         User user = this.userUpdateVerification(update);
         // 2、更新用户
         boolean save = this.userService.updateById(user);
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_01.assertIsTrue(save);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(save, "用户", "请确认信息准确无误后重新更新");
         return new CommonResponse<>();
     }
 
@@ -239,17 +239,17 @@ public class LoginBus extends BaseBus {
     public BaseResponse password(final PasswordUpdateDTO update) {
         // 1、验证用户存在
         User user = this.userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, update.getUsername()), Boolean.FALSE);
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_02.assertNotNull(user);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotNull(user, "用户", "请确认信息准确无误后重新修改密码");
         // 2、判断密码是否正确
         String encrypt = PasswordUtil.encrypt(update.getUsername(), update.getOldPassword(), user.getSalt());
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_01.assertIsTrue(user.getPassword().equals(encrypt));
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(user.getPassword().equals(encrypt), "用户", "请确认信息准确无误后重新修改密码");
         // 3、取盐
         user.setSalt(PasswordUtil.getStringSalt());
         // 4、构建密码
         user.setPassword(PasswordUtil.encrypt(user.getUsername(), update.getNewPassword(), user.getSalt()));
         // 5、更新用户
         boolean save = this.userService.updateById(user);
-        ArgumentResponseEnum.USER_VALID_ERROR_UPDATE_01.assertIsTrue(save);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(save, "用户", "请确认信息准确无误后重新修改密码");
         return new CommonResponse<>();
     }
 

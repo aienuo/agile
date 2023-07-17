@@ -55,11 +55,11 @@ public class FileUtil {
             if (!fileSaveFolder.exists()) {
                 // 创建文件根目录
                 boolean mkdirs = fileSaveFolder.mkdirs();
-                ArgumentResponseEnum.FILE_ADD_ERR_PATH_NO_EXIST.assertIsTrue(mkdirs);
+                ArgumentResponseEnum.FILE_ADD_ERR.assertIsTrue(mkdirs, "路径不存在，路径创建时失败");
             }
             FileCopyUtils.copy(filedByteData, new File(savePath));
         } catch (IOException e) {
-            ArgumentResponseEnum.FILE_ADD_ERR_FILE_SAVE_FAILED.assertFail(e);
+            ArgumentResponseEnum.FILE_ADD_ERR.assertFail(e, "文件保存失败");
         }
     }
 
@@ -103,7 +103,7 @@ public class FileUtil {
                 httpServletResponse.flushBuffer();
             }
         } catch (IOException e) {
-            ArgumentResponseEnum.FILE_DOWNLOAD_ERR_2.assertFail(e);
+            ArgumentResponseEnum.FILE_DOWNLOAD_ERR.assertFail(e);
         }
     }
 

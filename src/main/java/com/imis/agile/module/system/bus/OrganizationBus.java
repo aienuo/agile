@@ -66,14 +66,14 @@ public class OrganizationBus extends BaseBus {
         if (AgileUtil.isNotEmpty(add.getParentId())) {
             // 验证父级组织机构是否存在
             Organization parent = this.organizationService.getById(add.getParentId());
-            ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_ADD_03.assertNotNull(parent);
+            ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertNotNull(parent, "组织机构", "父级组织机构信息不存在");
         }
         // 验证 组织机构名称 是否存在重复
         Organization organization = this.organizationService.getOne(Wrappers.<Organization>lambdaQuery()
                 .eq(Organization::getOrganizationName, add.getOrganizationName())
                 .eq(AgileUtil.isNotEmpty(add.getParentId()), Organization::getParentId, add.getParentId()), Boolean.FALSE
         );
-        ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_ADD_02.assertIsNull(organization);
+        ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertIsNull(organization, "组织机构", "组织机构名称存在重复");
         return OrganizationConverter.INSTANCE.getAddEntity(add);
     }
 
@@ -88,11 +88,11 @@ public class OrganizationBus extends BaseBus {
      */
     private Organization organizationUpdateVerification(final OrganizationUpdateDTO update) {
         Organization organization = this.organizationService.getById(update.getId());
-        ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_02.assertNotNull(organization);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotNull(organization, "组织机构", "组织机构信息不存在");
         if (AgileUtil.isNotEmpty(update.getParentId())) {
             // 验证父级组织机构是否存在
             Organization parent = this.organizationService.getById(update.getParentId());
-            ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_03.assertNotNull(parent);
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotNull(parent, "组织机构", "父级组织机构信息不存在");
         }
         if (AgileUtil.isNotEmpty(update.getOrganizationName()) && !organization.getOrganizationName().equals(update.getOrganizationName())) {
             // 验证 组织机构名称 是否存在重复
@@ -100,7 +100,7 @@ public class OrganizationBus extends BaseBus {
                     .eq(Organization::getOrganizationName, update.getOrganizationName())
                     .eq(AgileUtil.isNotEmpty(update.getParentId()), Organization::getParentId, update.getParentId()), Boolean.FALSE
             );
-            ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_04.assertIsNull(organizationByName);
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsNull(organizationByName, "组织机构", "组织机构名称存在重复");
         }
         OrganizationConverter.INSTANCE.getUpdateEntity(organization, update);
         return organization;
@@ -122,18 +122,18 @@ public class OrganizationBus extends BaseBus {
         if (AgileUtil.isNotEmpty(parentIdList)) {
             // 判断 父级 组织机构 是否存在
             List<Organization> parentOrganizationList = this.organizationService.listByIds(parentIdList);
-            ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_03.assertNotEmpty(parentOrganizationList);
-            ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_03.assertIsTrue(parentIdList.size() == parentOrganizationList.size());
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotEmpty(parentOrganizationList, "组织机构", "父级组织机构信息不存在");
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(parentIdList.size() == parentOrganizationList.size(), "组织机构", "父级组织机构信息不存在");
         }
         // 将要变更节点 编号
         List<Long> idList = editList.stream().map(OrganizationEditDTO::getId).filter(AgileUtil::isNotEmpty).distinct().collect(Collectors.toList());
         if (AgileUtil.isNotEmpty(idList)) {
             // 判断 组织机构 是否存在
             organizationList = this.organizationService.listByIds(idList);
-            ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_02.assertNotEmpty(organizationList);
-            ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_02.assertIsTrue(idList.size() == organizationList.size());
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotEmpty(organizationList, "组织机构", "组织机构信息不存在");
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(idList.size() == organizationList.size(), "组织机构", "组织机构信息不存在");
         }
-        ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_01.assertNotEmpty(organizationList);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotEmpty(organizationList, "组织机构", "请确认信息准确无误后重新编辑");
         // 构建数据
         Map<Long, OrganizationEditDTO> organizationEditMap = new HashMap<>(editList.size());
         editList.forEach(organizationEdit -> organizationEditMap.put(organizationEdit.getId(), organizationEdit));
@@ -177,7 +177,7 @@ public class OrganizationBus extends BaseBus {
         Organization organization = this.organizationAddVerification(add);
         // 2、创建新组织机构
         boolean save = this.organizationService.save(organization);
-        ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_ADD_01.assertIsTrue(save);
+        ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertIsTrue(save, "组织机构", "请确认信息准确无误后重新添加");
         return new CommonResponse<>();
     }
 
@@ -217,7 +217,7 @@ public class OrganizationBus extends BaseBus {
         Organization organization = this.organizationUpdateVerification(update);
         // 2、更新组织机构
         boolean save = this.organizationService.updateById(organization);
-        ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_01.assertIsTrue(save);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(save, "组织机构", "请确认信息准确无误后重新更新");
         // 3、更新部门负责人
         if (AgileUtil.isNotEmpty(update.getOrganizationUserId())) {
             List<UserOrganization> userOrganizationList = this.userOrganizationService.list(Wrappers.<UserOrganization>lambdaQuery().eq(UserOrganization::getOrganizationId, update.getId()));
@@ -226,7 +226,7 @@ public class OrganizationBus extends BaseBus {
                         userOrganization -> userOrganization.setResponsible(userOrganization.getId().equals(update.getOrganizationUserId()) ? 1 : 0)
                 );
                 boolean updateBatchById = this.userOrganizationService.updateBatchById(userOrganizationList);
-                ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_05.assertIsTrue(updateBatchById);
+                ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(updateBatchById, "组织机构", "更新部门负责人失败");
             }
         }
         return new CommonResponse<>();
@@ -244,11 +244,11 @@ public class OrganizationBus extends BaseBus {
     @Transactional(rollbackFor = Exception.class)
     public BaseResponse deleteByIdList(final List<Long> idList) {
         long count = this.organizationService.count(Wrappers.<Organization>lambdaQuery().in(Organization::getParentId, idList));
-        ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_DELETE_02.assertIsTrue(count == 0);
+        ArgumentResponseEnum.DELETE_PARAMETERS_VALID_ERROR.assertIsTrue(count == 0, "组织机构", "部分组织机构下存在子节点");
         long userOrganizationCount = this.userOrganizationService.count(Wrappers.<UserOrganization>lambdaQuery().in(UserOrganization::getOrganizationId, idList));
-        ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_DELETE_03.assertIsTrue(userOrganizationCount == 0);
+        ArgumentResponseEnum.DELETE_PARAMETERS_VALID_ERROR.assertIsTrue(userOrganizationCount == 0, "组织机构", "请确认信息准确无误后重新更新");
         boolean delete = this.organizationService.removeByIds(idList);
-        ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_DELETE_01.assertIsTrue(delete);
+        ArgumentResponseEnum.DELETE_PARAMETERS_VALID_ERROR.assertIsTrue(delete, "组织机构", "部分组织机构下存在用户");
         return new CommonResponse<>();
     }
 
@@ -267,7 +267,7 @@ public class OrganizationBus extends BaseBus {
             List<Organization> organizationList = this.organizationEditTreeNodeVerification(editList);
             // 2、更新组织机构
             boolean save = this.organizationService.updateBatchById(organizationList);
-            ArgumentResponseEnum.ORGANIZATION_VALID_ERROR_UPDATE_01.assertIsTrue(save);
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(save, "组织机构", "请确认信息准确无误后重新编辑");
             return new CommonResponse<>();
         }
         return new CommonResponse<>();

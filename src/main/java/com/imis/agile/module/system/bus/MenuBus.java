@@ -59,14 +59,14 @@ public class MenuBus extends BaseBus {
         if (AgileUtil.isNotEmpty(add.getParentId())) {
             // 验证父级菜单权限是否存在
             Menu parent = this.menuService.getById(add.getParentId());
-            ArgumentResponseEnum.MENU_VALID_ERROR_ADD_03.assertNotNull(parent);
+            ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertNotNull(parent, "菜单权限", "父级菜单权限信息不存在");
         }
         // 验证 菜单权限名称 是否存在重复
         Menu menu = this.menuService.getOne(Wrappers.<Menu>lambdaQuery()
                 .eq(Menu::getName, add.getName()).eq(Menu::getMenuType, add.getMenuType())
                 .eq(AgileUtil.isNotEmpty(add.getParentId()), Menu::getParentId, add.getParentId()), Boolean.FALSE
         );
-        ArgumentResponseEnum.MENU_VALID_ERROR_ADD_02.assertIsNull(menu);
+        ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertIsNull(menu, "菜单权限", "菜单权限名称存在重复");
         return MenuConverter.INSTANCE.getAddEntity(add);
     }
 
@@ -81,11 +81,11 @@ public class MenuBus extends BaseBus {
      */
     private Menu menuUpdateVerification(final MenuUpdateDTO update) {
         Menu menu = this.menuService.getById(update.getId());
-        ArgumentResponseEnum.MENU_VALID_ERROR_UPDATE_02.assertNotNull(menu);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotNull(menu, "菜单权限", "菜单权限信息不存在");
         if (AgileUtil.isNotEmpty(update.getParentId()) && !update.getParentId().equals(menu.getParentId())) {
             // 验证父级菜单权限是否存在
             Menu parent = this.menuService.getById(update.getParentId());
-            ArgumentResponseEnum.MENU_VALID_ERROR_UPDATE_03.assertNotNull(parent);
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotNull(parent, "菜单权限", "父级菜单权限信息不存在");
         }
         if (AgileUtil.isNotEmpty(update.getName()) && !menu.getName().equals(update.getName())) {
             // 验证 菜单权限名称 是否存在重复
@@ -93,7 +93,7 @@ public class MenuBus extends BaseBus {
                     .eq(Menu::getName, update.getName()).eq(Menu::getMenuType, update.getMenuType())
                     .eq(AgileUtil.isNotEmpty(update.getParentId()), Menu::getParentId, update.getParentId()), Boolean.FALSE
             );
-            ArgumentResponseEnum.MENU_VALID_ERROR_UPDATE_04.assertIsNull(menuByName);
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsNull(menuByName, "菜单权限", "菜单权限名称存在重复");
         }
         MenuConverter.INSTANCE.getUpdateEntity(menu, update);
         return menu;
@@ -125,7 +125,7 @@ public class MenuBus extends BaseBus {
         Menu menu = this.menuAddVerification(add);
         // 2、创建新菜单权限
         boolean save = this.menuService.save(menu);
-        ArgumentResponseEnum.MENU_VALID_ERROR_ADD_01.assertIsTrue(save);
+        ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertIsTrue(save, "菜单权限", "请确认信息准确无误后重新添加");
         return new CommonResponse<>();
     }
 
@@ -158,7 +158,7 @@ public class MenuBus extends BaseBus {
         Menu menu = this.menuUpdateVerification(update);
         // 2、更新菜单权限
         boolean save = this.menuService.updateById(menu);
-        ArgumentResponseEnum.MENU_VALID_ERROR_UPDATE_01.assertIsTrue(save);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(save, "菜单权限", "请确认信息准确无误后重新更新");
         return new CommonResponse<>();
     }
 
@@ -173,11 +173,11 @@ public class MenuBus extends BaseBus {
      */
     public BaseResponse deleteByIdList(final List<Long> idList) {
         long count = this.menuService.count(Wrappers.<Menu>lambdaQuery().in(Menu::getParentId, idList));
-        ArgumentResponseEnum.MENU_VALID_ERROR_DELETE_02.assertIsTrue(count == 0);
+        ArgumentResponseEnum.DELETE_PARAMETERS_VALID_ERROR.assertIsTrue(count == 0, "菜单权限", "部分菜单权限下存在子节点");
         long roleMenuCount = this.roleMenuService.count(Wrappers.<RoleMenu>lambdaQuery().in(RoleMenu::getMenuId, idList));
-        ArgumentResponseEnum.MENU_VALID_ERROR_DELETE_03.assertIsTrue(roleMenuCount == 0);
+        ArgumentResponseEnum.DELETE_PARAMETERS_VALID_ERROR.assertIsTrue(roleMenuCount == 0, "菜单权限", "部分菜单权限已分配给角色使用");
         boolean delete = this.menuService.removeByIds(idList);
-        ArgumentResponseEnum.MENU_VALID_ERROR_DELETE_01.assertIsTrue(delete);
+        ArgumentResponseEnum.DELETE_PARAMETERS_VALID_ERROR.assertIsTrue(delete, "菜单权限", "请确认信息准确无误后重新删除");
         return new CommonResponse<>();
     }
 

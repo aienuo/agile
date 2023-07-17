@@ -69,7 +69,7 @@ public class RoleBus extends BaseBus {
     private Role roleAddVerification(final RoleAddDTO add) {
         // 验证 角色名称 是否存在重复
         Role role = this.roleService.getOne(Wrappers.<Role>lambdaQuery().eq(Role::getRoleName, add.getRoleName()), Boolean.FALSE);
-        ArgumentResponseEnum.ROLE_VALID_ERROR_ADD_02.assertIsNull(role);
+        ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertIsNull(role, "角色", "角色名称存在重复");
         add.setRoleCode("A008");
         return RoleConverter.INSTANCE.getAddEntity(add);
     }
@@ -85,11 +85,11 @@ public class RoleBus extends BaseBus {
      */
     private Role roleUpdateVerification(final RoleUpdateDTO update) {
         Role role = this.roleService.getById(update.getId());
-        ArgumentResponseEnum.ROLE_VALID_ERROR_UPDATE_02.assertNotNull(role);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotNull(role, "角色", "角色信息不存在");
         if (AgileUtil.isNotEmpty(update.getRoleName()) && !role.getRoleName().equals(update.getRoleName())) {
             // 验证 角色名称 是否存在重复
             Role roleByRoleName = this.roleService.getOne(Wrappers.<Role>lambdaQuery().eq(Role::getRoleName, update.getRoleName()), Boolean.FALSE);
-            ArgumentResponseEnum.ROLE_VALID_ERROR_UPDATE_03.assertIsNull(roleByRoleName);
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsNull(roleByRoleName, "角色", "角色名称存在重复");
         }
         RoleConverter.INSTANCE.getUpdateEntity(role, update);
         // 清除 角色菜单权限关联
@@ -120,18 +120,19 @@ public class RoleBus extends BaseBus {
      * @creed The only constant is change ! ! !
      * @since 2020/3/5 17:25
      */
+    @Transactional(rollbackFor = Exception.class)
     public BaseResponse add(final RoleAddDTO add) {
         // 1、添加校验
         Role role = this.roleAddVerification(add);
         // 2、创建新角色
         boolean save = this.roleService.save(role);
-        ArgumentResponseEnum.ROLE_VALID_ERROR_ADD_01.assertIsTrue(save);
+        ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertIsTrue(save, "角色", "请确认信息准确无误后重新添加");
         // 3、创建角色菜单权限关联
         List<Long> menuList = add.getMenuList();
         if (AgileUtil.isNotEmpty(menuList)) {
             List<RoleMenu> roleMenuList = RoleConverter.INSTANCE.getRoleMenuEntity(role.getId(), menuList);
             boolean saveRoleMenu = this.roleMenuService.saveBatch(roleMenuList);
-            ArgumentResponseEnum.ROLE_VALID_ERROR_UPDATE_04.assertIsTrue(saveRoleMenu);
+            ArgumentResponseEnum.INSERT_PARAMETERS_VALID_ERROR.assertIsTrue(saveRoleMenu, "角色", "角色与菜单权限关联失败");
         }
         return new CommonResponse<>();
     }
@@ -160,18 +161,19 @@ public class RoleBus extends BaseBus {
      * @creed The only constant is change ! ! !
      * @since 2020/3/5 17:25
      */
+    @Transactional(rollbackFor = Exception.class)
     public BaseResponse updateById(final RoleUpdateDTO update) {
         // 1、更新校验
         Role role = this.roleUpdateVerification(update);
         // 2、更新角色
         boolean save = this.roleService.updateById(role);
-        ArgumentResponseEnum.ROLE_VALID_ERROR_UPDATE_01.assertIsTrue(save);
+        ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(save, "角色", "请确认信息准确无误后重新更新");
         // 3、更新角色菜单权限关联
         List<Long> menuList = update.getMenuList();
         if (AgileUtil.isNotEmpty(menuList)) {
             List<RoleMenu> roleMenuList = RoleConverter.INSTANCE.getRoleMenuEntity(role.getId(), menuList);
             boolean saveRoleMenu = this.roleMenuService.saveBatch(roleMenuList);
-            ArgumentResponseEnum.ROLE_VALID_ERROR_UPDATE_04.assertIsTrue(saveRoleMenu);
+            ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertIsTrue(saveRoleMenu, "角色", "角色与菜单权限关联失败");
         }
         return new CommonResponse<>();
     }
@@ -188,11 +190,11 @@ public class RoleBus extends BaseBus {
     @Transactional(rollbackFor = Exception.class)
     public BaseResponse deleteByIdList(final List<Long> idList) {
         long number = this.userRoleService.count(Wrappers.<UserRole>lambdaQuery().in(UserRole::getRoleId, idList));
-        ArgumentResponseEnum.ROLE_VALID_ERROR_DELETE_02.assertIsTrue(number == 0);
+        ArgumentResponseEnum.DELETE_PARAMETERS_VALID_ERROR.assertIsTrue(number == 0, "角色", "角色已被分配给用户");
         boolean delete = this.roleMenuService.remove(Wrappers.<RoleMenu>lambdaQuery().in(RoleMenu::getRoleId, idList));
-        ArgumentResponseEnum.ROLE_VALID_ERROR_DELETE_03.assertIsTrue(delete);
+        ArgumentResponseEnum.DELETE_PARAMETERS_VALID_ERROR.assertIsTrue(delete, "角色", "角色与菜单权限关联关系解除失败");
         delete = this.roleService.removeByIds(idList);
-        ArgumentResponseEnum.ROLE_VALID_ERROR_DELETE_01.assertIsTrue(delete);
+        ArgumentResponseEnum.DELETE_PARAMETERS_VALID_ERROR.assertIsTrue(delete, "角色", "请确认信息准确无误后重新删除");
         return new CommonResponse<>();
     }
 

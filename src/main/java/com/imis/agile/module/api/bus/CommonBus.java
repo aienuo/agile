@@ -145,10 +145,10 @@ public class CommonBus extends BaseBus {
      */
     public BaseResponse doFileDownload(final Long fileId) {
         // 1.fileId 合法性判断
-        ArgumentResponseEnum.FILE_DOWNLOAD_ERR_1.assertNotNull(fileId);
+        ArgumentResponseEnum.FILE_DOWNLOAD_ERR.assertNotNull(fileId, "文件不存在");
         // 2.获取文件信息
         com.imis.agile.module.system.model.entity.File sysFile = this.fileService.getById(fileId);
-        ArgumentResponseEnum.FILE_DOWNLOAD_ERR_1.assertNotNull(sysFile);
+        ArgumentResponseEnum.FILE_DOWNLOAD_ERR.assertNotNull(sysFile, "文件不存在");
         // 3.文件下载
         String fileUrl = sysFile.getFileUrl();
         if (fileUrl.startsWith("http")) {

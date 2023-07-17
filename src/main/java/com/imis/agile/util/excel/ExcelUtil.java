@@ -758,7 +758,7 @@ public class ExcelUtil<T> {
             }
         } catch (Exception e) {
             log.error("导出Excel失败，添加单元格异常：{}", e.getMessage());
-            ArgumentResponseEnum.EXCEL_IMPORT_ERR_0.assertFail(e.getMessage());
+            ArgumentResponseEnum.EXCEL_IMPORT_ERR.assertFail(e.getMessage());
         }
         return cell;
     }
@@ -1063,7 +1063,7 @@ public class ExcelUtil<T> {
                     return new SimpleDateFormat(dateTimeFormat).parse(stringValue.trim());
                 } catch (ParseException e) {
                     log.error("格式化字符串类型日期异常：{}", e.getMessage());
-                    ArgumentResponseEnum.EXCEL_IMPORT_ERR_0.assertFail(e.getMessage());
+                    ArgumentResponseEnum.EXCEL_IMPORT_ERR.assertFail(e.getMessage());
                 }
             } else if (fieldValue instanceof Double && isNumeric) {
                 // Double 类型的日期
@@ -1265,13 +1265,13 @@ public class ExcelUtil<T> {
             this.workbook = WorkbookFactory.create(inputStream);
         } catch (IOException e) {
             log.error("从给定的 InputStream 中创建适当的 Workbook（HSSFWorkbook / XSSFWorkbook） 失败：{}", e.getMessage());
-            ArgumentResponseEnum.EXCEL_IMPORT_ERR_0.assertFail(e.getMessage());
+            ArgumentResponseEnum.EXCEL_IMPORT_ERR.assertFail(e.getMessage());
         }
         List<T> list = new ArrayList<>();
         // 1、获取 Sheet ：如果指定 Sheet 名, 则取指定 Sheet 中的内容，否则默认指向第1个 Sheet
         Sheet sheet = AgileUtil.isNotEmpty(sheetName) ? workbook.getSheet(sheetName) : workbook.getSheetAt(0);
         // 2、判断 Sheet 对象是否为空，为空抛出异常
-        ArgumentResponseEnum.EXCEL_IMPORT_ERR_1.assertNotNull(sheet);
+        ArgumentResponseEnum.EXCEL_IMPORT_ERR.assertNotNull(sheet, "Sheet 文件 不存在");
         // 3、判断 Excel 版本，根据版本选择合适的 图片数据获取方式
         boolean isXSSFWorkbook = !(workbook instanceof HSSFWorkbook);
         Map<String, PictureData> pictures;
@@ -1324,14 +1324,14 @@ public class ExcelUtil<T> {
                         entity = (entity == null ? this.clazz.getDeclaredConstructor().newInstance() : entity);
                     } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                         log.error("创建由此Class对象表示的类的新实例失败：{}", e.getMessage());
-                        ArgumentResponseEnum.EXCEL_IMPORT_ERR_0.assertFail(e.getMessage());
+                        ArgumentResponseEnum.EXCEL_IMPORT_ERR.assertFail(e.getMessage());
                     }
                     // 4.4.3从 Map 中得到对应列的 Field
                     Field field = (Field) entry.getValue()[0];
                     Excel attr = (Excel) entry.getValue()[1];
                     // 4.4.4取得对象类型，并根据对象类型设置值
                     Class<?> fieldType = field.getType();
-                    ArgumentResponseEnum.EXCEL_IMPORT_ERR_2.assertNotNull(fieldType);
+                    ArgumentResponseEnum.EXCEL_IMPORT_ERR.assertNotNull(fieldType, "无效的字段的声明类型");
                     // 4.4.5处理 字段的 值 （Java 自带数据类型）
                     Object fieldValue = this.makeFieldValueToBasicDataType(this.getCellValue(row, entry.getKey()), field);
                     if (AgileUtil.isNotEmpty(attr.readConverterExpression())) {
