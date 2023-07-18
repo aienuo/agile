@@ -201,7 +201,7 @@ public class AgileUtil {
         int originalStringLength = originalString.length();
         if (originalStringLength < stringLength) {
             while (originalStringLength < stringLength) {
-                StringBuffer stringBuffer = new StringBuffer();
+                StringBuilder stringBuffer = new StringBuilder();
                 if (right) {
                     // 右位补零
                     stringBuffer.append(originalString).append("0");

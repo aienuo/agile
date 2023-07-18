@@ -1,9 +1,6 @@
 package com.imis.agile;
 
-import com.imis.agile.util.ComputerUniqueIdentificationUtil;
-import com.imis.agile.util.IdCardUtil;
-import com.imis.agile.util.PasswordUtil;
-import com.imis.agile.util.UnitConversion;
+import com.imis.agile.util.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,10 +9,15 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.text.MessageFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -126,18 +128,102 @@ class AgileTests {
         writeFile(administrativeArea.toString(), "./json.json");
     }
 
+    /**
+     * 省市区县街道名称、高德地图坐标、百度地图坐标、行政区划编号
+     * citycode 城市编码
+     * adcode 区域编码 街道没有独有的adcode，均继承父类（区县）的adcode
+     * name 行政区名称
+     * polyline 行政区边界坐标点  当一个行政区范围，由完全分隔两块或者多块的地块组成，每块地的 polyline 坐标串以 | 分隔 。 如北京 的 朝阳区
+     * center 区域中心点
+     * level 行政区划级别 country:国家 province:省份（直辖市会在province显示） city:市（直辖市会在province显示） district:区县 street:街道
+     * districts 级行政区列表，包含district元素
+     */
+    @Test
+    void doTestGoDe() {
+
+        String key = "4f3555325e5471897c6ac3c9ff9410a2";
+        String url = "https://restapi.amap.com/v3/config/district";
+
+        String[] list = {
+                "北京市",
+                "天津市",
+                "河北省",
+                "山西省",
+                "内蒙古自治区",
+                "辽宁省",
+                "吉林省",
+                "黑龙江省",
+                "上海市",
+                "江苏省",
+                "浙江省",
+                "安徽省",
+                "福建省",
+                "江西省",
+                "山东省",
+                "河南省",
+                "湖北省",
+                "湖南省",
+                "广东省",
+                "广西壮族自治区",
+                "海南省",
+                "重庆市",
+                "四川省",
+                "贵州省",
+                "云南省",
+                "西藏自治区",
+                "陕西省",
+                "甘肃省",
+                "青海省",
+                "宁夏回族自治区",
+                "新疆维吾尔自治区"
+        };
+
+        List<District> districtAll = new ArrayList<>();
+
+        HttpClient client = HttpClient.newHttpClient();
+
+        for (String name : list) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .timeout(Duration.ofMinutes(2))
+                    .header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
+                    .POST(HttpRequest.BodyPublishers.ofString("key=" + key + "&keywords=" + name + "&subdistrict=3&showbiz=false&extensions=base"))
+                    .build();
+            try {
+                String body = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+
+                String regex = "\"citycode\":\\[]";
+
+                body = body.replaceAll(regex, "\"citycode\":\"\"");
+
+
+                AreaReturn areaReturn = JacksonUtils.parse(body, AreaReturn.class);
+
+                districtAll.addAll(areaReturn.getDistricts());
+
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+
+
+        writeFile(districtAll.toString(), "./省市区县街道名称坐标.json");
+
+    }
+
 
     /**
      * 将 json 字符串 写入 指定文件中
      *
-     * @param json - 数据
+     * @param json     - 数据
      * @param filePath - 文件路径
      */
     private void writeFile(final String json, final String filePath) {
 
         try {
             File file = new File(filePath);
-            if(file.exists()) {
+            if (file.exists()) {
                 file.delete();
             }
             boolean create = file.createNewFile();
