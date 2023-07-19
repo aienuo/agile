@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aienuo.agile.module.system.mapper.DictMapper">
+    <!-- 字典 - 项 通用查询结果列 -->
+    <sql id="sys_dict_base_column_list">
+        <!--@sql SELECT -->
+        id, create_by, create_time, update_by, update_time, dict_name, dict_code, dict_type, status, description
+        <!--@sql FROM sys_dict-->
+    </sql>
+
+    <!-- 字典 - 项 数据表名称 -->
+    <sql id="sys_dict_table_name">
+        <!--@sql SELECT TABLE_NAME -->
+        sys_dict
+        <!--@sql FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'sys_dict' -->
+    </sql>
+
+    <!-- 字典 - 项 - 数据分页 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="pageQuery" type="com.aienuo.agile.module.system.model.vo.DictPageVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="dict_name" property="dictName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="dict_code" property="dictCode" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="dict_type" property="dictType" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="status" property="status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="description" property="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 字典 - 项 - 数据列表 - 查询返回值 2020年10月10日 10:24:00 -->
+    <resultMap id="listQuery" type="com.aienuo.agile.module.api.model.vo.DictVO">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="BIGINT"/>
+        <result column="dict_name" property="dictName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="dict_code" property="dictCode" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="dict_type" property="dictType" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 2021年7月20日 14:36:07 分页查询 -->
+    <select id="pagingQueryListByParameter" resultMap="pageQuery">
+        SELECT
+            id, dict_name, dict_code, dict_type, status, description
+        FROM
+        <include refid="sys_dict_table_name"/>
+        <where>
+            <if test="param.id != null and param.id != '' ">
+                AND id = #{param.id}
+            </if>
+            <if test="param.dictName != null and param.dictName != '' ">
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="nameLike" value="'%' + param.dictName + '%'" />
+                AND dict_name LIKE #{nameLike}
+            </if>
+            <if test="param.dictCode != null and param.dictCode != '' ">
+                <!-- Oracle 中只支持两个参数 使用bind来让SQL支持两个以上 -->
+                <bind name="codeLike" value="'%' + param.dictCode + '%'" />
+                AND dict_code LIKE #{codeLike}
+            </if>
+            <!-- 创建人 -->
+            <if test="param.createBy != null and param.createBy != ''">
+                AND create_by = #{param.createBy}
+            </if>
+            <!-- 创建时间-起 -->
+            <if test="param.createTimeStart != null">
+                AND create_time <![CDATA[>=]]> #{param.createTimeStart}
+            </if>
+            <!-- 创建时间-止 -->
+            <if test="param.createTimeEnd != null ">
+                AND create_time <![CDATA[<=]]> #{param.createTimeEnd}
+            </if>
+            <!-- 更新人 -->
+            <if test="param.updateBy != null and param.updateBy != ''">
+                AND update_by = #{param.updateBy}
+            </if>
+            <!-- 更新时间-起 -->
+            <if test="param.updateTimeStart != null">
+                AND update_time <![CDATA[>=]]> #{param.updateTimeStart}
+            </if>
+            <!-- 更新时间-止 -->
+            <if test="param.updateTimeEnd != null ">
+                AND update_time <![CDATA[<=]]> #{param.updateTimeEnd}
+            </if>
+            <!-- 超级查询参数 这个参数方便自定义SQL条件查询（要考虑SQL注入，查询条件与数据权限冲突） -->
+            <if test="param.superQueryParams != null and param.superQueryParams != ''">
+                AND #{param.superQueryParams}
+            </if>
+        </where>
+    </select>
+
+    <!-- 2021年7月20日 14:36:07 列表查询 -->
+    <select id="queryList" resultMap="listQuery">
+        SELECT
+            id, dict_name, dict_code, dict_type
+        FROM
+            <include refid="sys_dict_table_name"/>
+        WHERE status = 0
+    </select>
+
+</mapper>

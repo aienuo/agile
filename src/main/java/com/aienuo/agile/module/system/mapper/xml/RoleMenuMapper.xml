@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aienuo.agile.module.system.mapper.RoleMenuMapper">
+    <!-- 角色菜单权限关联 通用查询结果列 -->
+    <sql id="sys_role_menu_base_column_list">
+        <!--@sql SELECT -->
+        id,create_by, create_time, update_by, update_time, role_id, menu_id
+        <!--@sql FROM sys_role_menu -->
+    </sql>
+
+    <!-- 角色菜单权限关联 数据表名称 -->
+    <sql id="sys_role_menu_table_name">
+        <!--@sql SELECT TABLE_NAME -->
+        sys_role_menu
+        <!--@sql FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'sys_role_menu' -->
+    </sql>
+
+    <!-- 指定角色下的菜单权限编号 -->
+    <select id="queryMenuIdListByRoleId" resultType="java.lang.String">
+        SELECT menu_id FROM <include refid="sys_role_menu_table_name"/> WHERE role_id = #{roleId}
+    </select>
+
+</mapper>

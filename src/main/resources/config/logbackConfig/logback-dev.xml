@@ -273,7 +273,7 @@
 
 	<!--开发环境:打印控制台-->
 	<springProfile name="dev">
-		<logger name="com.imis.agile" level="debug"/>
+		<logger name="com.aienuo.agile" level="debug"/>
 	</springProfile>
 
 	<!-- 最基础的日志输出级别 -->

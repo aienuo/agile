@@ -10,6 +10,6 @@ ${AnsiColor.BLUE}
 
 
 ${AnsiColor.BRIGHT_MAGENTA}
-Agile Version: ${imis-boot.version}
+Agile Version: ${aienuo-boot.version}
 Spring Boot Version: ${spring-boot.version}${spring-boot.formatted-version}
 ${AnsiColor.BLACK}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aienuo.agile.module.system.mapper.UserRoleMapper">
+    <!-- 用户角色关联 通用查询结果列 -->
+    <sql id="sys_user_role_base_column_list">
+        <!--@sql SELECT -->
+        id,create_by, create_time, update_by, update_time, user_id, role_id
+        <!--@sql FROM sys_user_role -->
+    </sql>
+
+    <!-- 用户角色关联 数据表名称 -->
+    <sql id="sys_user_role_table_name">
+        <!--@sql SELECT TABLE_NAME -->
+        sys_user_role
+        <!--@sql FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'sys_user_role' -->
+    </sql>
+
+    <!-- 指定用户下的角色编号 -->
+    <select id="queryRoleIdListByUserId" resultType="java.lang.String">
+        SELECT role_id FROM <include refid="sys_user_role_table_name"/> WHERE user_id = #{userId}
+    </select>
+
+</mapper>
