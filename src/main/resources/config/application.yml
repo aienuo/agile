@@ -1,4 +1,4 @@
-imis-boot:
+aienuo-boot:
   version: 1.0.0
 server:
   tomcat:
@@ -112,7 +112,7 @@ spring:
     resources:
       static-locations: classpath:/templates/
 mybatis-plus:
-  mapper-locations: classpath:com/imis/agile/module/**/mapper/xml/*Mapper.xml
+  mapper-locations: classpath:com/aienuo/agile/module/**/mapper/xml/*Mapper.xml
   checkConfigLocation: true
   global-config:
     banner: false
@@ -138,9 +138,9 @@ springdoc:
   group-configs:
     - group: '对外提供接口'
       paths-to-match: '/**'
-      packages-to-scan: com.imis.agile.module.api.controller
+      packages-to-scan: com.aienuo.agile.module.api.controller
     - group: '后台管理接口'
       paths-to-match: '/**'
-      packages-to-scan: com.imis.agile.module.system.controller
+      packages-to-scan: com.aienuo.agile.module.system.controller
 logging:
   config: classpath:config/logbackConfig/logback-${spring.profiles.active}.xml
