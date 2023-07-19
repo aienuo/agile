@@ -1,6 +1,7 @@
 package com.imis.agile;
 
 import com.imis.agile.util.*;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -23,15 +24,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 工具测试
  */
+@Slf4j
 class AgileTests {
 
     @Test
     void contextLoads() {
-        System.out.println(LocalDate.parse("19970229", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        log.info("{} 字符串日期转日期： {}", "19970229", LocalDate.parse("19970229", DateTimeFormatter.ofPattern("yyyyMMdd")));
     }
 
     @Test
@@ -40,27 +43,26 @@ class AgileTests {
         // 假身份证件号
         String id1 = "370911199702294811";
 
-        System.out.println(IdCardUtil.isIdCard(id1));
+        log.info("身份证合法性校验通过： {}", IdCardUtil.isIdCard(id1));
 
-        System.out.println(id1.matches(regexp1));
+        log.info("身份证合法性正则表达式校验通过： {}", id1.matches(regexp1));
 
         String regexp2 = "^(?:(?:\\+|00)86)?1(?:(?:3[\\d])|(?:4[5-7|9])|(?:5[0-3|5-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\\d])|(?:9[1|8|9]))\\d{8}$";
 
         String phone1 = "17605481537";
         String phone2 = "12345678910";
 
-        System.out.println(phone1.matches(regexp2));
-        System.out.println(phone2.matches(regexp2));
+        log.info("手机号合法性正则表达式校验通过： {}", phone1.matches(regexp2));
+        log.info("手机号合法性正则表达式校验通过： {}", phone2.matches(regexp2));
 
     }
 
     @Test
     void testPassword() {
-
         String salt = PasswordUtil.getStringSalt();
-        System.out.println(salt);
+        log.info("密码盐： {}", salt);
         String password = PasswordUtil.encrypt("admin", "admin", salt);
-        System.out.println(password);
+        log.info("编码后密码： {}", password);
 
     }
 
@@ -68,38 +70,38 @@ class AgileTests {
     void doTestForCryptoUtils() {
         String password = "root";
         String encodePassword = PasswordUtil.encrypt(password);
-        System.out.println(encodePassword);
+        log.info("编码后密码： {}", encodePassword);
         password = PasswordUtil.decrypt(encodePassword);
-        System.out.println(password);
+        log.info("解码后密码： {}", password);
     }
 
     @Test
     void getAge() {
-        System.out.println(IdCardUtil.getAge("110101201803075152"));
+        log.info("： {}", IdCardUtil.getAge("110101201803075152"));
     }
 
     @Test
     void doTestForComputerUniqueIdentificationUtil() {
-        System.out.println("当前计算机操作系统名称：" + ComputerUniqueIdentificationUtil.getOsName());
-        System.out.println("当前计算机的 CPU 序列号：" + ComputerUniqueIdentificationUtil.getCpuIdentification());
-        System.out.println("当前计算机网卡的 MAC 地址：" + ComputerUniqueIdentificationUtil.getMacAddress());
-        System.out.println("当前计算机主板序列号：" + ComputerUniqueIdentificationUtil.getMainBoardSerialNumber());
-        System.out.println("当前计算机唯一标识：" + ComputerUniqueIdentificationUtil.getComputerUniqueIdentification());
-        System.out.println("当前计算机唯一标识：" + ComputerUniqueIdentificationUtil.getComputerUniqueIdentificationString());
+        log.info("当前计算机操作系统名称： {}", ComputerUniqueIdentificationUtil.getOsName());
+        log.info("当前计算机的 CPU 序列号： {}", ComputerUniqueIdentificationUtil.getCpuIdentification());
+        log.info("当前计算机网卡的 MAC 地址： {}", ComputerUniqueIdentificationUtil.getMacAddress());
+        log.info("当前计算机主板序列号： {}", ComputerUniqueIdentificationUtil.getMainBoardSerialNumber());
+        log.info("当前计算机唯一标识： {}", ComputerUniqueIdentificationUtil.getComputerUniqueIdentification());
+        log.info("当前计算机唯一标识： {}", ComputerUniqueIdentificationUtil.getComputerUniqueIdentificationString());
     }
 
     @Test
     void doTestForUnitConversion() {
-        System.out.println(UnitConversion.conversion(new BigDecimal(1), UnitConversion.UnitsEnum.TS_MACH, UnitConversion.UnitsEnum.TS_KM, 8));
+        log.info("速度转换： {}", UnitConversion.conversion(new BigDecimal(1), UnitConversion.UnitsEnum.TS_MACH, UnitConversion.UnitsEnum.TS_KM, 8));
+
         List<Map<String, String>> list = UnitConversion.getCategoryList();
         Map<String, List<Map<String, String>>> listMap = UnitConversion.getUnitListMap();
         list.forEach(
                 stringStringMap -> {
-                    System.out.println(stringStringMap.get("code") + "--" + stringStringMap.get("name"));
                     List<Map<String, String>> mapList = listMap.get(stringStringMap.get("code"));
                     mapList.forEach(
                             stringStringMap1 -> {
-                                System.out.println(stringStringMap1.get("code") + "---" + stringStringMap1.get("name"));
+                                log.info("{} 计量单位({})： {} --- {}", stringStringMap.get("name"), stringStringMap.get("code"), stringStringMap1.get("code"), stringStringMap1.get("name"));
                             }
                     );
                 }
@@ -123,7 +125,7 @@ class AgileTests {
 
         structureAdministrativeArea(administrativeArea);
 
-        // System.out.println(administrativeArea);
+        log.info("行政区划数据： {}", administrativeArea);
 
         writeFile(administrativeArea.toString(), "./json.json");
     }
@@ -192,6 +194,7 @@ class AgileTests {
             try {
                 String body = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
 
+                // 高德地图 BUG citycode 有值的情况 是字符串，无值的时候 返回空数组，
                 String regex = "\"citycode\":\\[]";
 
                 body = body.replaceAll(regex, "\"citycode\":\"\"");
@@ -199,10 +202,11 @@ class AgileTests {
 
                 AreaReturn areaReturn = JacksonUtils.parse(body, AreaReturn.class);
 
+                assert areaReturn != null;
                 districtAll.addAll(areaReturn.getDistricts());
 
             } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
+                log.error(e.getMessage(), e);
             }
 
         }
@@ -232,10 +236,10 @@ class AgileTests {
                 BufferedWriter bufferWriter = new BufferedWriter(fileWritter);
                 bufferWriter.write(json);
                 bufferWriter.close();
-                System.out.println(file.getPath());
+                log.info("文件路径： {}", file.getPath());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -249,12 +253,12 @@ class AgileTests {
         try {
             String classname = area.getChildName();
             // Jsoup 解析 HTML
-            // System.out.println(area.getChildHref());
+            // log.info("： {}",area.getChildHref());
             Document document = Jsoup.connect(area.getChildHref()).get();
             // 像 js 一样，通过 class 获取列表下的 省会列表 table
             Element provinceTable = document.getElementsByClass(classname + "table").first();
             if (provinceTable != null) {
-                // System.out.println(provinceTable);
+                // log.info("： {}",provinceTable);
                 // 像 js 一样，通过 class 获取列表下的 tr
                 Elements provinceTrList = provinceTable.getElementsByClass(classname + "tr");
                 List<AdministrativeArea> administrativeAreaList = new ArrayList<>();
@@ -262,24 +266,24 @@ class AgileTests {
                 for (Element provinceTr : provinceTrList) {
                     // 像 js 一样，通过 tagName 获取列表下的 td
                     Elements provinceTdList = provinceTr.getElementsByTag("td");
-                    // System.out.println(provinceTdList);
+                    // log.info("： {}",provinceTdList);
                     // 1 - 省级单位
                     if (ADMINISTRATIVE_AREA_LIVE_NAME[0].equals(classname)) {
                         for (Element provinceTd : provinceTdList) {
-                            // System.out.println(provinceTd);
+                            // log.info("： {}",provinceTd);
                             // 像 js 一样，通过 tagName 获取列表下的 a
                             Elements provinceA = provinceTd.getElementsByTag("a");
                             String name = provinceTd.text();
-                            String aHref = provinceA.first().attr("href");
+                            String aHref = Objects.requireNonNull(provinceA.first()).attr("href");
                             // 行政区划 级别
                             AdministrativeArea administrativeArea = new AdministrativeArea().setLevel(area.getLevel() + 1);
                             administrativeArea.setName(name);
-                            if (aHref != null && aHref.length() > 0) {
-                                // System.out.println(" - 地址:" + aHref);
+                            if (aHref.length() > 0) {
+                                // log.info("： {}"," - 地址:" + aHref);
                                 String currentCode = aHref.substring(0, aHref.indexOf('.'));
                                 String code = currentCode + area.getCode().substring(currentCode.length());
-                                // System.out.println(area.getCode());
-                                // System.out.println(code);
+                                // log.info("： {}",area.getCode());
+                                // log.info("： {}",code);
                                 administrativeArea.setCode(code);
                             }
                             String currentHref = area.getChildHref();
@@ -299,10 +303,10 @@ class AgileTests {
                             Element provinceTd = provinceTdList.get(i);
                             // 像 js 一样，通过 tagName 获取列表下的 a
                             Elements provinceA = provinceTd.getElementsByTag("a");
-                            if (provinceA != null && provinceA.size() > 0) {
+                            if (provinceA.size() > 0) {
                                 // 拥有下一级 从 a 标签 内获取内容
                                 String nameOrCode = provinceA.text();
-                                String aHref = provinceA.first().attr("href");
+                                String aHref = Objects.requireNonNull(provinceA.first()).attr("href");
                                 if (i == 0) {
                                     // 第一级 获取 code
                                     administrativeArea.setCode(nameOrCode);
@@ -315,7 +319,7 @@ class AgileTests {
                                     administrativeArea.setChildName(ADMINISTRATIVE_AREA_LIVE_NAME[administrativeArea.getLevel()]);
                                     administrativeAreaList.add(administrativeArea);
                                     // 递归
-                                    // structureAdministrativeArea(administrativeArea);
+                                    structureAdministrativeArea(administrativeArea);
                                 }
                             } else {
                                 String nameOrCode = provinceTd.text();
@@ -334,16 +338,17 @@ class AgileTests {
                 }
                 area.setChild(administrativeAreaList);
             } else {
-                System.out.println(document);
+                log.info("table 空： {}", document);
+
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
     }
 
     @Test
     void testMessageFormat() {
-        System.out.println(MessageFormat.format("{1} 上传失败：{0}", "ABCD", "EFGH"));
+        log.info("测试 MessageFormat ： {} 999", MessageFormat.format("{1} 上传失败：{0}", "ABCD", "EFGH"));
 
         int[] arr = {1, 5, 6, 0, 7, 4, 9, 3};
         int[] index = {0, 1, 2, 3, 4, 0, 5, 1, 2, 6, 7}; // 这些是角标，按照角标数  从 上面的数组取值就是了
@@ -354,7 +359,7 @@ class AgileTests {
             tel.append(arr[i]);
         }
 
-        System.out.println(tel);
+        log.info("随机生成电话号码： {}", tel);
 
     }
 
@@ -388,7 +393,7 @@ class AgileTests {
                 outputStream.write(string.toString().getBytes());
                 outputStream.close();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                log.error(e.getMessage(), e);
             }
 
         }
