@@ -64,7 +64,7 @@ public class AdministrativeArea implements Serializable {
         return "{" +
                 "\"name\":\"" + name + '\"' +
                 ", \"code\":\"" + code + '\"' +
-                ", \"level:" + level +
+                ", \"level\":\"" + level + '\"' +
                 ", \"classification\":\"" + (classification == null ? "" : classification) + '\"' +
                 ", \"childHref\":\"" + childHref + '\"' +
                 ", \"childName\":\"" + childName + '\"' +

@@ -17,6 +17,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -73,11 +74,16 @@ class AgileTests {
         log.info("编码后密码： {}", encodePassword);
         password = PasswordUtil.decrypt(encodePassword);
         log.info("解码后密码： {}", password);
+
+
+        String url = "jdbc:mysql://192.168.211.131:3306/agile?allowMultiQueries=true&serverTimezone=UTC&characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false";
+        log.info("加密后的URL： {}", PasswordUtil.encrypt(url));
+
     }
 
     @Test
     void getAge() {
-        log.info("： {}", IdCardUtil.getAge("110101201803075152"));
+        log.info("获取年龄： {}", IdCardUtil.getAge("110101201803075152"));
     }
 
     @Test
@@ -270,8 +276,8 @@ class AgileTests {
                     // 1 - 省级单位
                     if (ADMINISTRATIVE_AREA_LIVE_NAME[0].equals(classname)) {
                         for (Element provinceTd : provinceTdList) {
-                            // log.info("： {}",provinceTd);
-                            // 像 js 一样，通过 tagName 获取列表下的 a
+                            // log.info("provinceTd ： {}", provinceTd);
+                            // 像 js 一样，通过 tagName 获取列表下的 a 标签
                             Elements provinceA = provinceTd.getElementsByTag("a");
                             String name = provinceTd.text();
                             String aHref = Objects.requireNonNull(provinceA.first()).attr("href");
@@ -279,11 +285,11 @@ class AgileTests {
                             AdministrativeArea administrativeArea = new AdministrativeArea().setLevel(area.getLevel() + 1);
                             administrativeArea.setName(name);
                             if (aHref.length() > 0) {
-                                // log.info("： {}"," - 地址:" + aHref);
+                                // log.info("地址： {}", aHref);
                                 String currentCode = aHref.substring(0, aHref.indexOf('.'));
                                 String code = currentCode + area.getCode().substring(currentCode.length());
-                                // log.info("： {}",area.getCode());
-                                // log.info("： {}",code);
+                                // log.info("Code： {}", area.getCode());
+                                // log.info("拼接后 Code： {}", code);
                                 administrativeArea.setCode(code);
                             }
                             String currentHref = area.getChildHref();
@@ -339,10 +345,11 @@ class AgileTests {
                 area.setChild(administrativeAreaList);
             } else {
                 log.info("table 空： {}", document);
-
             }
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            // log.error(e.getMessage(), e);
+            log.error(area.getChildHref());
+            // writeFile(area.toString(), "./json.json");
         }
     }
 
@@ -397,6 +404,53 @@ class AgileTests {
             }
 
         }
+    }
+
+    /**
+     * 读取 JSON 文件
+     *
+     * @param file - File
+     * @return AdministrativeArea
+     */
+    private static AdministrativeArea nioMethod(final File file) {
+        AdministrativeArea administrativeArea = new AdministrativeArea();
+        try {
+            String jsonString = new String(Files.readAllBytes(Paths.get(file.getPath())));
+            administrativeArea = JacksonUtils.parse(jsonString, AdministrativeArea.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return administrativeArea;
+    }
+
+    /**
+     * 构建
+     *
+     * @param administrativeArea - AdministrativeArea
+     */
+    private void buildAdministrativeAreaTreeData(AdministrativeArea administrativeArea) {
+        List<AdministrativeArea> child = administrativeArea.getChild();
+        String childHref = administrativeArea.getChildHref();
+        String code = administrativeArea.getCode();
+        if (child != null && !child.isEmpty()) {
+            child.forEach(this::buildAdministrativeAreaTreeData);
+        } else {
+            if (AgileUtil.isNotEmpty(childHref)) {
+                structureAdministrativeArea(administrativeArea);
+            }
+        }
+
+    }
+
+    @Test
+    void testAdministrativeArea() {
+        File file = new File("./json.json");
+        AdministrativeArea administrativeArea = nioMethod(file);
+        // log.info("行政区划数据： {}", administrativeArea);
+        buildAdministrativeAreaTreeData(administrativeArea);
+        log.info("行政区划数据： {}", administrativeArea);
+
+        // writeFile(administrativeArea.toString(), "./all_json.json");
     }
 
 }
