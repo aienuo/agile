@@ -23,9 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -135,8 +135,7 @@ public class OrganizationBus extends BaseBus {
         }
         ArgumentResponseEnum.UPDATE_PARAMETERS_VALID_ERROR.assertNotEmpty(organizationList, "组织机构", "请确认信息准确无误后重新编辑");
         // 构建数据
-        Map<Long, OrganizationEditDTO> organizationEditMap = new HashMap<>(editList.size());
-        editList.forEach(organizationEdit -> organizationEditMap.put(organizationEdit.getId(), organizationEdit));
+        Map<Long, OrganizationEditDTO> organizationEditMap = editList.stream().collect(Collectors.toMap(OrganizationEditDTO::getId, Function.identity()));
         organizationList.forEach(
                 organization -> {
                     if (organizationEditMap.containsKey(organization.getId())) {
