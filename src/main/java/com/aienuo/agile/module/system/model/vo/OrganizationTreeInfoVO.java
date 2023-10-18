@@ -1,6 +1,6 @@
 package com.aienuo.agile.module.system.model.vo;
 
-import com.aienuo.agile.constant.base.BaseTreeVO;
+import com.aienuo.agile.constant.base.BaseTree;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -25,7 +25,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Schema(title = "组织机构 - 树查询 - 返回值", description = "组织机构 - 树查询 - 返回值")
-public class OrganizationTreeInfoVO extends BaseTreeVO implements Serializable {
+public class OrganizationTreeInfoVO extends BaseTree implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

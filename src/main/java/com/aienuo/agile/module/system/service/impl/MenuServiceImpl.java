@@ -61,7 +61,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     @Override
     @DS(DataBaseConstant.DATA_SOURCE_SLAVE)
     public List<MenuTreeVO> queryMenuTreeListByUserId(final Long userId) {
-        List<MenuTreeVO> menuTreeList = new ArrayList<>();
         // 用户角色关联
         List<UserRole> userRoleList = this.userRoleService.list(Wrappers.<UserRole>lambdaQuery().eq(UserRole::getUserId, userId));
         if (AgileUtil.isNotEmpty(userRoleList)) {
@@ -75,12 +74,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
                 List<MenuTreeVO> menuList = this.baseMapper.queryMenuTreeListByIdList(menuIdList);
                 if (AgileUtil.isNotEmpty(menuList)) {
                     // 构建树形结构数据
-                    BuildingTreeData<MenuTreeVO> buildingTreeData = new BuildingTreeData<>();
-                    return buildingTreeData.buildingTreeData(menuList);
+                    return new BuildingTreeData<MenuTreeVO>().buildingTreeData(menuList);
                 }
             }
         }
-        return menuTreeList;
+        return new ArrayList<>();
     }
 
     /**
@@ -126,8 +124,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         List<MenuTreeInfoVO> menuTreeList = this.baseMapper.queryMenuTreeList();
         if (AgileUtil.isNotEmpty(menuTreeList)) {
             // 构建数据
-            BuildingTreeData<MenuTreeInfoVO> buildingTreeData = new BuildingTreeData<>();
-            return buildingTreeData.buildingTreeData(menuTreeList);
+            return new BuildingTreeData<MenuTreeInfoVO>().buildingTreeData(menuTreeList);
         }
         return menuTreeList;
     }

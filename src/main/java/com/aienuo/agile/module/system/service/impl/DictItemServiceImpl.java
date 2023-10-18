@@ -45,8 +45,7 @@ public class DictItemServiceImpl extends ServiceImpl<DictItemMapper, DictItem> i
         List<DictItemVO> dictItemList = this.baseMapper.queryDictItemList(query);
         if (AgileUtil.isNotEmpty(dictItemList)) {
             // 构建数据
-            BuildingTreeData<DictItemVO> buildingTreeData = new BuildingTreeData<>();
-            return buildingTreeData.buildingTreeData(dictItemList);
+            return new BuildingTreeData<DictItemVO>().buildingTreeData(dictItemList);
         }
         return dictItemList;
     }
@@ -66,8 +65,7 @@ public class DictItemServiceImpl extends ServiceImpl<DictItemMapper, DictItem> i
         List<ItemVO> dictItemList = this.baseMapper.queryDictItemListByDictIdList(dictIdList);
         if (AgileUtil.isNotEmpty(dictItemList)) {
             // 构建数据
-            BuildingTreeData<ItemVO> buildingTreeData = new BuildingTreeData<>();
-            return buildingTreeData.buildingTreeData(dictItemList);
+            return new BuildingTreeData<ItemVO>().buildingTreeData(dictItemList);
         }
         return dictItemList;
     }

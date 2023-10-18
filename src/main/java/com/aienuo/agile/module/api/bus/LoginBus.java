@@ -149,8 +149,7 @@ public class LoginBus extends BaseBus {
                     dict -> {
                         if (itemListMap.containsKey(dict.getId())) {
                             // 构建数据
-                            BuildingTreeData<ItemVO> buildingTreeData = new BuildingTreeData<>();
-                            dict.setItemList(buildingTreeData.buildingTreeData(itemListMap.get(dict.getId())));
+                            dict.setItemList(new BuildingTreeData<ItemVO>().buildingTreeData(itemListMap.get(dict.getId())));
                         }
                     }
             );

@@ -1,6 +1,6 @@
 package com.aienuo.agile.module.api.model.vo;
 
-import com.aienuo.agile.constant.base.BaseTreeVO;
+import com.aienuo.agile.constant.base.BaseTree;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -23,7 +23,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Schema(title = "菜单权限 - 登录 - 返回值", description = "菜单权限 - 登录 - 返回值")
-public class MenuTreeVO extends BaseTreeVO implements Serializable {
+public class MenuTreeVO extends BaseTree implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

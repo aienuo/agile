@@ -1,6 +1,6 @@
 package com.aienuo.agile.util;
 
-import com.aienuo.agile.constant.base.BaseTreeVO;
+import com.aienuo.agile.constant.base.BaseTree;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.List;
  * @version 1.0
  * @since 2021年07月23日 09:10
  */
-public class BuildingTreeData<T extends BaseTreeVO> {
+public class BuildingTreeData<T extends BaseTree> {
 
     /**
      * 递归查找子节点

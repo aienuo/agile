@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * <p>
- * BaseTreeVO<br>
+ * BaseTree<br>
  * Tree 对象
  * </p>
  *
@@ -21,7 +21,7 @@ import java.util.List;
 @Data
 @Schema(title = "Tree 对象", description = "Tree 对象")
 @EqualsAndHashCode(callSuper = false)
-public class BaseTreeVO implements Serializable {
+public class BaseTree<T> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -42,7 +42,7 @@ public class BaseTreeVO implements Serializable {
      * 子级列表
      */
     @Schema(title = "子级列表")
-    private List<BaseTreeVO> children;
+    private List<T> children;
 
 
 }

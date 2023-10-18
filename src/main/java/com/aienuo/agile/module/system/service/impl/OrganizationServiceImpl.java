@@ -43,8 +43,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         List<OrganizationTreeInfoVO> organizationTreeList = this.baseMapper.queryOrganizationTreeList();
         if (AgileUtil.isNotEmpty(organizationTreeList)) {
             // 构建数据
-            BuildingTreeData<OrganizationTreeInfoVO> buildingTreeData = new BuildingTreeData<>();
-            return buildingTreeData.buildingTreeData(organizationTreeList);
+            return new BuildingTreeData<OrganizationTreeInfoVO>().buildingTreeData(organizationTreeList);
         }
         return organizationTreeList;
     }
