@@ -15,8 +15,8 @@ spring:
           driver-class-name: com.mysql.cj.jdbc.Driver
         slave:
           url: jdbc:mysql://192.168.211.131:3306/agile?allowMultiQueries=true&serverTimezone=UTC&characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false
-          username: ENC(VZamSTMi224AH6RUtJGXNldiDp/XEL2ozRhBUu/o9ChodT4JEb9kE/j0EFhXKbjsfvLVacUW0AUzetA6OrNJug==)
-          password: ENC(VZamSTMi224AH6RUtJGXNldiDp/XEL2ozRhBUu/o9ChodT4JEb9kE/j0EFhXKbjsfvLVacUW0AUzetA6OrNJug==)
+          username: root
+          password: root
           driver-class-name: com.mysql.cj.jdbc.Driver
 mybatis-plus:
   configuration:
